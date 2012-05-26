@@ -1,4 +1,4 @@
 Datea_mobile
 ============
 
-phonegap application for Datea
+phonegap application for Datea (development branch)
