@@ -1,14 +1,13 @@
 $(function(){
 
-    $(document).ready(function(){
-        $("#login_form").submit(function(form){
-            form.preventDefault();
-        });
-    });
+    var api_url = "http://192.168.2.113:8000/api/v1";
+
+    ///////////////MODELS///////////////////
 
 //session model
 
    var SessionModel = Backbone.Model.extend({
+       urlRoot: api_url + "/accounts/signin/?format=json",
         defaults: {
             logged: false,
             apiKey: null,
@@ -23,112 +22,189 @@ $(function(){
 
     var DateaUserCollection = Backbone.Collection.extend({
         model: DateaUser,
-        //url: "http://192.168.2.113:8000/api/v1/user/",
+   });
+
+    ////////////////views////////////////////
+
+//home view
+    var HomeView = Backbone.View.extend({
+
+        render: function(){
+            this.$el.html(ich.home_tpl());
+            return this
+        },
     });
 
-//session view
-    var LoginView = Backbone.View.extend({
-
-        el:$("#login"),
-        events:{
-            "submit #login_form": "loginSubmit",
-            "change #usr ": "setUser",
-            "change #pss": "setPss"
+    var RegisterView = Backbone.View.extend({
+        events: {
+            "submit": "submitRegister",
+            "click h1":"enter"
         },
-        /*
-        //not sure we need this
-        initialize: function(){
-            var self = this;
-            this.model.bind("change", this.render, this);
-
+        render: function(){
+            this.$el.html(ich.register_tpl());
+            return this;
         },
-        render: function(event){
-            $("#result").html("Login Successful");
-        },
-        */
-
-        loginSubmit: function(e){
-            //e.preventDefault();
-        	console.log("bang");
-            var usr = this.model.get('username');
-            var pss = this.model.get('password');
-            var that = this;
-            var data = {username: usr, password : pss};
-            console.log(data.username, data.password);
-            $.post("http://192.168.2.113:8000/api/v1/accounts/signin/?format=json",
-                    JSON.stringify(data),
+        submitRegister : function(e){
+            e.preventDefault();
+            var formdata =$("#register_form").serializeArray();
+            //parsing data into a convenient object
+            var regdata = {};
+            formdata.forEach(function(data){
+                console.log(data.name, data.value);
+                regdata[data.name] = data.value;
+            });
+            //validate form 
+            if(regdata.password == regdata.confirm_password){
+                console.log("validated");   
+            }else{
+                console.log("error");
+            }
+            var self = this;           
+           //there is no register model, so we're doing plain ajax post to create the user in the server, instead of using model.save(). 
+            $.post(api_url + "/accounts/create/?format=json",
+                    JSON.stringify(regdata),
                     function(response){
-                        if (response.status == 200){
-                            that.model.set({apiKey: response.token});
-                            that.model.set({logged: true});
-                            $('#result').html("Login Successful")
-                            that.userModel = new DateaUser();
-                            that.userModel.urlRoot = "http://192.168.2.113:8000/api/v1/user/?username=" + usr;
- that.userModel.fetch();
-                            //that.userModel.fetch();
-                            that.userView = new DateaUserView({model: that.userModel});
-                            
-                            //that.userView.render();
-
-                            /*
-                            that.userCollection = new DateaUserCollection();
-                            that.userModel = new DateaUser();
-                            that.userCollection.fetch({
-                                data : {"username": usr},
-                                success: function(){
-                                    console.log("data loaded");
-                                }
+                        console.log(response.status);
+                        if(response.status === 200){
+                            self.model.set({
+                                username: regdata.username,
+                                password: regdata.password
                             });
-                            //that.userView = new DateaUserView({model: that.userCollection});
-                            //that.userView.model.fetch({data:{username: usr}});
-                            */
-                        }else{
-                            console.log("error with login");
-                            console.log(response.error);
-                            $("#result").html("Error");
+                            $('#result').html(ich.enter());
                         }
                     },
-                    "json"
-                  );
-            return;
+                    'json'
+                    );
+
         },
-        setUser: function(){
-            console.log("usr set");
-            this.model.set({username: $("#usr").val()});
-        },
-        setPss: function(){
-            console.log('psss set');
-            this.model.set({password: $("#pss").val()})
+        enter: function(){
+            var self = this;
+            var logindata = {
+                username: this.model.get('username'),
+                password: this.model.get('password')
+            };
+            //login sent to server
+            this.model.save(logindata, {
+                 success: function(model, response){
+                    console.log("bang");
+                    if(response.status == 200){
+                        console.log( response);
+                        console.log("success");
+                        self.model.set({apiKey: response.token});
+                        self.model.set({logged: true});
+                        //redirecting to user profile for now
+                        var uname = self.model.get("username");
+                        app.navigate("user/" +uname, {trigger : true});
+                    }else if(reponse.error){
+                        console.log(response.error);
+                        $("#result").html(response.error);
+                    }
+                }
+            });
         }
 
     });
+//session view
+    var LoginView = Backbone.View.extend({
 
-    var DateaUserView = Backbone.View.extend({
+        events:{
+            "submit #login_form": "loginSubmit",
+        },
+        render: function(event){
+            this.$el.html(ich.login_form_tpl());
+            return this;
+        },
 
-        el: $("#user_data"),  
+        loginSubmit: function(e){
+            e.preventDefault();
+            var usr = $("#usr").val();
+            var pss = $("#pss").val();
+            var self = this;
+            this.model.save({username:usr, password:pss},{
+                success: function(model, response){
+                    console.log("bang");
+                    if(response.status == 200){
+                        console.log( response);
+                        console.log("success");
+                        self.model.set({apiKey: response.token});
+                        self.model.set({logged: true});
+                        var uname = self.model.get("username");
+                        app.navigate("user/" +uname, {trigger : true});
+                    }else if(reponse.error){
+                        console.log(response.error);
+                        $("#result").html(response.error);
+                    }
+                },
+                error: function(response){
+                    console.log(response);
+                    $("#result").html("Ocurrio un error");
+                }
+            });
+            return;
+        }
+    });
+
+    //user view
+    var DateaUserView = Backbone.View.extend({ 
         
         initialize: function(){
             this.model.bind("change", this.render, this);
         },
 
-        render: function(event){
-            var dat = this.model.get('objects')[0];
-            console.log("username:  " + dat);
-            this.$el.html(ich.user_profile(dat));
-            //$("#user_data").append(JSON.stringify(this.model));
+        render: function(){
+            //evaluate the object is not empty
+            if(this.model.get('objects') !== undefined){
+                this.dat = this.model.get('objects')[0];
+                console.log("username:  " + this.dat.username);
+                this.$el.html(ich.user_profile_tpl(this.dat));
+            }
+            return this;
         }
     });
 
     var AppRouter = Backbone.Router.extend({
+
+        initialze: function(){
+        /*
+        the logic works but something (zepto, browser?) 
+        is removing the port number from the url string
+        possibly same origin policy 
+        */
+        //$.ajaxSettings.url = api_url + "/accounts/signin/?format=json";// 
+         $.ajaxSettings.accepts = 'json';
+         $.ajaxSettings.crossDomain = true;
+      
+        },
         routes: {
-            "":"home"
+            "":"home",
+            "login":"login",
+            "register": "register",
+            "user/:username": "loadUser"
         },
         home: function(){
+            this.homeView = new HomeView();
+            $("#app").html(this.homeView.render().el);
+        },
+        login: function(){
             this.session = new SessionModel();
             this.loginView = new LoginView({model: this.session});
+            $("#app").html(this.loginView.render().el);
+        },
+        register: function(){
+            this.session = new SessionModel();
+            this.registerView = new RegisterView({model: this.session});
+            $("#app").html(this.registerView.render().el);
+        },
+        loadUser: function(username){
+            this.userModel = new DateaUser();
+            this.userModel.urlRoot = api_url + "/user/?username=" + username
+            
+            this.userModel.fetch();
+            this.userView = new DateaUserView({model:this.userModel});
+            $("#app").html(this.userView.render().el);
         }
     });
 
-var app = new AppRouter();
-Backbone.history.start();
+    var app = new AppRouter();
+    Backbone.history.start();
 });
