@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>test page</title>
+        <script src="js/libs/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/underscore.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/backbone.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/backbone-tastypie.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/ICanHaz.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/jquery.serializeObject.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/jquery.autosize-min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/jquery.iframe-transport.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/json2.js"type="text/javascript" charset="utf-8"></script>
+        <script src="js/libs/date.format.js" type="text/javascript" charset="utf-8"></script>
+        <!-- Templates -->
+        <script id="home_tpl" type="text/html">
+                <h1>Bienvenido a Datea</h1>
+                <a href="#login">login</a>
+                <a href="#register">register</a>
+        </script>
+
+        <script id="register_tpl" type="text/html">
+            <h1>Register Here</h1>
+            <form id="register_form">
+                <input type="text" id="user" name="username" />
+                <input type="email" id="mail" name="email"/>
+                <input type="password" id="pass" name="password"/>
+                <input type="password" id="confirm_pass" name="confirm_password" />
+                <input type="submit" />
+            </form>
+            <div id="result"></div>
+        </script>
+
+        <script id="enter" type="text/html">
+            <h1>enter</h1>
+        </script>
+        <script id="login_form_tpl" type = "text/html">
+                <form id="login_form">
+                    <input type="text" id="usr" name="username" />
+                    <input type="password" id="pss" name="password" />
+                    <input type="submit" id="send" />
+                </form>
+                <div id="result"></div>
+        </script>
+
+     
+        <script id="user_profile_tpl" type="text/html">
+            <div>
+                    <h1>{{ username }}</h1>
+                </div>
+                <div>
+                    <img src="http://localhost:8000{{profile.image}}" id="profile_img" />
+                </div>
+                <div>
+                    <ul>
+                        <li>Joined: {{ date_joined }}</li>
+                        <li>Last Login{{ last_login }}</li>
+                        <li>Full Name{{ profile.full_name }}</li>
+                    </ul>
+                </div>
+                <div>
+                    <a href="#user/edit/{{ id }}">editar perfil</a>
+                </div> 
+         </script>
+        <!-- edit profile form -->
+        <script type="text/html" id="edit_user_tpl">
+            <form id="user_edit_form" >
+                <label for="fullname_in">Nombre Completo</label>
+                <input type="text" name="full_name" value="Nombre Completo" id="fullname_in"/>
+                <label for="email_in">email</label><input type="email" name="email" value="" id="email_in">
+                <label for="message_in">name</label><input type="text" name="message" value="" id="message_in">
+                <label for="image_input">Imagen de Perfil</label>
+                <input type="file" name="image" value="" id="image_input">
+                  <input type="submit" />
+
+          </form>
+       </script>
+
+    </head>
+    <body>
+        <div id="app">
+        </div>
+        <script src="js/misc/utils.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/models/image.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/models/profile.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/models/session.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/models/user.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/collections/image.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/views/home.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/views/login.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/views/profile.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/views/profile_edit.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/views/register.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/router.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+                    window.app = new AppRouter();
+                    Backbone.history.start();         
+                
+                });
+
+    </script>
+    </body>
+</html>
