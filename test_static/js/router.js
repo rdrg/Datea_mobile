@@ -5,6 +5,7 @@ var AppRouter = Backbone.Router.extend({
     
     initialize: function(){
         ich.grabTemplates();
+        //ich.grabExternalTemplates();
         $.ajaxSetup({
             crossDomain:true
             //accepts: "application/json",

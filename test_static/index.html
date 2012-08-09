@@ -12,70 +12,17 @@
         <script src="js/libs/jquery.iframe-transport.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/libs/json2.js"type="text/javascript" charset="utf-8"></script>
         <script src="js/libs/date.format.js" type="text/javascript" charset="utf-8"></script>
+
         <!-- Templates -->
-        <script id="home_tpl" type="text/html">
-                <h1>Bienvenido a Datea</h1>
-                <a href="#login">login</a>
-                <a href="#register">register</a>
-        </script>
-
-        <script id="register_tpl" type="text/html">
-            <h1>Register Here</h1>
-            <form id="register_form">
-                <input type="text" id="user" name="username" />
-                <input type="email" id="mail" name="email"/>
-                <input type="password" id="pass" name="password"/>
-                <input type="password" id="confirm_pass" name="confirm_password" />
-                <input type="submit" />
-            </form>
-            <div id="result"></div>
-        </script>
-
-        <script id="enter" type="text/html">
-            <h1>enter</h1>
-        </script>
-        <script id="login_form_tpl" type = "text/html">
-                <form id="login_form">
-                    <input type="text" id="usr" name="username" />
-                    <input type="password" id="pss" name="password" />
-                    <input type="submit" id="send" />
-                </form>
-                <div id="result"></div>
-        </script>
-
+        <ul id="icanhaz-xternal" style="display:none;">
+          <li id="home_tpl" title="templates/home.html"></li>
+          <li id="register_tpl" title="templates/register.html"></li>
+          <li id="enter" title="templates/enter.html"></li>
+          <li id="login_form_tpl" title="templates/login_form.html"></li>
+          <li id="user_profile_tpl" title="templates/user_profile.html"></li>
+          <li id="edit_user_tpl" title="templates/edit_user.html"></li>
+        </ul>       
      
-        <script id="user_profile_tpl" type="text/html">
-            <div>
-                    <h1>{{ username }}</h1>
-                </div>
-                <div>
-                    <img src="http://localhost:8000{{profile.image}}" id="profile_img" />
-                </div>
-                <div>
-                    <ul>
-                        <li>Joined: {{ date_joined }}</li>
-                        <li>Last Login{{ last_login }}</li>
-                        <li>Full Name{{ profile.full_name }}</li>
-                    </ul>
-                </div>
-                <div>
-                    <a href="#user/edit/{{ id }}">editar perfil</a>
-                </div> 
-         </script>
-        <!-- edit profile form -->
-        <script type="text/html" id="edit_user_tpl">
-            <form id="user_edit_form" >
-                <label for="fullname_in">Nombre Completo</label>
-                <input type="text" name="full_name" value="Nombre Completo" id="fullname_in"/>
-                <label for="email_in">email</label><input type="email" name="email" value="" id="email_in">
-                <label for="message_in">name</label><input type="text" name="message" value="" id="message_in">
-                <label for="image_input">Imagen de Perfil</label>
-                <input type="file" name="image" value="" id="image_input">
-                  <input type="submit" />
-
-          </form>
-       </script>
-
     </head>
     <body>
         <div id="app">
@@ -92,11 +39,11 @@
         <script src="js/views/profile_edit.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/views/register.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/router.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function(){
-                    window.app = new AppRouter();
-                    Backbone.history.start();         
-                
+    
+        <script type="text/javascript" charset="utf-8">
+          $(document).ready(function(){
+                window.app = new AppRouter();
+                Backbone.history.start();
                 });
 
     </script>
