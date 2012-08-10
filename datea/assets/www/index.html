@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Datea</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
@@ -14,9 +14,21 @@
     <script src="assets/cordova/childbrowser.js"></script>
     <script src="assets/cordova/FBConnect.js"></script>
     <script src="assets/cordova/TwitterConnect.js"></script>
+    
+    <link rel="stylesheet" href="assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap-responsive.css" />
+    <link rel="stylesheet" href="assets/css/datea.css" />
 
-    <style type="text/css" src="assets/bootstrap/css/bootstrap.css"></style>
-    <style type="text/css" scr="assets/bootstrap/css/bootstrap-responsive.css"></style>
+    <!-- Templates -->
+    <ul id="icanhaz-xternal" style="display:none;">
+      <li id="home_tpl" title="datea/templates/home.html"></li>
+      <li id="register_tpl" title="datea/templates/register.html"></li>
+      <li id="enter" title="datea/templates/enter.html"></li>
+      <li id="login_form_tpl" title="datea/templates/login_form.html"></li>
+      <li id="user_profile_tpl" title="datea/templates/user_profile.html"></li>
+      <li id="edit_user_tpl" title="datea/templates/edit_user.html"></li>
+    </ul>       
+
 
     <script type="text/javascript">
       function onBodyLoad(){
@@ -27,94 +39,20 @@
     </script>
 
     <!-- weinre -->
-    <!-- <script src="http://10.0.2.2:8080/target/target-script-min.js"></script> -->
-
-         <!-- Templates -->
-        <script id="home_tpl" type="text/html">
-                <h1>Bienvenido a Datea</h1>
-                <a href="#login">login</a>
-                <a href="#register">register</a>
-        </script>
-
-        <script id="register_tpl" type="text/html">
-            <h1>Register Here</h1>
-            <form id="register_form">
-                <input type="text" id="user" name="username" />
-                <input type="email" id="mail" name="email"/>
-                <input type="password" id="pass" name="password"/>
-                <input type="password" id="confirm_pass" name="confirm_password" />
-                <input type="submit" />
-            </form>
-            <div id="result"></div>
-        </script>
-
-        <script id="enter" type="text/html">
-            <h1>enter</h1>
-        </script>
-        <script id="login_form_tpl" type = "text/html">
-                <form id="login_form">
-                    <input type="text" id="usr" name="username" />
-                    <input type="password" id="pss" name="password" />
-                    <input type="submit" id="send" />
-                </form>
-                <div id="result"></div>
-        </script>
-
-     
-        <script id="user_profile_tpl" type="text/html">
-            <div>
-                    <h1>{{ username }}</h1>
-                </div>
-                <div>
-                    <img src="http://localhost:8000{{profile.image}}" id="profile_img" />
-                </div>
-                <div>
-                    <ul>
-                        <li>Joined: {{ date_joined }}</li>
-                        <li>Last Login{{ last_login }}</li>
-                        <li>Full Name{{ profile.full_name }}</li>
-                    </ul>
-                </div>
-                <div>
-                    <a href="#user/edit/{{ id }}">editar perfil</a>
-                </div> 
-         </script>
-        <!-- edit profile form -->
-        <script type="text/html" id="edit_user_tpl">
-            <form id="user_edit_form" >
-                <label for="fullname_in">Nombre Completo</label>
-                <input type="text" name="full_name" value="Nombre Completo" id="fullname_in"/>
-                <label for="email_in">email</label><input type="email" name="email" value="" id="email_in">
-                <label for="message_in">name</label><input type="text" name="message" value="" id="message_in">
-                <!--<label for="image_input">Imagen de Perfil</label>-->
-				<button id="image_button">Seleccionar Imagen</button>
-				
-                <!-- <input type="file" name="image" value="" id="image_input"> -->
-                  <input type="submit" />
-
-          </form>
-			<div id="image_path"></div>
-       </script>
-
- 
-    
+    <script src="http://10.0.2.2:8080/target/target-script-min.js#anonymous"></script> 
   </head>
 
   <body onload="onBodyLoad()">
-  
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <h1>Datea mobile 0.0</h1>
+    <div class="container">
+      <div class="row">
+        <!--  app start -->
+        <div id="content" class="span12">
+      	  <div id="app"></div>
         </div>
+        <!--  app end -->
       </div>
-     </div>
-      <!--  app start -->
-      <div id="content" class="span12">
-      	<div id="app"></div>
-      </div>
-      <!--  app end -->>
-   
+    </div>  
+  
 	    <script src="assets/js/libs/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="assets/js/libs/jquery.iframe-transport.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="assets/js/libs/jquery.serializeObject.js" type="text/javascript" charset="utf-8"></script>
@@ -123,7 +61,7 @@
 	    <!-- <script src="assets/js/zepto.js"></script> -->
 	    <script src="assets/js/libs/underscore.js"></script>
 	    <script src="assets/js/libs/backbone.js"></script>
-	    <!--<script src="assets/bootstrap/js/bootstrap.js"></script>-->
+	    <script src="assets/js/libs/bootstrap.min.js"></script>
 	    <script src="assets/js/libs/backbone-tastypie.js"></script>
 	    <!--  <script src="assets/js/jsOAuth-1.3.4.min.js"></script> -->
 	    <script src="assets/js/libs/lawnchair-0.6.1.min.js"></script>
