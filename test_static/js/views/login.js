@@ -36,6 +36,9 @@ var LoginView = Backbone.View.extend({
                     };
 
                     localStorage.setItem("authdata",JSON.stringify(localdata));
+                    local_session.set({"authdata" :  localdata});
+                    
+                    //local_session.save(localdata);
                     Backbone.Tastypie = {
                         prependDomain: api_url,
                         doGetOnEmptyPostResponse: true,

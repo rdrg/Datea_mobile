@@ -33,7 +33,7 @@ var AppRouter = Backbone.Router.extend({
     register: function(){
         this.session = new Session();
         this.registerView = new RegisterView({model: this.session});
-        $("#app").html(this.egisterView.render().el);
+        $("#app").html(this.registerView.render().el);
     },
     loadProfile: function(userid){
         this.userModel = new User({id:userid});
