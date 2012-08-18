@@ -13,100 +13,25 @@
         <script src="js/libs/jquery.iframe-transport.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/libs/json2.js"type="text/javascript" charset="utf-8"></script>
         <script src="js/libs/date.format.js" type="text/javascript" charset="utf-8"></script>
-        <!-- Templates -->
-
-        <script type="text/html" id="navbar" charset="utf-8">
-            {{#nav}}
-                <div >
-                    <a href="{{link}}">{{name}}</a>
-                </div>
-            {{/nav}}
-        </script>
-
-        <script id="home_tpl" type="text/html">
-                <h1>Bienvenido a Datea</h1>
-                <a href="#login">login</a>
-                <a href="#register">register</a>
-        </script>
-
-        <script id="register_tpl" type="text/html">
-            <h1>Register Here</h1>
-            <form id="register_form">
-                <input type="text" id="user" name="username" />
-                <input type="email" id="mail" name="email"/>
-                <input type="password" id="pass" name="password"/>
-                <input type="password" id="confirm_pass" name="confirm_password" />
-                <input type="submit" />
-            </form>
-            <div id="result"></div>
-        </script>
-
-        <script id="enter" type="text/html">
-            <h1>enter</h1>
-        </script>
-        <script id="login_form_tpl" type = "text/html">
-                <form id="login_form">
-                    <input type="text" id="usr" name="username" />
-                    <input type="password" id="pss" name="password" />
-                    <input type="submit" id="send" />
-                </form>
-                <div id="result"></div>
-        </script>
-
-     
-        <script id="user_profile_tpl" type="text/html">
-            <div>
-                    <h1>{{ username }}</h1>
-                </div>
-                <div>
-                    <img src="http://localhost:8000{{profile.image}}" id="profile_img" />
-                </div>
-                <div>
-                    <ul>
-                        <li>Joined: {{ date_joined }}</li>
-                        <li>Last Login{{ last_login }}</li>
-                        <li>Full Name{{ profile.full_name }}</li>
-                    </ul>
-                </div>
-                <div>
-                    <a href="#user/edit/{{ id }}">editar perfil</a>
-                </div>
-                <div id="logout_btn">
-                    <a href="#logout">logout</a>
-                </div>
-         </script>
-        <!-- edit profile form -->
-        <script type="text/html" id="edit_user_tpl">
-            <form id="user_edit_form" >
-                <label for="fullname_in">Nombre Completo</label>
-                <input type="text" name="full_name" value="Nombre Completo" id="fullname_in"/>
-                <label for="email_in">email</label><input type="email" name="email" value="" id="email_in">
-                <label for="message_in">name</label><input type="text" name="message" value="" id="message_in">
-                <label for="image_input">Imagen de Perfil</label>
-                <input type="file" name="image" value="" id="image_input">
-                  <input type="submit" />
-
-          </form>
-      </script>
-      <script type="text/html" charset="utf-8" id="action_list_tpl">
-          <h1>Actions</h1>
-          {{#actions}}
-          <p>{{name}}</p>
-            {{/actions}}
-      </script>
-      <script id="action_list_item_tpl" type="text/html" charset="utf-8">
-          <p>
-          {{ name }}
-          </p>
-      </script>
-
-    </head>
+   </head>
     <body>
         <div id="main">
             <div id="app"></div>
             <div id="nav"></div>
+
         </div>
 
+        <ul id="icanhaz-xternal" style="display:none;">
+          <li id="home_tpl" title="templates/home.html"></li>
+          <li id="register_tpl" title="templates/register.html"></li>
+          <li id="enter" title="templates/enter.html"></li>
+          <li id="login_form_tpl" title="templates/login_form.html"></li>
+          <li id="user_profile_tpl" title="templates/user_profile.html"></li>
+          <li id="edit_user_tpl" title="templates/edit_user.html"></li>
+          <li id="navbar_tpl" title="templates/navbar.html"></li>
+          <li id="action_list_tpl" title="templates/action_list.html"
+        </ul>       
+ 
 
         <script src="js/config.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/misc/utils.js" type="text/javascript" charset="utf-8"></script>
@@ -139,13 +64,12 @@
             if(localStorage.getItem('authdata') !== undefined){
                 authdata = JSON.parse(localStorage.getItem('authdata'));
                 local_session.set(authdata);
-
+    
                 if(local_session.get('logged')){
                     var userid = local_session.get('userid');
                     my_user.fetch({
                         data: {'id': userid},
                         success: function(model, response){  
-                            console.log("user: " + JSON.stringify(model.toJSON()));
                             startApp();
                         }
                         
@@ -154,7 +78,6 @@
             }else{
                 startApp();
             }
-            //console.log(JSON.stringify(local_session));
             var startApp = function(){
                 window.app = new AppRouter();
                 Backbone.history.start(); 

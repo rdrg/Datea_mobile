@@ -5,6 +5,7 @@ var AppRouter = Backbone.Router.extend({
     
     initialize: function(){
         ich.grabTemplates();
+        //ich.grabExternalTemplates();
         $.ajaxSetup({
             crossDomain:true
             //accepts: "application/json",
@@ -16,9 +17,11 @@ var AppRouter = Backbone.Router.extend({
     },
     routes: {
         "":"home",
+        "back": "back",
         "login":"login",
         "logout": "logout",
         "register": "register",
+        "history": "history",
         "user/:userid": "loadProfile",
         "user/edit/:userid":"editProfile",
         "actions": "listActions"
@@ -40,6 +43,12 @@ var AppRouter = Backbone.Router.extend({
             this.loadNav('default');
         }
     },
+
+    back: function(){
+        window.history.go(-2);
+        console.log(window.history.previous);
+    },
+
     login: function(){
         this.session = new Session();
         this.loginView = new LoginView({model: this.session});
@@ -88,7 +97,6 @@ var AppRouter = Backbone.Router.extend({
         this.actionCollection.fetch({
             //data: {orderby:'-created'},
             success: function(collection, response){
-                console.log("fetched colection: " + JSON.stringify(collection));
                  self.actionView = new ActionView({model: self.actionCollection});
                 $("#app").html(self.actionView.render().el);
                 self.loadNav('dateo');
@@ -103,12 +111,12 @@ var AppRouter = Backbone.Router.extend({
             nav_data = [
                 {name: "acciones" , link : "#actions"},
                 {name: "historial", link: "#history"},
-                {name: "mi perfil", link: "#profile/" + my_user.get("id")}
+                {name: "mi perfil", link: "#user/" + my_user.get("id")}
             ];           
         }else{
              nav_data = [
-                {name: "volver", link: "#actions"},
-                {name: "inicio" , link: "/"},
+                {name: "volver", link: "#back"},
+                {name: "inicio" , link: "#"},
                 {name: "dateos" , link: "#dateos"},
                 {name: "crear dateo" , link: "#dateo/create"}
             ];  
