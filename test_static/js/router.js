@@ -24,7 +24,9 @@ var AppRouter = Backbone.Router.extend({
         "history": "history",
         "user/:userid": "loadProfile",
         "user/edit/:userid":"editProfile",
-        "actions": "listActions"
+        "actions": "actionList",
+        "action/:id": "actionDetail",
+        "mapping/:id": "mappingDetail"
     },
     home: function(){
         if(!local_session.get('logged')){
@@ -90,7 +92,7 @@ var AppRouter = Backbone.Router.extend({
         $("#app").html(this.profileEditView.render().el);
         this.loadNav('default');
     },
-    listActions: function(){
+    actionList: function(){
         //this.actionModel = new Action();
         this.actionCollection = new ActionCollection();
         var self = this;
@@ -99,9 +101,34 @@ var AppRouter = Backbone.Router.extend({
             success: function(collection, response){
                  self.actionView = new ActionView({model: self.actionCollection});
                 $("#app").html(self.actionView.render().el);
-                self.loadNav('dateo');
+                self.loadNav('report');
             }   
         });  
+    },
+
+    actionDetail: function(id){
+
+        this.actionModel = new Action();
+        //this is hacky
+        //rather make the collection global 
+        //and get the model from it
+        var url = api_url + "/api/v1/mapping/" + id;
+        this.actionModel.url = url;
+        console.log(url);
+        var self = this;
+        this.actionModel.fetch({
+            success:function(){
+                console.log("image: " + self.actionModel.get('image'));
+                self.actionDetailView = new ActionDetailView({model : self.actionModel});
+                $("#app").html(self.actionDetailView.render().el);
+                self.loadNav('report');
+               
+            }
+        });
+    },
+
+    mappingDetail: function(id){
+        console.log(id);
     },
 
     loadNav: function(mode){
@@ -128,5 +155,3 @@ var AppRouter = Backbone.Router.extend({
     }
 });
 
-//var app = new AppRouter();
-//Backbone.history.start();
