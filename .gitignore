@@ -24,6 +24,8 @@ tmp/**/*
 *.tmp
 *.bak
 *.swp
+*.swo
+*.swq
 *~.nib
 local.properties
 .classpath
