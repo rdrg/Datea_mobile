@@ -113,8 +113,21 @@
       <div id="content" class="span12">
       	<div id="app"></div>
       </div>
-      <!--  app end -->>
-   
+      <!--  app end -->
+        <ul id="icanhaz-xternal" style="display:none;">
+          <li id="home_tpl" title="datea/templates/home.html"></li>
+          <li id="register_tpl" title="datea/templates/register.html"></li>
+          <li id="enter" title="datea/templates/enter.html"></li>
+          <li id="login_form_tpl" title="datea/templates/login_form.html"></li>
+          <li id="user_profile_tpl" title="datea/templates/user_profile.html"></li>
+          <li id="edit_user_tpl" title="datea/templates/edit_user.html"></li>
+          <li id="navbar_tpl" title="datea/templates/navbar.html"></li>
+          <li id="action_list_tpl" title="datea/templates/action_list.html"></li>
+          <li id="action_detail_tpl" title="datea/templates/action_detail.html"></li>
+          <li id="item_list_tpl" title="datea/templates/item_list.html"></li>
+          <li id="item_detail_tpl" title="datea/templates/item_detail.html"> </li>
+        </ul>       
+
 	    <script src="assets/js/libs/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="assets/js/libs/jquery.iframe-transport.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="assets/js/libs/jquery.serializeObject.js" type="text/javascript" charset="utf-8"></script>
@@ -131,25 +144,64 @@
 	    <script src="assets/js/libs/webkit-sqlite.js"></script>
 
 	    
-	    <script src="datea/misc/utils.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/misc/utils.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/models/action.js" type="text/javascript" charset="utf-8"></script>
+
 	    <script src="datea/models/image.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/models/profile.js" type="text/javascript" charset="utf-8"></script>
-	    <script src="datea/models/session.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/models/local_session.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/models/map_item.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/models/session.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/models/user.js" type="text/javascript" charset="utf-8"></script>
-	    <script src="datea/collections/image.js" type="text/javascript" charset="utf-8"></script>
-	    <script src="datea/views/home.js" type="text/javascript" charset="utf-8"></script>
+	    <script src="datea/collections/map_item.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/collections/image.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/collections/action.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/navbar.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/home.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/action_list.js" type="text/javascript" charset="utf-8"></script>
+
 	    <script src="datea/views/login.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/views/profile.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/views/profile_edit.js" type="text/javascript" charset="utf-8"></script>
-	    <script src="datea/views/register.js" type="text/javascript" charset="utf-8"></script>
-	    <script src="datea/router.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/register.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/action.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/action_detail.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/map_item_list.js" type="text/javascript" charset="utf-8"></script>
+            <script src="datea/views/map_item_detail.js" type="text/javascript" charset="utf-8"></script>
+ 
+            <script src="datea/router.js" type="text/javascript" charset="utf-8"></script>
+
 	    <script type="text/javascript" charset="utf-8">
         	$(document).ready(function(){
-            	        window.app = new AppRouter();
-                	    Backbone.history.start();         
+                        Backbone.Tastypie.prependDomain = api_url;
+                        window.local_session = new localSession();
+                        window.my_user = new User();
+                        //local_session.save();
+                        //local_session.fetch();
+                        if(localStorage.getItem('authdata') !== undefined){
+                            authdata = JSON.parse(localStorage.getItem('authdata'));
+                            local_session.set(authdata);
                 
-                	});
-    	</script>
+                            if(local_session.get('logged')){
+                                var userid = local_session.get('userid');
+                                my_user.fetch({
+                                    data: {'id': userid},
+                                    success: function(model, response){  
+                                        startApp();
+                                    }
+                                    
+                                });
+                            }
+                        }else{
+                            startApp();
+                        }
+                        var startApp = function(){
+                        window.app = new AppRouter();
+                        Backbone.history.start(); 
+                }
+                   
+            });
+            </script>
 	</body>
 </html>
 

@@ -26,7 +26,9 @@ var AppRouter = Backbone.Router.extend({
         "user/edit/:userid":"editProfile",
         "actions": "actionList",
         "action/:id": "actionDetail",
-        "mapping/:id": "mappingDetail"
+        "mapping/:id": "mappingDetail",
+        "mapping/:id/reports": "mapItemList",
+        "mapping/report/:id": "mapItemDetail"
     },
     home: function(){
         if(!local_session.get('logged')){
@@ -44,6 +46,29 @@ var AppRouter = Backbone.Router.extend({
             $("#app").html(this.profileView.render().el);
             this.loadNav('default');
         }
+    },
+
+    loadNav: function(mode){
+        this.navModel = new Navbar({});
+        var nav_data = [];
+        if(mode == 'default'){
+            nav_data = [
+                {name: "acciones" , link : "#actions"},
+                {name: "historial", link: "#history"},
+                {name: "mi perfil", link: "#user/" + my_user.get("id")}
+            ];           
+        }else{
+             nav_data = [
+                {name: "volver", link: "#back"},
+                {name: "inicio" , link: "#"},
+                {name: "dateos" , link: "#dateos"},
+                {name: "crear dateo" , link: "#dateo/create"}
+            ];  
+        }
+        this.navModel.set({"nav":nav_data });
+        this.navView = new NavbarView({model: this.navModel});
+        console.log(JSON.stringify(my_user.toJSON()));
+        $("#nav").html(this.navView.render().el);
     },
 
     back: function(){
@@ -111,7 +136,7 @@ var AppRouter = Backbone.Router.extend({
         this.actionModel = new Action();
         //this is hacky
         //rather make the collection global 
-        //and get the model from it
+        //and get the model  it
         var url = api_url + "/api/v1/mapping/" + id;
         this.actionModel.url = url;
         console.log(url);
@@ -127,31 +152,31 @@ var AppRouter = Backbone.Router.extend({
         });
     },
 
-    mappingDetail: function(id){
-        console.log(id);
+    mapItemList: function(map_id){
+        console.log("reportlist");
+        this.mapItems = new MapItemCollection();
+        this.itemListView = new ItemListView({model: this.mapItems});
+        var self = this;
+        this.mapItems.fetch({
+            data: {'action':map_id, 'order_by': '-created'},
+            success: function(){
+                $("#app").html(self.itemListView.render().el);
+                self.loadNav('report');
+            }
+        });
     },
 
-    loadNav: function(mode){
-        this.navModel = new Navbar({});
-        var nav_data = [];
-        if(mode == 'default'){
-            nav_data = [
-                {name: "acciones" , link : "#actions"},
-                {name: "historial", link: "#history"},
-                {name: "mi perfil", link: "#user/" + my_user.get("id")}
-            ];           
-        }else{
-             nav_data = [
-                {name: "volver", link: "#back"},
-                {name: "inicio" , link: "#"},
-                {name: "dateos" , link: "#dateos"},
-                {name: "crear dateo" , link: "#dateo/create"}
-            ];  
-        }
-        this.navModel.set({"nav":nav_data });
-        this.navView = new NavbarView({model: this.navModel});
-        console.log(JSON.stringify(my_user.toJSON()));
-        $("#nav").html(this.navView.render().el);
-    }
+    mapItemDetail:function(item_id){
+        this.mapItem = new MapItem();
+        this.mapItemView = new ItemDetailView({model:this.mapItem});
+        var self = this;
+        this.mapItem.fetch({
+            data:{'id':item_id},
+            success: function(){
+                $("#app").html(self.mapItemView.render().el);
+                self.loadNav('report');
+            }
+        });
+   } 
 });
 
