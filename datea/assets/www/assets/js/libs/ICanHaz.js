@@ -669,6 +669,7 @@ var Mustache;
         refresh: function () {
             ich.clearAll();
             ich.grabTemplates();
+            ich.grabExternalTemplates();
         },
         
         // grabs templates from the DOM and caches them.
@@ -693,13 +694,35 @@ var Mustache;
             }
         },
 
+        grabExternalTemplates: function(){
+            var i,
+                scripts = $('ul#icanhaz-xternal li'),
+                script,
+                trash = [];
+            
+            scripts.each(function(index,element){
+                if(element.id && element.title){
+                    ich.grabExternalTemplate(element.id, element.title);
+                    trash.unshift(script);
+                }
+            });
+            
+           // for (i = 0, l = trash.length; i < l; i++) {
+           //     trash[i].parentNode.removeChild(trash[i]);
+           // }
+
+        },
+
         //loads an template file and caches it 
         grabExternalTemplate: function(templateName,templateFile){
            $.ajax({
                 url: templateFile, 
                 type: 'GET',
                 dataType: 'text',
+                async: false,
                 success: function(data){
+                    console.log(data);
+                    console.log(trim(data));
                     ich.addTemplate(templateName, trim(data));
                 }
            });
@@ -719,10 +742,12 @@ var Mustache;
         if (ich.$) {
             ich.$(function () {
                 ich.grabTemplates();
+                ich.grabExternalTemplates();
             });
         } else {
             document.addEventListener('DOMContentLoaded', function () {
                 ich.grabTemplates();
+                ich.grabExternalTemplates();
             }, true);
         }
     }
