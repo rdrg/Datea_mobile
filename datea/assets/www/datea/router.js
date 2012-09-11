@@ -33,8 +33,8 @@ var AppRouter = Backbone.Router.extend({
     home: function(){
         if(!local_session.get('logged')){
             console.log("new session");
-            this.homeView = new HomeView();
-            $("#app").html(this.homeView.render().el);
+            //this.homeView = new HomeView();
+            $("#app").html(new HomeView.render().el);
         }else{
             //var authdata = JSON.parse(localStorage.getItem("authdata"));
             console.log("open session");
@@ -42,9 +42,10 @@ var AppRouter = Backbone.Router.extend({
             //this.userModel = new User({id:userid});
             var userid = local_session.get('userid');
             my_user.fetch({data:{'id':userid}});
-            this.profileView = new ProfileView({model:my_user});
-            $("#app").html(this.profileView.render().el);
-            this.loadNav('default');
+            //this.profileView = new ProfileView({model:my_user});
+            //$("#app").html(this.profileView.render().el);
+            //this.loadNav('default');
+            loadProfile(userid);
         }
     },
 
@@ -66,9 +67,9 @@ var AppRouter = Backbone.Router.extend({
             ];  
         }
         this.navModel.set({"nav":nav_data });
-        this.navView = new NavbarView({model: this.navModel});
+        //this.navView = new NavbarView({model: this.navModel});
         console.log(JSON.stringify(my_user.toJSON()));
-        $("#nav").html(this.navView.render().el);
+        $("#nav").html(new NavbarView({model: this.navModel}).render().el);
     },
 
     back: function(){
@@ -78,14 +79,14 @@ var AppRouter = Backbone.Router.extend({
 
     login: function(){
         this.session = new Session();
-        this.loginView = new LoginView({model: this.session});
-        $("#app").html(this.loginView.render().el);
+        //this.loginView = new LoginView({model: this.session});
+        $("#app").html(new LoginView({model:this.session}).render().el);
 
     },
     register: function(){
         this.session = new Session();
-        this.registerView = new RegisterView({model: this.session});
-        $("#app").html(this.egisterView.render().el);
+        //this.registerView = new RegisterView({model: this.session});
+        $("#app").html(new RegisterView({model: this.session}).render().el);
     },
     logout: function(){
         var logout_data = {
@@ -101,8 +102,8 @@ var AppRouter = Backbone.Router.extend({
     loadProfile: function(userid){
         //this.userModel = new User({id:userid});
         my_user.fetch({data:{'id':userid}});
-        this.profileView = new ProfileView({model:my_user});
-        $("#app").html(this.profileView.render().el);
+        //this.profileView = new ProfileView({model:my_user});
+        $("#app").html(new ProfileView({model:my_user}).render().el);
         this.loadNav('default');
 
     },
@@ -113,8 +114,8 @@ var AppRouter = Backbone.Router.extend({
         //var token = authdata.token;
         //this.userModel = new User({id:userid});
         //this.userModel.fetch();
-        this.profileEditView = new ProfileEditView({model:my_user});
-        $("#app").html(this.profileEditView.render().el);
+        //this.profileEditView = new ProfileEditView({model:my_user});
+        $("#app").html(new ProfileEditView({model:my_user}).render().el);
         this.loadNav('default');
     },
     actionList: function(){
@@ -124,8 +125,8 @@ var AppRouter = Backbone.Router.extend({
         this.actionCollection.fetch({
             //data: {orderby:'-created'},
             success: function(collection, response){
-                 self.actionView = new ActionView({model: self.actionCollection});
-                $("#app").html(self.actionView.render().el);
+                 //self.actionView = new ActionView({model: self.actionCollection});
+                $("#app").html(new ActionView({model:self.actionCollection}).render().el);
                 self.loadNav('report');
             }   
         });  
@@ -144,8 +145,8 @@ var AppRouter = Backbone.Router.extend({
         this.actionModel.fetch({
             success:function(){
                 console.log("image: " + self.actionModel.get('image'));
-                self.actionDetailView = new ActionDetailView({model : self.actionModel});
-                $("#app").html(self.actionDetailView.render().el);
+                //self.actionDetailView = new ActionDetailView({model : self.actionModel});
+                $("#app").html(new ActionDetailView({model:self.actionModel}).render().el);
                 self.loadNav('report');
                
             }
@@ -155,12 +156,12 @@ var AppRouter = Backbone.Router.extend({
     mapItemList: function(map_id){
         console.log("reportlist");
         this.mapItems = new MapItemCollection();
-        this.itemListView = new ItemListView({model: this.mapItems});
+        //this.itemListView = new ItemListView({model: this.mapItems});
         var self = this;
         this.mapItems.fetch({
             data: {'action':map_id, 'order_by': '-created'},
             success: function(){
-                $("#app").html(self.itemListView.render().el);
+                $("#app").html(new ItemListView({model: self.mapItems}).render().el);
                 self.loadNav('report');
             }
         });
@@ -168,12 +169,12 @@ var AppRouter = Backbone.Router.extend({
 
     mapItemDetail:function(item_id){
         this.mapItem = new MapItem();
-        this.mapItemView = new ItemDetailView({model:this.mapItem});
+        //this.mapItemView = new ItemDetailView({model:this.mapItem});
         var self = this;
         this.mapItem.fetch({
             data:{'id':item_id},
             success: function(){
-                $("#app").html(self.mapItemView.render().el);
+                $("#app").html(new ItemDetailView({model: self.mapItem}).render().el);
                 self.loadNav('report');
             }
         });
