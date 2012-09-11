@@ -1,3 +1,4 @@
+//function startApp(){
 $(document).ready(function(){
   tpl.loadTemplates(['home','login_form','edit_user','enter','action_detail',
                   'item_detail', 'item_list', 'action_list', 'navbar', 'register',
@@ -18,18 +19,18 @@ $(document).ready(function(){
                             my_user.fetch({
                                 data: {'id': userid},
                                 success: function(model, response){  
-                                    startApp();
+                                    start_App();
                                 }
                                 
                             });
                         }
                     }else{
-                        startApp();
+                        start_App();
                     }
-                    var startApp = function(){
+                    var start_App = function(){
                       window.app = new AppRouter();
                       Backbone.history.start(); 
                     }
                   });
 });
-
+//}
