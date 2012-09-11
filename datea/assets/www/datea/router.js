@@ -11,7 +11,35 @@ var AppRouter = Backbone.Router.extend({
         
         });
         $.support.cors = true;
-        
+
+                    Backbone.Tastypie.prependDomain = api_url;
+                    window.local_session = new localSession();
+                    window.my_user = new User();
+                    //local_session.save();
+                    //local_session.fetch();
+                    if(localStorage.getItem('authdata') !== undefined){
+                        authdata = JSON.parse(localStorage.getItem('authdata'));
+                        local_session.set(authdata);
+
+                        if(local_session.get('logged')){
+                            var userid = local_session.get('userid');
+                            my_user.fetch({
+                                data: {'id': userid},
+                                success: function(model, response){ 
+                                    //start_App();
+                                    var userid = local_session.get('userid');
+                                    my_user.fetch({data:{'id':userid}});
+                                    $("#app").html(new ProfileView({model: my_user}).render().el);
+                                    }           
+                            });
+                    
+                    }else{
+                        $("#app").html(new HomeView.render().el);
+                        //start_App();
+                    }
+                }else{
+                    $("#app").html(new HomeView.render().el);
+                }
     },
     routes: {
         "":"home",
@@ -29,22 +57,7 @@ var AppRouter = Backbone.Router.extend({
         "mapping/report/:id": "mapItemDetail"
     },
     home: function(){
-        if(!local_session.get('logged')){
-            console.log("new session");
-            //this.homeView = new HomeView();
             $("#app").html(new HomeView.render().el);
-        }else{
-            //var authdata = JSON.parse(localStorage.getItem("authdata"));
-            console.log("open session");
-            //var userid = window.authdata.userid;
-            //this.userModel = new User({id:userid});
-            var userid = local_session.get('userid');
-            my_user.fetch({data:{'id':userid}});
-            //this.profileView = new ProfileView({model:my_user});
-            //$("#app").html(this.profileView.render().el);
-            //this.loadNav('default');
-            loadProfile(userid);
-        }
     },
 
     loadNav: function(mode){
