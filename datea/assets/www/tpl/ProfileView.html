@@ -1,0 +1,19 @@
+<div>
+  <h1><%= username %></h1>
+</div>
+
+<div>
+  <img src="/<%=profile.image %>" id="profile_img" />
+</div>
+
+<div>
+  <ul>
+    <li>Fecha de ingreso: <%= date_joined %></li>
+    <li>Último ingreso: <%= last_login %></li>
+    <li>Nombre completo: <%= profile.full_name %></li>
+  </ul>
+</div>
+
+<div>
+  <a href="#user/edit/<%= id %>">Editar perfil</a>
+</div> 
