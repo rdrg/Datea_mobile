@@ -19,18 +19,18 @@ $(document).ready(function(){
                             my_user.fetch({
                                 data: {'id': userid},
                                 success: function(model, response){  
-                                    start_App();
+                                    startApp();
                                 }
                                 
                             });
                         }
                     }else{
-                        start_App();
+                        startApp();
                     }
-                    var start_App = function(){
+                   // var startApp = function(){
                       window.app = new AppRouter();
                       Backbone.history.start(); 
-                    }
+                    //}
                   });
 });
 //}
