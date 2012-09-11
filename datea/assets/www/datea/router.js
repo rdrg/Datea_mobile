@@ -1,11 +1,9 @@
 ///////ROUTER//////////
-var api_url = "http://192.168.2.113:8000";
+var api_url = "http://192.168.0.100:8000";
 
 var AppRouter = Backbone.Router.extend({
     
     initialize: function(){
-        ich.grabTemplates();
-        //ich.grabExternalTemplates();
         $.ajaxSetup({
             crossDomain:true
             //accepts: "application/json",
