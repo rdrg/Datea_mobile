@@ -30,9 +30,7 @@
     -->
 
     <!-- weinre -->
-    <script src="http://10.0.2.2:8080/target/target-script-min.js#anonymous"></script> 
-
-   
+    <script src="http://10.0.2.2:8080/target/target-script-min.js#anonymous"></script>
     
   </head>
 
@@ -76,64 +74,32 @@
 	    <script src="assets/js/libs/webkit-sqlite.js"></script>
 
 	    
-            <script src="datea/misc/utils.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/models/action.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/misc/utils.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/models/action.js" type="text/javascript" charset="utf-8"></script>
 
 	    <script src="datea/models/image.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/models/profile.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/models/local_session.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/models/map_item.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/models/session.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/models/local_session.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/models/map_item.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/models/session.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/models/user.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/collections/map_item.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/collections/image.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/collections/action.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/navbar.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/home.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/action_list.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/collections/image.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/collections/action.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/navbar.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/home.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/action_list.js" type="text/javascript" charset="utf-8"></script>
 
 	    <script src="datea/views/login.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/views/profile.js" type="text/javascript" charset="utf-8"></script>
 	    <script src="datea/views/profile_edit.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/register.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/action.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/action_detail.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/map_item_list.js" type="text/javascript" charset="utf-8"></script>
-            <script src="datea/views/map_item_detail.js" type="text/javascript" charset="utf-8"></script>
- 
-            <script src="datea/router.js" type="text/javascript" charset="utf-8"></script>
-
-	    <script type="text/javascript" charset="utf-8">
-        	$(document).ready(function(){
-                        Backbone.Tastypie.prependDomain = api_url;
-                        window.local_session = new localSession();
-                        window.my_user = new User();
-                        //local_session.save();
-                        //local_session.fetch();
-                        if(localStorage.getItem('authdata') !== undefined){
-                            authdata = JSON.parse(localStorage.getItem('authdata'));
-                            local_session.set(authdata);
-                
-                            if(local_session.get('logged')){
-                                var userid = local_session.get('userid');
-                                my_user.fetch({
-                                    data: {'id': userid},
-                                    success: function(model, response){  
-                                        startApp();
-                                    }
-                                    
-                                });
-                            }
-                        }else{
-                            startApp();
-                        }
-                        //var startApp = function(){
-                        	window.app = new AppRouter();
-                        	Backbone.history.start(); 
-                		//}
-                   
-            });
-            </script>
+        <script src="datea/views/register.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/action.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/action_detail.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/map_item_list.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/views/map_item_detail.js" type="text/javascript" charset="utf-8"></script>
+        <script src="datea/router.js" type="text/javascript" charset="utf-8"></script>
+	    <script src="datea/main.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>
 
