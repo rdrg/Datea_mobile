@@ -1,4 +1,4 @@
-var localSession = Backbone.Model.extend({
+window.localSession = Backbone.Model.extend({
     defaults:{
         "username":null,
         "token": null,

@@ -2,7 +2,8 @@ var api_url = "http://10.0.2.2:8000"
 
 var DateaRouter = Backbone.Router.extend({
 	routes: {
-		"": "login",
+		"": "home",
+		"login": "login",
 		"about": "about",
 		"user/:userid": "userLoadProfile",
         "user/edit/:userid":"userEditProfile"
@@ -14,6 +15,13 @@ var DateaRouter = Backbone.Router.extend({
 		
 		this.headerView = new HeaderView();
 		$('.header').html(this.headerView.render().el);
+	},
+
+	home: function(){
+		if(!this.homeView){
+			this.homeView = new HomeView();
+		}
+		$('body').html(this.homeView.render().el);
 	},
 	
 	about: function () {
@@ -50,10 +58,12 @@ var DateaRouter = Backbone.Router.extend({
 });
 
 utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-               'ProfileEditView'], function () {
+               'ProfileEditView', 'HomeView'], function () {
+
 	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000"
 	
 	window.localSession = new localSession();
+	console.log(window.localSession);
     window.localUser = new User();
 	
 	var app = window.app = new DateaRouter();

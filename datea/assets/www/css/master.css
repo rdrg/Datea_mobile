@@ -1,3 +1,1 @@
-body {
-  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-}
+.center{margin-left:auto;margin-right:auto}.container300{width:300px;margin-left:auto;margin-right:auto}#header{background-image:url('../img/home/header_bg.png');background-repeat:repeat-x;width:100%;height:95px}#home_header{margin-left:auto;margin-right:auto;width:300px;height:95px}#home_msg{background-image:url('../img/home/message_bg.png');width:100%;height:73px;color:#fff}#content{width:100%;margin:0;background-image:url('../img/bg.png')}
