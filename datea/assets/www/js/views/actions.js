@@ -1,5 +1,10 @@
 var ActionsView = Backbone.View.extend({
-    render: function() {
+	initialize: function () {
+		alert('initialize')
+		this.render();
+	},
+	
+    render: function () {
     	alert('me llaman')
         var action_list = [];
         

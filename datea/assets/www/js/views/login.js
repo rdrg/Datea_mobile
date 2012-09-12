@@ -7,6 +7,11 @@ window.LoginView = Backbone.View.extend({
 		this.render();
 	},
 	render: function () {
+		if (localSession.get('logged')) {
+			var userid = localSession.get('userid');
+			dateaApp.navigate("user/" + userid, { trigger : true });
+		};
+		
 		this.$el.html(this.template);
 		return this;
 	},
