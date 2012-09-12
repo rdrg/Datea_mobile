@@ -1,5 +1,5 @@
 window.localSession = Backbone.Model.extend({
-    defaults:{
+    defaults: {
         "username":null,
         "token": null,
         "userid": null,

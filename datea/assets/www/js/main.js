@@ -1,4 +1,4 @@
-var api_url = "http://192.168.2.113:8000";
+var api_url = "http://10.0.2.2:8000";
 
 var DateaRouter = Backbone.Router.extend({
 	routes: {
