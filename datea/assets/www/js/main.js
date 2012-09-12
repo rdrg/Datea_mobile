@@ -1,4 +1,4 @@
-var api_url = "http://10.0.2.2:8000"
+var api_url = "http://192.168.2.113:8000";
 
 var DateaRouter = Backbone.Router.extend({
 	routes: {
@@ -6,7 +6,8 @@ var DateaRouter = Backbone.Router.extend({
 		"login": "login",
 		"about": "about",
 		"user/:userid": "userLoadProfile",
-        "user/edit/:userid":"userEditProfile"
+        "user/edit/:userid": "userEditProfile",
+        "actions": "allActions"
 	},
 	
 	initialize: function () {
@@ -35,7 +36,7 @@ var DateaRouter = Backbone.Router.extend({
 	login: function () {
 		if (!this.session) {
 			this.session = new Session();
-		};
+		}
 		
 		if (!this.loginView) {
 			this.loginView = new LoginView({ model: this.session });
@@ -54,13 +55,24 @@ var DateaRouter = Backbone.Router.extend({
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
         $("#app").html(this.profileEditView.render().el);
+	},
+	
+	allActions: function () {
+		alert('entro a allActions')
+		this.actionCollection = new ActionCollection();
+        var self = this;
+        this.actionCollection.fetch({
+            success: function(collection, response) {
+                $("#app").html(new ActionsView({ model: self.actionCollection }).render().el);
+            }
+        }); 
 	}
 });
 
 utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-               'ProfileEditView', 'HomeView'], function () {
+               'ProfileEditView', 'HomeView', 'ActionsView'], function () {
 
-	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000"
+	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	
 	window.localSession = new localSession();
 	console.log(window.localSession);
@@ -69,4 +81,4 @@ utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
 	var app = window.app = new DateaRouter();
 	
 	Backbone.history.start();
-})
+});
