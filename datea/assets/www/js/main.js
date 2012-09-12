@@ -36,7 +36,7 @@ var DateaRouter = Backbone.Router.extend({
 		if(!this.homeView){
 			this.homeView = new HomeView();
 		}
-		$('body').html(this.homeView.render().el);
+		$('#app').html(this.homeView.render().el);
 	},
 	
 	about: function () {
@@ -48,16 +48,17 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	login: function () {
+                console.log("load login");
 		if (!this.session) {
 			this.session = new Session();
 		}
 		
 		if (!this.loginView) {
 			this.loginView = new LoginView({ model: this.session });
-			this.loginView.render();
+			//this.loginView.render();
 		}
 		$('#app').html(this.loginView.render().el);
-		this.headerView.selectMenuItem('login-menu');
+		//this.headerView.selectMenuItem('login-menu');
 	},
 	
 	userLoadProfile: function (userid) {
