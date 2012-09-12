@@ -50,7 +50,7 @@ var DateaRouter = Backbone.Router.extend({
 });
 
 utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-               'EditProfileView'], function () {
+               'ProfileEditView'], function () {
 	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000"
 	
 	window.localSession = new localSession();
