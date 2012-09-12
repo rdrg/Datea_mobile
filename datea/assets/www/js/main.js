@@ -5,7 +5,8 @@ var DateaRouter = Backbone.Router.extend({
 		"": "login",
 		"about": "about",
 		"user/:userid": "userLoadProfile",
-        "user/edit/:userid":"userEditProfile"
+        "user/edit/:userid": "userEditProfile",
+        "actions": "allActions"
 	},
 	
 	initialize: function () {
@@ -46,11 +47,22 @@ var DateaRouter = Backbone.Router.extend({
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
         $("#app").html(this.profileEditView.render().el);
+	},
+	
+	allActions: function () {
+		alert('entro a allActions')
+		this.actionCollection = new ActionCollection();
+        var self = this;
+        this.actionCollection.fetch({
+            success: function(collection, response) {
+                $("#app").html(new ActionsView({ model: self.actionCollection }).render().el);
+            }
+        }); 
 	}
 });
 
 utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-               'ProfileEditView'], function () {
+               'ProfileEditView', 'ActionsView'], function () {
 	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000"
 	
 	window.localSession = new localSession();
