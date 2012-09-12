@@ -48,7 +48,7 @@ window.LoginView = Backbone.View.extend({
                         }
                     };
                     
-                    app.navigate("user/" + userid, { trigger : true });
+                    dateaApp.navigate("user/" + userid, { trigger : true });
                 } else if(response.error) {
                     $("#result").html(response.error);
                 }
@@ -59,4 +59,4 @@ window.LoginView = Backbone.View.extend({
         });
         return;
     }
-})
+});
