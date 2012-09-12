@@ -1,17 +1,17 @@
 var ProfileEditView = Backbone.View.extend({
-//    events: {
-//      "click #image_button": "browseImage",	
-//      "submit #user_edit_form": "updateUser"
-//    },
+    events: {
+      "click #image_button": "browseImage",	
+      "submit #user_edit_form": "updateUser"
+    },
     initialize: function(){
        console.log("inicio");
     },
     render: function() {
-    	this.$el.html(this.template);
+        this.$el.html(this.template);
         return this;
-    }
-});
-/*
+    },
+
+
     updateUser: function(ev) {
         ev.preventDefault();
         
@@ -58,7 +58,23 @@ var ProfileEditView = Backbone.View.extend({
         }
     },
     
-    browseImage: function(e) {
-    	alert('boo')
-    }
-});*/
+    browseImage: function(event){
+        event.preventDefault();
+            navigator.camera.getPicture(
+                function(imageURI){
+                    alert(imageURI);
+                    $("#image_path").html( imageURI);
+                },
+                function(message){
+                    alert(message);
+                },
+                {
+                    quality: 50,
+                    destinationType: navigator.camera.DestinationType.FILE_URI,
+                    //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                    sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+
+                }
+            );
+        }
+});

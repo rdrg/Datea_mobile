@@ -1,4 +1,4 @@
-var api_url = "http://10.0.2.2:8000"
+var api_url = "http://192.168.2.113:8000";
 
 var DateaRouter = Backbone.Router.extend({
 	routes: {
@@ -27,7 +27,7 @@ var DateaRouter = Backbone.Router.extend({
 	login: function () {
 		if (!this.session) {
 			this.session = new Session();
-		};
+		}
 		
 		if (!this.loginView) {
 			this.loginView = new LoginView({ model: this.session });
@@ -51,7 +51,7 @@ var DateaRouter = Backbone.Router.extend({
 
 utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
                'ProfileEditView'], function () {
-	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000"
+	Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	
 	window.localSession = new localSession();
     window.localUser = new User();
@@ -59,4 +59,4 @@ utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
 	var app = window.app = new DateaRouter();
 	
 	Backbone.history.start();
-})
+});
