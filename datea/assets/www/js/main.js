@@ -43,7 +43,7 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.aboutView) {
 			this.aboutView = new AboutView();
 		}
-		$('#app').html(this.aboutView.render().el);
+		$('#content').html(this.aboutView.render().el);
 		this.headerView.selectMenuItem('about-menu');
 	},
 	
@@ -57,8 +57,12 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 			//this.loginView.render();
 		}
-		$('#app').html(this.loginView.render().el);
-		//this.headerView.selectMenuItem('login-menu');
+		//clean window
+		$('#home_msg').remove();
+		$('.header').removeAttr('id');
+
+		$('#content').html(this.loginView.render().el);
+		$('.header').html(this.headerView.render().el);
 	},
 	
 	logout: function () {
@@ -76,12 +80,12 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        $("#app").html(this.profileView.render().el);
+        $("#content").html(this.profileView.render().el);
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        $("#app").html(this.profileEditView.render().el);
+        $("#content").html(this.profileEditView.render().el);
 	},
 	
 	allActions: function () {
@@ -93,7 +97,7 @@ var DateaRouter = Backbone.Router.extend({
 		this.actionCollection.fetch({
         	success: function(c, res) {
         		alert('intento el fetch')
-        		$("#app").html(new ActionsView({ model: self.actionCollection }).render().el);
+        		$("#content").html(new ActionsView({ model: self.actionCollection }).render().el);
             }
         }); 
 	},
@@ -121,3 +125,15 @@ $(document).ready(function () {
             Backbone.history.start();
     });
 });
+
+function onLoad(){
+	document.addEventListener("deviceready",onDeviceReady,false);
+}
+
+function onDeviceReady(){
+	document.addEventListener("menubutton", onMenuDown, false);
+}
+
+function onMenuDown(){
+	$('#footer').toggle();
+}
