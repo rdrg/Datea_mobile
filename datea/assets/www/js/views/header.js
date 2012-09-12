@@ -2,7 +2,14 @@ window.HeaderView = Backbone.View.extend({
 	initialize: function () {
 		this.render();
 	},
-	render: function () {
+	render: function () {	
+		// FIXME: NOT PROUD
+		if (localSession.get('logged')) {
+			var userid = localSession.get('userid');
+			this.$el.html(this.template({ userid: userid }));
+			return this;
+		}
+		
 		this.$el.html(this.template());
 		return this;
 	},

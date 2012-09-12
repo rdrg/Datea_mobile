@@ -1,5 +1,13 @@
 var api_url = "http://10.0.2.2:8000";
 
+Backbone.View.prototype.close = function () {
+    if (this.beforeClose) {
+        this.beforeClose();
+    }
+    this.remove();
+    this.unbind();
+};
+
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
@@ -10,7 +18,17 @@ var DateaRouter = Backbone.Router.extend({
 		"user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
         "actions": "allActions",
-        "dateo/new": "createDateo"
+        "mapping/:mapid": "loadMapping",
+        "mapping/:mapid/edit": "editMapping",
+        "mapping/:mapid/admin": "adminMapping"
+	},
+	
+	showView: function(selector, view) {
+	    if (this.currentView)
+	        this.currentView.close();
+	    $(selector).html(view.render().el);
+	    this.currentView = view;
+	    return view;
 	},
 	
 	initialize: function () {
@@ -35,7 +53,7 @@ var DateaRouter = Backbone.Router.extend({
         	if(!this.homeView) {
         		this.homeView = new HomeView();
             }
-        	$('#app').html(this.homeView.render().el);
+        	this.showView('#app', this.homeView);
         }
 	},
 	
@@ -55,7 +73,6 @@ var DateaRouter = Backbone.Router.extend({
 		
 		if (!this.loginView) {
 			this.loginView = new LoginView({ model: this.session });
-			//this.loginView.render();
 		}
 		//clean window
 		$('#home_msg').remove();
@@ -72,6 +89,7 @@ var DateaRouter = Backbone.Router.extend({
 	            "userid": null,
 	            "logged": false
 	        };
+		
 	    localSession.set(logout_data);
 	    localStorage.setItem("authdata", JSON.stringify(logout_data));
 	    dateaApp.navigate("/", { trigger: true });
@@ -80,12 +98,12 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        $("#content").html(this.profileView.render().el);
+        this.showView('#content', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        $("#content").html(this.profileEditView.render().el);
+        this.showView('#content', this.profileEditView);
 	},
 	
 	allActions: function () {
