@@ -1,4 +1,4 @@
-var api_url = "http://10.0.2.2:8000";
+var api_url = "http://192.168.2.113:8000";
 
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
@@ -12,12 +12,16 @@ var DateaRouter = Backbone.Router.extend({
      
 	routes: {
 		"": "home",
-		"login": "login",
+                //temporary redirection to work on actions
+                //"":"allActions",
+		
+                "login": "login",
 		"logout": "logout",
 		"about": "about",
 		"user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
         "actions": "myActions",
+        "action/:actionid": "actionDetail",
         "mapping/:mapid": "loadMapping",
         "mapping/:mapid/edit": "editMapping",
         "mapping/:mapid/admin": "adminMapping"
@@ -75,16 +79,16 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 		}
 		//clean window
-		$('#home_msg').remove();
+	        $('#home_msg').remove();
 		$('.header').removeAttr('id');
 
 		this.showView('#content', this.loginView);
-		$('.header').html(this.headerView.render().el);
+	        $('.header').html(this.headerView.render().el);
 	},
 	
 	logout: function () {
 		var logout_data = {
-				"username": null,
+		    "username": null,
 	            "token" : null,
 	            "userid": null,
 	            "logged": false
@@ -108,8 +112,33 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	myActions: function () {
-
+            this.actionCollection = new ActionCollection();
+            this.actionCollection.url = api_url + '/api/v1/action/';
+            var self = this;
+            console.log("action url: " + this.actionCollection.url);
+            this.actionCollection.fetch({
+                success: function(collection, response){
+                    console.log("actions fetched");
+                    self.actionsView = new ActionsView({model:self.actionCollection});
+                    self.showView('#content', self.actionsView);
+                    //load navigation
+                }
+            });
 	},
+
+        actionDetail: function(actionid){
+            this.actionModel = new Action();
+            this.actionModel.url = api_url + "/api/v1/mapping/" + actionid;
+            var self = this;
+            this.actionModel.fetch({
+                success: function(){
+                    console.log("action fetched");
+                    self.actionView = new ActionView({model: self.actionModel});
+                    self.showView('#content', self.actionView);
+                    //load navigation
+                }
+            });
+        },
 	
 	createDateo: function () {
 		this.dateo = null;
@@ -118,7 +147,7 @@ var DateaRouter = Backbone.Router.extend({
 
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-                   'ProfileEditView', 'HomeView', 'ActionsView'], function () {
+                   'ProfileEditView', 'HomeView', 'ActionsView','ActionView'], function () {
 
             Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
             
