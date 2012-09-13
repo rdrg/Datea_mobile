@@ -13,7 +13,7 @@ var DateaRouter = Backbone.Router.extend({
 	routes: {
 		"": "home",
                 //temporary redirection to work on actions
-                //"":"allActions",
+               // "":"allActions",
 		
                 "login": "login",
 		"logout": "logout",
@@ -44,20 +44,35 @@ var DateaRouter = Backbone.Router.extend({
 	},
 
 	home: function() {
-		if (localSession.get('logged')) {
-        	var userid = localSession.get('userid');
-            localUser.fetch({ data: { 'id': userid }});   
+            if (localSession.get('logged')) {
+                var userid = localSession.get('userid');
+                localUser.fetch({ data: { 'id': userid }});   
            
-            if (!this.profileView) {
-            	this.profileView = new ProfileView({ model: localUser });
+            if (!this.actionCollection) {
+                this.actionCollection = new ActionCollection();
+                this.actionCollection.url = api_url + '/api/v1/action/';
             }
+
+            var self = this;
+            //console.log("action url: " + this.actionCollection.url);
+            this.actionCollection.fetch({
+                success: function(collection, response){
+                    console.log("actions fetched");
+                    if(!self.actionsView){
+                        self.actionsView = new ActionsView({model:self.actionCollection});
+                    }
+                    self.showView('#content', self.actionsView);
+                    //load navigation
+                }
+            });
+            //this.profileView = new ProfileView({ model: localUser });
             
-            this.showView("#app", this.profileView);
+            this.showView("#app", this.actionView);
         } else {
-        	if(!this.homeView) {
-        		this.homeView = new HomeView();
+            if(!this.homeView) {
+                this.homeView = new HomeView();
             }
-        	this.showView('#app', this.homeView);
+                this.showView('#app', this.homeView);
         }
 	},
 	
@@ -127,13 +142,18 @@ var DateaRouter = Backbone.Router.extend({
 	},
 
         actionDetail: function(actionid){
-            this.actionModel = new Action();
+            if(!this.actionModel){
+                this.actionModel = new Action();
+            }
             this.actionModel.url = api_url + "/api/v1/mapping/" + actionid;
             var self = this;
+
             this.actionModel.fetch({
                 success: function(){
                     console.log("action fetched");
-                    self.actionView = new ActionView({model: self.actionModel});
+                    if(!this.actionView){
+                        self.actionView = new ActionView({model: self.actionModel});
+                    }
                     self.showView('#content', self.actionView);
                     //load navigation
                 }
