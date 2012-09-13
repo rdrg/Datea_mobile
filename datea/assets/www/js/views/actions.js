@@ -7,12 +7,19 @@ var ActionsView = Backbone.View.extend({
     render: function () {
     	alert('me llaman')
         var action_list = [];
+    	var self = this;
+    	var uids = this.model.models.slice()
         
-        _.each(this.model.models, function(action) {
-            action_list.push(action.toJSON());
-        });
+    	(function next() {
+    		if (!uids.length) return;
+    		var uid = uids.pop()
+    		_.each(self.model.models, function (action) {
+                action_list.push(action.toJSON());
+            });
+    		next()
+    	})();
         
-        actions = {"actions": action_list};
+        actions = {"actions": action_list };
         
         this.$el.html(this.template(actions));
 

@@ -10,7 +10,7 @@ window.HeaderView = Backbone.View.extend({
 			return this;
 		}
 		
-		this.$el.html(this.template());
+		this.$el.html(this.template( { userid: null }));
 		return this;
 	},
 	selectMenuItem: function (item) {

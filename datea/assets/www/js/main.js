@@ -17,7 +17,7 @@ var DateaRouter = Backbone.Router.extend({
 		"about": "about",
 		"user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
-        "actions": "allActions",
+        "actions": "myActions",
         "mapping/:mapid": "loadMapping",
         "mapping/:mapid/edit": "editMapping",
         "mapping/:mapid/admin": "adminMapping"
@@ -86,6 +86,7 @@ var DateaRouter = Backbone.Router.extend({
 	        };
 		
 	    localSession.set(logout_data);
+	    console.log(localSession.get('logged'));
 	    localStorage.setItem("authdata", JSON.stringify(logout_data));
 	    dateaApp.navigate("/", { trigger: true });
 	},
@@ -101,18 +102,8 @@ var DateaRouter = Backbone.Router.extend({
         this.showView('#app', this.profileEditView);
 	},
 	
-	allActions: function () {
-		alert('entro a allActions');
-		this.actionCollection = new ActionCollection();
-		this.actionModel = new Action();
-		var self = this;
-        	
-		this.actionCollection.fetch({
-        	success: function(c, res) {
-        		alert('intento el fetch')
-        		$("#app").html(new ActionsView({ model: self.actionCollection }).render().el);
-            }
-        }); 
+	myActions: function () {
+
 	},
 	
 	createDateo: function () {
