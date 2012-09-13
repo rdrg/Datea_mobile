@@ -8,11 +8,6 @@
     .center;
     .wh(300px,95px);
 }
-#home_msg{
-    background-image: url('../img/home/message_bg.png');
-    .wh(100%,73px);
-    color:@w;
-}
 
 #h_title{
     margin-left: 20px;
@@ -22,10 +17,12 @@
 }
 
 #h_sub{
-    margin-right: 20px;
-    margin-left: 27px;
-    margin-top: 11px;
-    line-height: 12px;
+  margin-right: 20px;
+  margin-left: -18px;
+  margin-top: 11px;
+  line-height: 12px;
+  text-align: left;
+  width: 208px;
 }
 
 .home_bubble{
@@ -46,11 +43,6 @@
     padding-right: 20px;
 }
 
-#footer{
-    background-color: @w;
-    -webkit-box-shadow: 0px -6px 20px 0px #ccc;
-    //display: none;
-}
 .log{
     margin-top: 20px;
     margin-left: 20px;
@@ -61,4 +53,106 @@
 
 #register{
     width: 130px;
+}
+
+///content btns
+.home_i{
+  display: inline-block;
+  width: 40px;
+  height: 43px;
+  margin-top: 8px;
+  margin-right: 13px;
+  margin-left: 3px;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+}
+.home_btn{
+  padding: 8px;
+  margin: 10px 20px 0px;
+  span{
+    font-weight: bold;
+    line-height: 0px;
+    text-align: left;
+  }
+}
+
+#login_btn{
+  .home_btn;
+  i{
+    .home_i;    
+    background-image: url('../img/icono_registro_off.png');
+  }
+}
+
+#explore_btn{
+  .home_btn;
+  i{
+    .home_i;
+    background-image: url('../img/icono_apoya_off.png');
+  }
+}
+
+#participate_btn{
+  .home_btn;
+  i{
+    .home_i;
+    background-image: url('../img/icono_participa_off.png');
+  }
+}
+
+
+///responsive stuff
+
+.fillWidth{
+  margin-left: -20px;
+  right: 0px;
+  left: 0px;
+  display: block; 
+}
+
+#home_msg{
+  background-image: url('../img/home/message_bg.png');
+  height: 73px;
+  color: @w;
+  position: static;
+  .fillWidth;   
+}
+
+#footer{
+  background-color: @w;
+  -webkit-box-shadow: 0px -6px 20px 0px #ccc;
+  .fillWidth;
+  display: none;
+  position: absolute;
+  bottom: 0px;
+}
+
+@media (min-width: 1200px) { 
+  #home_msg{
+    margin-top: 95px;
+    color: pink;
+  }
+}
+
+@media (min-width: 980px) and (max-width: 1199px){
+  #home_msg{
+    margin-top: 95px;
+    color: red;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  #home_msg{
+    color: blue;
+  }
+}
+
+@media (max-width: 767px) { 
+  #home_msg{
+    margin-right: -20px;
+    margin-left: -20px;
+    right: 0px;
+    left: 0px;
+    position: static;
+  }
 }
