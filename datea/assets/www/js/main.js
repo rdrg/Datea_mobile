@@ -48,7 +48,7 @@ var DateaRouter = Backbone.Router.extend({
             	this.profileView = new ProfileView({ model: localUser });
             }
             
-            $("#app").html(this.profileView.render().el);
+            this.showView("#app", this.profileView);
         } else {
         	if(!this.homeView) {
         		this.homeView = new HomeView();
@@ -61,7 +61,7 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.aboutView) {
 			this.aboutView = new AboutView();
 		}
-		$('#app').html(this.aboutView.render().el);
+		$('#content').html(this.aboutView.render().el);
 		this.headerView.selectMenuItem('about-menu');
 	},
 	
@@ -74,7 +74,12 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.loginView) {
 			this.loginView = new LoginView({ model: this.session });
 		}
-		this.showView('#app', this.loginView);
+		//clean window
+		$('#home_msg').remove();
+		$('.header').removeAttr('id');
+
+		this.showView('#content', this.loginView);
+		$('.header').html(this.headerView.render().el);
 	},
 	
 	logout: function () {
@@ -94,12 +99,12 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        this.showView('#app', this.profileView);
+        this.showView('#content', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#app', this.profileEditView);
+        this.showView('#content', this.profileEditView);
 	},
 	
 	myActions: function () {
@@ -129,3 +134,15 @@ $(document).ready(function () {
             Backbone.history.start();
     });
 });
+
+function onLoad(){
+	document.addEventListener("deviceready",onDeviceReady,false);
+}
+
+function onDeviceReady(){
+	document.addEventListener("menubutton", onMenuDown, false);
+}
+
+function onMenuDown(){
+	$('#footer').toggle();
+}

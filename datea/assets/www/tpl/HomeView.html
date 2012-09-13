@@ -1,49 +1,73 @@
-<div data-role="page">
-<div data-role="header" data-position="fixed" id="header">
+<div id="header" class="navbar-fixed-top">
     <div id="home_header">
         <img src="img/home/logo.png" alt="">
     </div>
 </div>
 
 <div id="home_msg">
-    <div class="container300">
-        <div class="title">Bienvenido a Datea!</div>
-        <div class="small">
-            Datea es una plataforma para activar 
+    <div class="">
+        <div id="h_title" class="title">
+            Bienvenido a Datea!
+        </div>
+        <div id="h_sub" class="small">
+            Datea es una plataforma para activar <br> 
             la parcipaci&oacute;n de tu comunidad
         </div>    
     </div>
 </div>
 
-<div id="content">
-    <div class="container300">
-        <div id="home_register">
-            <div><img src="" alt=""></div>
-            <div>ingresa o registra una cuenta de usuario</div>
+<div id="content" class="row container">
+  <div class="span12">
+    <div id="main_container" class="span12">
+      <div class="row">
+        <div class="home_bubble span3">
+            <div class="left icon">
+                <img src="img/icono_registro_off.png">
+            </div>
+            <div class="rght icon_txt">
+              <strong>
+                ingresa o registra una cuenta de usuario
+              </strong>
+            </div>
         </div>
-        <div id="home_register">
-            <div><img src="" alt=""></div>
-            <div>encuentra acciones de tu interes y unete a ellas</div>
+        <div class="home_bubble span3">
+            <div class="left icon">
+                <img src="img/icono_apoya_off.png">
+            </div>
+            <div class="rght icon_txt">
+              <strong>
+                encuentra acciones de tu interes y unete a ellas
+              </strong>
+            </div>
         </div>
-        <div id="home_register">
-            <div><img src="" alt=""></div>
-            <div>participa dateando problemas y soluciones</div>
+        <div class="home_bubble span3">
+            <div class="left icon">
+                <img src="img/icono_participa_off.png">
+            </div>
+            <div class="rght icon_txt">
+              <strong>
+                participa dateando problemas y soluciones
+              </strong>
+            </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<div data-role="footer" data-position="fixed"  id="footer">
-    <div class="container300">
-        <div class="left">
-            <div id="ingresa">
-                <a href="#login" data-role="button">ingresa</a> 
-            </div>
+<div id="footer" class="navbar-fixed-bottom">
+    <div class="row container">
+        <div id="login" class="left log">
+            <a href="#login" id="login" class="btn btn-large">
+              INGRESA
+            </a>
             <div>ya tienes cuenta?</div>
         </div>
-        <div class="right">
-            <div id="registrate"></div>
+        <div id="register" class="log">
+            <a href="#login" id="login" class="btn btn-large">
+              REG&Iacute;STRATE
+            </a>
             <div>aun no eres datero?</div>
         </div>    
     </div>
-</div>
 </div>
