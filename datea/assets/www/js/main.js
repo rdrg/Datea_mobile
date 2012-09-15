@@ -61,19 +61,19 @@ var DateaRouter = Backbone.Router.extend({
                     if(!self.actionsView){
                         self.actionsView = new ActionsView({model:self.actionCollection});
                     }
-                    self.showView('#app', self.actionsView);
+                    self.showView('#content', self.actionsView);
                     //load navigation
                 }
             });
             //this.profileView = new ProfileView({ model: localUser });
             
-            this.showView("#app", this.actionView);
+            this.showView("#content", this.actionView);
         } else {
             if(!this.homeView) {
                 this.homeView = new HomeView();
             }
             
-            this.showView('#app', this.homeView);
+            this.showView('#content', this.homeView);
         }
 	},
 	
@@ -81,12 +81,11 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.aboutView) {
 			this.aboutView = new AboutView();
 		}
-		$('#app').html(this.aboutView.render().el);
+		$('#content').html(this.aboutView.render().el);
 		this.headerView.selectMenuItem('about-menu');
 	},
 	
 	login: function () {
-        console.log("load login");
 		if (!this.session) {
 			this.session = new Session();
 		}
@@ -98,7 +97,7 @@ var DateaRouter = Backbone.Router.extend({
 	        $('#home_msg').remove();
 		$('.header').removeAttr('id');
 
-		this.showView('#app', this.loginView);
+		this.showView('#content', this.loginView);
 	    $('.header').html(this.headerView.render().el);
 	},
 	
@@ -119,12 +118,12 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        this.showView('#app', this.profileView);
+        this.showView('#content', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#app', this.profileEditView);
+        this.showView('#content', this.profileEditView);
 	},
 	
 	myActions: function () {
@@ -136,7 +135,7 @@ var DateaRouter = Backbone.Router.extend({
                 success: function(collection, response){
                     console.log("actions fetched");
                     self.actionsView = new ActionsView({model:self.actionCollection});
-                    self.showView('#app', self.actionsView);
+                    self.showView('#content', self.actionsView);
                     //load navigation
                 }
             });
@@ -155,7 +154,7 @@ var DateaRouter = Backbone.Router.extend({
                     if(!this.actionView){
                         self.actionView = new ActionView({model: self.actionModel});
                     }
-                    self.showView('#app', self.actionView);
+                    self.showView('#content', self.actionView);
                     //load navigation
                 }
             });
@@ -168,7 +167,8 @@ var DateaRouter = Backbone.Router.extend({
 
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-                   'ProfileEditView', 'HomeView', 'ActionsView','ActionView'], function () {
+                   'ProfileEditView', 'HomeView', 'ActionsView','ActionView',
+                   'FooterView'], function () {
 
             Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
             
