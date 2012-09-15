@@ -1,16 +1,17 @@
 window.HeaderView = Backbone.View.extend({
 	initialize: function () {
-		this.render();
+		localSession.on('change', this.render, this);
 	},
 	render: function () {	
 		// FIXME: NOT PROUD
 		if (localSession.get('logged')) {
 			var userid = localSession.get('userid');
+			console.log(this.$el)
 			this.$el.html(this.template({ userid: userid }));
 			return this;
 		}
 		
-		this.$el.html(this.template( { userid: null }));
+		this.$el.html(this.template({ userid: false }));
 		return this;
 	},
 	selectMenuItem: function (item) {

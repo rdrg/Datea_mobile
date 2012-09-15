@@ -1,4 +1,4 @@
-var api_url = "http://192.168.2.113:8000";
+var api_url = "http://10.0.2.2:8000";
 
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
@@ -14,8 +14,7 @@ var DateaRouter = Backbone.Router.extend({
 		"": "home",
                 //temporary redirection to work on actions
                // "":"allActions",
-		
-                "login": "login",
+        "login": "login",
 		"logout": "logout",
 		"about": "about",
 		"user/:userid": "userLoadProfile",
@@ -30,6 +29,7 @@ var DateaRouter = Backbone.Router.extend({
 	showView: function(selector, view) {
 	    if (this.currentView)
 	        this.currentView.close();
+	    
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
 	    return view;
@@ -44,9 +44,9 @@ var DateaRouter = Backbone.Router.extend({
 	},
 
 	home: function() {
-            if (localSession.get('logged')) {
-                var userid = localSession.get('userid');
-                localUser.fetch({ data: { 'id': userid }});   
+        if (localSession.get('logged')) {
+            var userid = localSession.get('userid');
+            localUser.fetch({ data: { 'id': userid }});   
            
             if (!this.actionCollection) {
                 this.actionCollection = new ActionCollection();
@@ -61,7 +61,7 @@ var DateaRouter = Backbone.Router.extend({
                     if(!self.actionsView){
                         self.actionsView = new ActionsView({model:self.actionCollection});
                     }
-                    self.showView('#content', self.actionsView);
+                    self.showView('#app', self.actionsView);
                     //load navigation
                 }
             });
@@ -72,7 +72,8 @@ var DateaRouter = Backbone.Router.extend({
             if(!this.homeView) {
                 this.homeView = new HomeView();
             }
-                this.showView('#app', this.homeView);
+            
+            this.showView('#app', this.homeView);
         }
 	},
 	
@@ -80,7 +81,7 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.aboutView) {
 			this.aboutView = new AboutView();
 		}
-		$('#content').html(this.aboutView.render().el);
+		$('#app').html(this.aboutView.render().el);
 		this.headerView.selectMenuItem('about-menu');
 	},
 	
@@ -94,11 +95,11 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 		}
 		//clean window
-	        $('#home_msg').remove();
-		$('.header').removeAttr('id');
+	    //$('#home_msg').remove();
+		//$('.header').removeAttr('id');
 
-		this.showView('#content', this.loginView);
-	        $('.header').html(this.headerView.render().el);
+		this.showView('#app', this.loginView);
+	    $('.header').html(this.headerView.render().el);
 	},
 	
 	logout: function () {
@@ -118,12 +119,12 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        this.showView('#content', this.profileView);
+        this.showView('#app', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#content', this.profileEditView);
+        this.showView('#app', this.profileEditView);
 	},
 	
 	myActions: function () {
@@ -135,7 +136,7 @@ var DateaRouter = Backbone.Router.extend({
                 success: function(collection, response){
                     console.log("actions fetched");
                     self.actionsView = new ActionsView({model:self.actionCollection});
-                    self.showView('#content', self.actionsView);
+                    self.showView('#app', self.actionsView);
                     //load navigation
                 }
             });
@@ -154,7 +155,7 @@ var DateaRouter = Backbone.Router.extend({
                     if(!this.actionView){
                         self.actionView = new ActionView({model: self.actionModel});
                     }
-                    self.showView('#content', self.actionView);
+                    self.showView('#app', self.actionView);
                     //load navigation
                 }
             });
@@ -184,14 +185,14 @@ $(document).ready(function () {
     });
 });
 
-function onLoad(){
+function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
 }
 
-function onDeviceReady(){
+function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
 }
 
-function onMenuDown(){
+function onMenuDown() {
 	$('#footer').toggle();
 }
