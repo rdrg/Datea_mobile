@@ -41,6 +41,9 @@ var DateaRouter = Backbone.Router.extend({
 		
 		this.headerView = new HeaderView();
 		$('.header').html(this.headerView.render().el);
+		
+		this.footerView = new FooterView();
+		$('.footer').html(this.footerView.render().el);
 	},
 
 	home: function() {
