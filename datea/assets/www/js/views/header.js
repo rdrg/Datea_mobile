@@ -6,7 +6,6 @@ window.HeaderView = Backbone.View.extend({
 		// FIXME: NOT PROUD
 		if (localSession.get('logged')) {
 			var userid = localSession.get('userid');
-			console.log(this.$el)
 			this.$el.html(this.template({ userid: userid }));
 			return this;
 		}
