@@ -39,9 +39,16 @@ var DateaRouter = Backbone.Router.extend({
 		$.ajaxSetup({ crossDomain:true });
 		$.support.cors = true;
 		
-		this.headerView = new HeaderView();
-		$('.header').html(this.headerView.render().el);
-		
+                if(localSession.get('logged')){
+		    this.headerView = new LoggedInHeaderView();
+		    $('.header').html(this.headerView.render().el);
+		}else{
+                    this.headerView = new LoggedOutHeaderView();
+                     $('.header').html(this.headerView.render().el);
+                }
+
+                $('.header').html(this.headerView.render().el);
+
 		this.footerView = new FooterView();
 		$('.footer').html(this.footerView.render().el);
 	},
@@ -164,13 +171,19 @@ var DateaRouter = Backbone.Router.extend({
 	
 	createDateo: function () {
 		this.dateo = null;
-	}
+	},
+
+        before: {
+            "*": function(){
+                console.log("fireeeeeee");
+            }
+        }
 });
 
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
                    'ProfileEditView', 'HomeView', 'ActionsView','ActionView',
-                   'FooterView'], function () {
+                   'FooterView', 'LoggedInHeaderView', 'LoggedOutHeaderView'], function () {
 
             Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
             
