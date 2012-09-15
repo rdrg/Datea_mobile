@@ -65,7 +65,6 @@ var DateaRouter = Backbone.Router.extend({
                     //load navigation
                 }
             });
-            //this.profileView = new ProfileView({ model: localUser });
             
             this.showView("#content", this.actionView);
         } else {
@@ -82,7 +81,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.aboutView = new AboutView();
 		}
 		$('#content').html(this.aboutView.render().el);
-		this.headerView.selectMenuItem('about-menu');
+                    this.headerView.selectMenuItem('about-menu');
 	},
 	
 	login: function () {
@@ -94,7 +93,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 		}
 		//clean window
-	        $('#home_msg').remove();
+                $('#home_msg').remove();
 		$('.header').removeAttr('id');
 
 		this.showView('#content', this.loginView);
@@ -116,9 +115,9 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	userLoadProfile: function (userid) {
-        localUser.fetch({ data: { 'id': userid }});
-        this.profileView = new ProfileView({ model: localUser });
-        this.showView('#content', this.profileView);
+            localUser.fetch({ data: { 'id': userid }});
+            this.profileView = new ProfileView({ model: localUser });
+            this.showView('#content', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {
