@@ -1,4 +1,4 @@
-var api_url = "http://192.168.2.113:8000";
+window.api_url = "http://192.168.2.113:8000";
 
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
@@ -122,8 +122,8 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	userEditProfile: function (userid) {
-		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#content', this.profileEditView);
+	    this.profileEditView = new ProfileEditView({ model: localUser });
+            this.showView('#content', this.profileEditView);
 	},
 	
 	myActions: function () {
