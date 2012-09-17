@@ -52,13 +52,14 @@ var RegisterView = Backbone.View.extend({
         this.model.save(logindata, {
              success: function(model, response){
                 if(response.status == 200){
-                    var authdata = {
+                    var localdata = {
                         "username": logindata.username,
                         //"password": logindata.password,
-                        "apiKey" : response.token,
-                        "logged" : true,
-                        "userid" : response.userid
+                        "token" : response.token,
+                        "userid" : response.userid,
+                        "logged": true
                     };
+                    local_session.save(authdata);
 
                       Backbone.Tastypie = {
                         prependDomain: api_url,
@@ -70,8 +71,8 @@ var RegisterView = Backbone.View.extend({
                         }
                     };
 
-                    localStorage.setItem("authdata", JSON.stringify(authdata));
-                    self.model.set(authdata);
+                    //localStorage.setItem("authdata", JSON.stringify(authdata));
+                    local_session.create(localdata);
                     //self.model.set({logged: true});
                     //redirecting to user profile for now
                     //var userid = self.model.get("userid");

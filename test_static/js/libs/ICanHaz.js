@@ -721,8 +721,8 @@ var Mustache;
                 dataType: 'text',
                 async: false,
                 success: function(data){
-                    console.log(data);
-                    console.log(trim(data));
+                //    console.log(data);
+                //  console.log(trim(data));
                     ich.addTemplate(templateName, trim(data));
                 }
            });
