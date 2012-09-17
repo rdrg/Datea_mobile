@@ -1,5 +1,5 @@
 ///////ROUTER//////////
-var api_url = "http://192.168.2.113:8000";
+var api_url = "http://192.168.2.129:8000";
 
 var AppRouter = Backbone.Router.extend({
     
