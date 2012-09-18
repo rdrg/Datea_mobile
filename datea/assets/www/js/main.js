@@ -196,6 +196,8 @@ $(document).ready(function () {
 
             window.dateaApp = new DateaRouter();           
             Backbone.history.start();
+
+            $('dropdown-toggle').dropdown();
     });
 });
 
