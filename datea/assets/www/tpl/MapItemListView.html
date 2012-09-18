@@ -1,0 +1,7 @@
+<h1>Map Item List</h1>
+<% _each(map_items, function(map_item){ )%>
+    <p><a href="#mapping/report/<% id %>"><%= content %></a></p>
+    <p><%= extract %></p>
+    <p><%= user.username %></p>
+<%= }) %>
+

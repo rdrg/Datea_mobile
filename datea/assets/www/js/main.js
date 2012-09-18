@@ -11,19 +11,20 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-		"": "home",
-                //temporary redirection to work on actions
-               // "":"allActions",
-        "login": "login",
-		"logout": "logout",
-		"about": "about",
-		"user/:userid": "userLoadProfile",
-        "user/edit/:userid": "userEditProfile",
-        "actions": "myActions",
-        "action/:actionid": "actionDetail",
-        "mapping/:mapid": "loadMapping",
-        "mapping/:mapid/edit": "editMapping",
-        "mapping/:mapid/admin": "adminMapping"
+	    "": "home",
+            //temporary redirection to work on actions
+            // "":"allActions",
+            "login": "login",
+	    "logout": "logout",
+	    "about": "about",
+	    "user/:userid": "userLoadProfile",
+            "user/edit/:userid": "userEditProfile",
+            "actions": "myActions",
+            "action/:actionid": "actionDetail",
+            "mapping/:mapid/reports":"mapItemList",
+            "mapping/report/:reportid":"mapItemDetail",
+            "mapping/:mapid/edit": "editMapping",
+            "mapping/:mapid/admin": "adminMapping" 
 	},
 	
 	showView: function(selector, view) {
@@ -168,22 +169,42 @@ var DateaRouter = Backbone.Router.extend({
                 }
             });
         },
-	
+
+        mappingDetail: function(mapid){
+            console.log("show map item");
+            if(!this.mapItems){
+                this.mapItems = new MapItemCollection();
+            }
+            if(!this.mapItemListView){
+                this.mapItemListView = new MapItemListView({model: this.mapItems}); 
+            }
+            var self = this;
+            this.mapItems.fetch({
+                data: {'id': mapid},
+                success: function(){
+                    self.showView('#content', self.mapItemListView());
+                }
+            }); 
+        }
+        
+        /*        
 	createDateo: function () {
 		this.dateo = null;
-	},
-
+	}
+        */
+        /*
         before: {
             "*": function(){
                 console.log("fireeeeeee");
             }
         }
+        */
 });
 
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
                    'ProfileEditView', 'HomeView', 'ActionsView','ActionView',
-                   'FooterView', 'LoggedInHeaderView', 'LoggedOutHeaderView'], function () {
+                   'FooterView', 'LoggedInHeaderView', 'LoggedOutHeaderView', 'MapItemListView'], function () {
 
             Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
             
