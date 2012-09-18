@@ -1,23 +1,22 @@
 var ActionsView = Backbone.View.extend({
 	initialize: function () {
-		alert('initialize')
-		this.render();
-	},
-	
+        //fetch actions according to user status
+	this.render();
+    },	
     render: function () {
-    	alert('me llaman')
+    	//alert('me llaman')
         var action_list = [];
-    	var self = this;
-    	var uids = this.model.models.slice()
+    	//var self = this;
+    	//var uids = this.model.models.slice()
         
-    	(function next() {
-    		if (!uids.length) return;
-    		var uid = uids.pop()
-    		_.each(self.model.models, function (action) {
-                action_list.push(action.toJSON());
-            });
-    		next()
-    	})();
+    	//(function next() {
+    		//if (!uids.length) return;
+    		//var uid = uids.pop()
+    	_.each(this.model.models, function (action) {
+            action_list.push(action.toJSON());
+        });
+    	    //next();
+    	//})();
         
         actions = {"actions": action_list };
         

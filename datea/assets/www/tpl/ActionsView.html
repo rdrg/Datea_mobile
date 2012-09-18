@@ -1,5 +1,5 @@
 <h1>Actions</h1>
-<% actions.each(function(action) { %>
+<% _.each(actions, function(action) { %>
     <img src="/<%= action.image %>" />
-    <p><a href="#action/<%= action.id %>"> <%= action.name %> </a></p>
+    <p><a href="#action/<%= action.id %>"> <%= action.name %></a></p>
 <% }) %>
