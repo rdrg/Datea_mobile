@@ -11,19 +11,20 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-		"": "home",
-    //temporary redirection to work on actions
-   // "":"allActions",
-    "login": "login",
-		"logout": "logout",
-		"about": "about",
-		"user/:userid": "userLoadProfile",
-    "user/edit/:userid": "userEditProfile",
-    "actions": "myActions",
-    "action/:actionid": "actionDetail",
-    "mapping/:mapid": "loadMapping",
-    "mapping/:mapid/edit": "editMapping",
-    "mapping/:mapid/admin": "adminMapping"
+        "": "home",
+        //temporary redirection to work on actions
+        // "":"allActions",
+        "login": "login",
+        "logout": "logout",
+        "about": "about",
+        "user/:userid": "userLoadProfile",
+        "user/edit/:userid": "userEditProfile",
+        "actions": "myActions",
+        "action/:actionid": "actionDetail",
+        "mapping/:mapid/reports":"mapItemList",
+        "mapping/report/:reportid":"mapItemDetail",
+        "mapping/:mapid/edit": "editMapping",
+        "mapping/:mapid/admin": "adminMapping" 
 	},
 	
 	showView: function(selector, view) {
@@ -38,51 +39,53 @@ var DateaRouter = Backbone.Router.extend({
 	initialize: function () {
 		$.ajaxSetup({ crossDomain:true });
 		$.support.cors = true;
-		
-    if(localSession.get('logged')){
-		  this.headerView = new LoggedInHeaderView();
-		  $('.header').html(this.headerView.render().el);
+		        
+        if(localSession.get('logged')){
+		    this.headerView = new LoggedInHeaderView();
+		    $('.header').html(this.headerView.render().el);
 		}else{
       this.headerView = new LoggedOutHeaderView();
       $('.header').html(this.headerView.render().el);
     }
 
     $('.header').html(this.headerView.render().el);
-
 		this.footerView = new FooterView();
 		$('.footer').html(this.footerView.render().el);
 	},
 
 	home: function() {
-    if (localSession.get('logged')) {
-      var userid = localSession.get('userid');
-      localUser.fetch({ data: { 'id': userid }});   
-     
-      if (!this.actionCollection) {
-          this.actionCollection = new ActionCollection();
-          this.actionCollection.url = api_url + '/api/v1/action/';
-      }
 
-      var self = this;
-      //console.log("action url: " + this.actionCollection.url);
-      this.actionCollection.fetch({
-          success: function(collection, response){
-              console.log("actions fetched");
-              if(!self.actionsView){
-                  self.actionsView = new ActionsView({model:self.actionCollection});
-              }
-              self.showView('#app', self.actionsView);
-              //load navigation
-          }
-      });
-      console.log('boong');
-      this.showView("#app", this.actionView);
-    } else {
-      if(!this.homeView) {
-          this.homeView = new HomeView();
-      }
-      this.showView('#app', this.homeView);
-    }
+        console.log("enter home"); 
+        if (localSession.get('logged')) {
+            var userid = localSession.get('userid');
+            localUser.fetch({ data: { 'id': userid }});   
+           
+            if (!this.actionCollection) {
+                this.actionCollection = new ActionCollection();
+                this.actionCollection.url = api_url + '/api/v1/action/';
+            }
+
+            var self = this;
+            //console.log("action url: " + this.actionCollection.url);
+            this.actionCollection.fetch({
+                success: function(collection, response){
+                    console.log("actions fetched");
+                    if(!self.actionsView){
+                        self.actionsView = new ActionsView({model:self.actionCollection});
+                    }
+                    self.showView('#content', self.actionsView);
+                    //load navigation
+                }
+            });
+            
+            this.showView("#content", this.actionView);
+        } else {
+            if(!this.homeView) {
+                this.homeView = new HomeView();
+            }
+            
+            this.showView('#content', this.homeView);
+        }
 	},
 	
 	about: function () {
@@ -102,7 +105,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 		}
 		//clean window
-                $('#home_msg').remove();
+                //$('#home_msg').remove();
 		$('.header').removeAttr('id');
 
 		this.showView('#content', this.loginView);
@@ -167,39 +170,69 @@ var DateaRouter = Backbone.Router.extend({
                 }
             });
         },
-	
+
+        mappingDetail: function(mapid){
+            console.log("show map item");
+            if(!this.mapItems){
+                this.mapItems = new MapItemCollection();
+            }
+            if(!this.mapItemListView){
+                this.mapItemListView = new MapItemListView({model: this.mapItems}); 
+            }
+            var self = this;
+            this.mapItems.fetch({
+                data: {'id': mapid},
+                success: function(){
+                    self.showView('#content', self.mapItemListView());
+                }
+            }); 
+        }
+        
+        /*        
 	createDateo: function () {
 		this.dateo = null;
-	},
-
+	}
+        */
+        /*
         before: {
             "*": function(){
                 console.log("fireeeeeee");
             }
         }
+        */
 });
 
 $(document).ready(function () {
-    utils.loadTpl(['HeaderView', 'AboutView', 'LoginView', 'ProfileView',
-                   'ProfileEditView', 'HomeView', 'ActionsView','ActionView',
-                   'FooterView', 'LoggedInHeaderView', 'LoggedOutHeaderView'], function () {
+    utils.loadTpl(['HeaderView', 
+                    'AboutView', 
+                    'LoginView', 
+                    'ProfileView',
+                    'ProfileEditView', 
+                    'HomeView', 
+                    'ActionsView',
+                    'ActionView',
+                    'FooterView', 
+                    'LoggedInHeaderView', 
+                    'LoggedOutHeaderView', 
+                    'MapItemListView'], 
+    function () {
+        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
+        
+        window.localSession = new localSession();
+        window.localUser = new User();
 
-            Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
-            
-            window.localSession = new localSession();
-            window.localUser = new User();
+        if(localStorage.getItem('authdata') !== undefined) {
+            var authdata = JSON.parse(localStorage.getItem('authdata'));
+            localSession.set(authdata);
+        }
+        window.dateaApp = new DateaRouter();           
+        Backbone.history.start();
 
-            if(localStorage.getItem('authdata') !== undefined) {
-                var authdata = JSON.parse(localStorage.getItem('authdata'));
-                localSession.set(authdata);
-            }
-
-            window.dateaApp = new DateaRouter();           
-            Backbone.history.start();
-
-            $('dropdown-toggle').dropdown();
+        $('dropdown-toggle').dropdown();
     });
 });
+
+
 
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
@@ -210,5 +243,6 @@ function onDeviceReady() {
 }
 
 function onMenuDown() {
-	$('#footer').toggle();
+	$('.footer').toggle();
 }
+
