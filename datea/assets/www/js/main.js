@@ -23,8 +23,9 @@ var DateaRouter = Backbone.Router.extend({
             "action/:actionid": "actionDetail",
             "mapping/:mapid/reports":"mapItemList",
             "mapping/report/:reportid":"mapItemDetail",
-            "mapping/:mapid/edit": "editMapping",
-            "mapping/:mapid/admin": "adminMapping" 
+            "mapping/report/create": "createReport",
+            //"mapping/:mapid/edit": "editMapping",
+            //"mapping/:mapid/admin": "adminMapping" 
 	},
 	
 	showView: function(selector, view) {
