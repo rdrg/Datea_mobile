@@ -187,6 +187,7 @@ var DateaRouter = Backbone.Router.extend({
             if(!this.mapItemListView){
                 this.mapItemListView = new MapItemListView({model: this.mapItems}); 
             }
+
             var self = this;
             this.mapItems.fetch({
                 data: {'id': mapid},
@@ -215,21 +216,42 @@ var DateaRouter = Backbone.Router.extend({
                     self.showView('#content', self.newMapItemView);   
                 }
             });
+    },
+       
+	mapItemMap: function(mapid) {
+    	if (!this.actionModel) {
+    		this.actionModel = new Action({id: mapid});
+    		this.actionModel.urlRoot = '/api/v1/mapping';
+    	}
+    	if(!this.mapItems){
+            this.mapItems = new MapItemCollection();
+            this.mapItems.url = api_url + "/api/v1/map_item/";
         }
-=======
-	},
-         
-	createReport: function () {
-            //console.log("create dateo");
-            this.newMapItem = new MapItem();
-            if(!this.newMapItemView){
-                this.newMapItemView = new CreateMapItemView({model: this.newMapItem}); 
-            }
-            this.showView('#content', this.newMapItemView);
-	}
         
-
->>>>>>> create report views, in progress
+        this.mapItemMapView = new MapItemMapView({
+        	model: this.actionModel,
+        	collection: this.mapItems,
+        }); 
+    	
+    	var self = this;
+    	
+    	this.actionModel.fetch({
+    		success: function (model, response) {
+				console.log(model);
+				// fetch map items
+				self.mapItems.fetch({
+					data: {mapping: mapid},
+					success: function () {
+				        self.showView('#content', self.mapItemMapView);
+				        self.mapItemMapView.loadMap();
+				     },
+				     error: function(error) {
+				        	console.log("fetch error");
+				     }
+				});
+    		}
+    	});
+    },
 });
 
 $(document).ready(function () {
@@ -249,23 +271,25 @@ $(document).ready(function () {
                     'CreateMapItemView',
                     'CreateMapItemOne',
                     'CreateMapItemTwo',
-                    'CreateMapItemThree'], 
-    function () {
-        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
-        
-        window.localSession = new localSession();
-        window.localUser = new User();
+                    'CreateMapItemThree', 
+                    'MapItemMapView'], 
 
-        if(localStorage.getItem('authdata') !== undefined) {
-            var authdata = JSON.parse(localStorage.getItem('authdata'));
-            localSession.set(authdata);
-        }
-        window.dateaApp = new DateaRouter();           
-        Backbone.history.start();
-
-        $('dropdown-toggle').dropdown();
-
-        $('#content').jscroll();
+		function () {
+	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
+	        
+	        window.localSession = new localSession();
+	        window.localUser = new User();
+	
+	        if(localStorage.getItem('authdata') !== undefined) {
+	            var authdata = JSON.parse(localStorage.getItem('authdata'));
+	            localSession.set(authdata);
+	        }
+	        window.dateaApp = new DateaRouter();           
+	        Backbone.history.start();
+	
+	        $('dropdown-toggle').dropdown();
+	
+	        $('#content').jscroll();
     });
 });
 
