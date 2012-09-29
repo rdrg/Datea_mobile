@@ -1,0 +1,46 @@
+.gradient_white{
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #ffffff 67%, #ededed 90%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(67%,#ffffff), color-stop(90%,#ededed)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+}
+
+#footer{
+  background-color: @w;
+  -webkit-box-shadow: 0px -6px 20px 0px #ccc;
+  .fillWidth;
+ // display: none;
+  position: absolute;
+  bottom: 0px;
+}
+
+#footer > .navbar-inner{
+  .gradient_white;
+}
+
+#footer  .btn {
+  margin-left: 30px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  background-image: none;
+  border: none;
+  color: @gray-dark;
+}
+
+#login_btn_footer{
+  background-color: @gray-bg;
+}
+
+#signup_btn_footer{
+  background-color: @yellow-btn;
+}
+
+@media (max-width: 767px) { 
+  #footer{
+    margin-right: 0px;
+  }
+}

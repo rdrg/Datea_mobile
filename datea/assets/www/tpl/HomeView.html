@@ -1,12 +1,19 @@
-<div id="home_msg">
+
+
+<div id="home_msg" class="row ">
     <div class="">
         <div id="h_title" class="title">
-            Bienvenido a Datea!
+          Bienvenido a Datea!
         </div>
-        <div id="h_sub" class="small">
-            Datea es una plataforma para activar <br> 
-            la parcipaci&oacute;n de tu comunidad
-        </div>    
+        <center>
+          <div>
+            <div id="h_sub" class="small">
+              Datea es una plataforma para activar <br> 
+              la parcipaci&oacute;n de tu comunidad
+            </div>  
+          </div>
+          
+        </center>    
     </div>
 </div>
 
@@ -14,54 +21,28 @@
   <div class="span12">
     <div id="main_container" class="span12">
       <div class="row">
-        <div class="home_bubble span3">
-            <div class="left icon">
-                <img src="img/icono_registro_off.png">
-            </div>
-            <div class="rght icon_txt">
-              <strong>
-                ingresa o registra una cuenta de usuario
-              </strong>
-            </div>
-        </div>
-        <div class="home_bubble span3">
-            <div class="left icon">
-                <img src="img/icono_apoya_off.png">
-            </div>
-            <div class="rght icon_txt">
-              <strong>
-                encuentra acciones de tu interes y unete a ellas
-              </strong>
-            </div>
-        </div>
-        <div class="home_bubble span3">
-            <div class="left icon">
-                <img src="img/icono_participa_off.png">
-            </div>
-            <div class="rght icon_txt">
-              <strong>
-                participa dateando problemas y soluciones
-              </strong>
-            </div>
-        </div>
+
+        <button id="login_btn" class="btn" onclick="window.HomeView.login">
+          <i></i>
+          <span>
+            ingresa o registra una cuenta de usuario
+          </span>
+        </button>
+
+        <button id="explore_btn" class="btn">
+          <i></i>
+          <span>
+            encuentra acciones de tu interes y unete a ellas
+          </span>
+        </button>
+
+        <button id="participate_btn" class="btn">
+          <i></i>
+          <span>
+            participa dateando problemas y soluciones
+          </span>
+        </button>
       </div>
     </div>
   </div>
-</div>
-
-<div id="footer" class="navbar-fixed-bottom">
-    <div class="row container">
-        <div id="login" class="left log">
-            <a href="#login" id="login" class="btn btn-large">
-              INGRESA
-            </a>
-            <div>ya tienes cuenta?</div>
-        </div>
-        <div id="register" class="log">
-            <a href="#login" id="login" class="btn btn-large">
-              REG&Iacute;STRATE
-            </a>
-            <div>aun no eres datero?</div>
-        </div>    
-    </div>
 </div>

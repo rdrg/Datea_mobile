@@ -1,5 +1,5 @@
-window.api_url = "http://192.168.2.113:8000";
-
+//window.api_url = "http://192.168.2.113:8000";
+window.api_url = "http://10.0.19.113:8000";
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
         this.beforeClose();
@@ -40,55 +40,53 @@ var DateaRouter = Backbone.Router.extend({
 	initialize: function () {
 		$.ajaxSetup({ crossDomain:true });
 		$.support.cors = true;
-		
-                
-                
-                if(localSession.get('logged')){
+		        
+        if(localSession.get('logged')){
 		    this.headerView = new LoggedInHeaderView();
 		    $('.header').html(this.headerView.render().el);
 		}else{
-                    this.headerView = new LoggedOutHeaderView();
-                     $('.header').html(this.headerView.render().el);
-                }
+      this.headerView = new LoggedOutHeaderView();
+      $('.header').html(this.headerView.render().el);
+    }
 
-                $('.header').html(this.headerView.render().el);
-        
+    $('.header').html(this.headerView.render().el);
 		this.footerView = new FooterView();
 		$('.footer').html(this.footerView.render().el);
 	},
 
 	home: function() {
-            console.log("enter home"); 
-            if (localSession.get('logged')) {
-                var userid = localSession.get('userid');
-                localUser.fetch({ data: { 'id': userid }});   
-               
-                if (!this.actionCollection) {
-                    this.actionCollection = new ActionCollection();
-                    this.actionCollection.url = api_url + '/api/v1/action/';
-                }
 
-                var self = this;
-                //console.log("action url: " + this.actionCollection.url);
-                this.actionCollection.fetch({
-                    success: function(collection, response){
-                        console.log("actions fetched");
-                        if(!self.actionsView){
-                            self.actionsView = new ActionsView({model:self.actionCollection});
-                        }
-                        self.showView('#content', self.actionsView);
-                        //load navigation
-                    }
-                });
-                
-                this.showView("#content", this.actionView);
-            } else {
-                if(!this.homeView) {
-                    this.homeView = new HomeView();
-                }
-                
-                this.showView('#content', this.homeView);
+        console.log("enter home"); 
+        if (localSession.get('logged')) {
+            var userid = localSession.get('userid');
+            localUser.fetch({ data: { 'id': userid }});   
+           
+            if (!this.actionCollection) {
+                this.actionCollection = new ActionCollection();
+                this.actionCollection.url = api_url + '/api/v1/action/';
             }
+
+            var self = this;
+            //console.log("action url: " + this.actionCollection.url);
+            this.actionCollection.fetch({
+                success: function(collection, response){
+                    console.log("actions fetched");
+                    if(!self.actionsView){
+                        self.actionsView = new ActionsView({model:self.actionCollection});
+                    }
+                    self.showView('#content', self.actionsView);
+                    //load navigation
+                }
+            });
+            
+            this.showView("#content", this.actionView);
+        } else {
+            if(!this.homeView) {
+                this.homeView = new HomeView();
+            }
+            
+            this.showView('#content', this.homeView);
+        }
 	},
 	
 	about: function () {
@@ -189,13 +187,13 @@ var DateaRouter = Backbone.Router.extend({
                     self.showView('#content', self.mapItemListView());
                 }
             }); 
-        }
-        
-        /*        
-	createDateo: function () {
-		this.dateo = null;
+        },
+         
+	createReport: function () {
+		//this.dateo = null;
+            console.log("create dateo");
 	}
-        */
+        
         /*
         before: {
             "*": function(){
@@ -228,9 +226,10 @@ $(document).ready(function () {
             var authdata = JSON.parse(localStorage.getItem('authdata'));
             localSession.set(authdata);
         }
-
         window.dateaApp = new DateaRouter();           
         Backbone.history.start();
+
+        $('dropdown-toggle').dropdown();
     });
 });
 
