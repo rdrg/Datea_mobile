@@ -7,6 +7,8 @@ var MapItemMapView = Backbone.View.extend({
     
     loadMap: function() {
     	this.InfoLayer = 1;
+    	console.log("loaded");
+    	console.log(this.model);
     	console.log(this.collection); 
     },
     

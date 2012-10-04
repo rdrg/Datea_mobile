@@ -237,7 +237,6 @@ var DateaRouter = Backbone.Router.extend({
     	
     	this.actionModel.fetch({
     		success: function (model, response) {
-				console.log(model);
 				// fetch map items
 				self.mapItems.fetch({
 					data: {mapping: mapid},
@@ -246,7 +245,7 @@ var DateaRouter = Backbone.Router.extend({
 				        self.mapItemMapView.loadMap();
 				     },
 				     error: function(error) {
-				        	console.log("fetch error");
+				        console.log("fetch error");
 				     }
 				});
     		}
