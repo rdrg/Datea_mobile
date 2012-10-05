@@ -195,8 +195,7 @@ var DateaRouter = Backbone.Router.extend({
                     self.showView('#content', self.mapItemListView());
                 }
             }); 
-<<<<<<< HEAD
-        },
+    },
          
 	createReport: function(mapid) {
             var self = this;
@@ -248,7 +247,10 @@ var DateaRouter = Backbone.Router.extend({
 				        console.log("fetch error");
 				     }
 				});
-    		}
+    		},
+    		error: function(error) {
+				console.log("fetch error");
+			}
     	});
     },
 });
@@ -270,10 +272,9 @@ $(document).ready(function () {
                     'CreateMapItemView',
                     'CreateMapItemOne',
                     'CreateMapItemTwo',
-                    'CreateMapItemThree', 
-                    'MapItemMapView'], 
-
-		function () {
+                    'CreateMapItemThree'] 
+		
+		,function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	        
 	        window.localSession = new localSession();
