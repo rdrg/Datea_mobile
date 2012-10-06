@@ -29,7 +29,6 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	showView: function(selector, view) {
-            //console.log("view name: " + view.constructor.toString());
 	    if (this.currentView)
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
@@ -38,55 +37,58 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	initialize: function () {
-		$.ajaxSetup({ crossDomain:true });
-		$.support.cors = true;
+	    $.ajaxSetup({ crossDomain:true });
+	    $.support.cors = true;
 		        
-        if(localSession.get('logged')){
-		    this.headerView = new LoggedInHeaderView();
-		    $('.header').html(this.headerView.render().el);
-		}else{
-      this.headerView = new LoggedOutHeaderView();
-      $('.header').html(this.headerView.render().el);
-    }
+            if(localSession.get('logged')){
+	        this.headerView = new LoggedInHeaderView();
+		$('.header').html(this.headerView.render().el);
+	    }else{
+                this.headerView = new LoggedOutHeaderView();
+                $('.header').html(this.headerView.render().el);
+            }
+            //$('.header').html(this.headerView.render().el);
+            this.navBar = new NavBar({});
+            this.navBarView = new NavBarView({model: this.navBar});
+            $('.footer').html(this.navBarView.render().el);
 
-    $('.header').html(this.headerView.render().el);
-		this.footerView = new FooterView();
-		$('.footer').html(this.footerView.render().el);
+	    //this.footerView = new FooterView();
+	    //$('.footer').html(this.footerView.render().el);
 	},
 
 	home: function() {
 
-        console.log("enter home"); 
-        if (localSession.get('logged')) {
-            var userid = localSession.get('userid');
-            localUser.fetch({ data: { 'id': userid }});   
-           
-            if (!this.actionCollection) {
-                this.actionCollection = new ActionCollection();
-                this.actionCollection.url = api_url + '/api/v1/action/';
-            }
-
-            var self = this;
-            //console.log("action url: " + this.actionCollection.url);
-            this.actionCollection.fetch({
-                success: function(collection, response){
-                    console.log("actions fetched");
-                    if(!self.actionsView){
-                        self.actionsView = new ActionsView({model:self.actionCollection});
-                    }
-                    self.showView('#content', self.actionsView);
-                    //load navigation
+            console.log("enter home"); 
+            if (localSession.get('logged')) {
+                var userid = localSession.get('userid');
+                localUser.fetch({ data: { 'id': userid }});   
+               
+                if (!this.actionCollection) {
+                    this.actionCollection = new ActionCollection();
+                    this.actionCollection.url = api_url + '/api/v1/action/';
                 }
-            });
-            
-            this.showView("#content", this.actionView);
-        } else {
-            if(!this.homeView) {
-                this.homeView = new HomeView();
+
+                var self = this;
+                //console.log("action url: " + this.actionCollection.url);
+                this.actionCollection.fetch({
+                    success: function(collection, response){
+                        console.log("actions fetched");
+                        if(!self.actionsView){
+                            self.actionsView = new ActionsView({model:self.actionCollection});
+                        }
+                        self.showView('#content', self.actionsView);
+                        //load navigation
+                    }
+                });
+                
+                //this.showView("#content", this.actionView);
+            } else {
+                if(!this.homeView) {
+                    this.homeView = new HomeView();
+                }
+                
+                this.showView('#content', this.homeView);
             }
-            
-            this.showView('#content', this.homeView);
-        }
 	},
 	
 	about: function () {
@@ -205,7 +207,8 @@ $(document).ready(function () {
                     'AboutView', 
                     'LoginView', 
                     'ProfileView',
-                    'ProfileEditView', 
+                    'ProfileEditView',
+                    'NavBarView', 
                     'HomeView', 
                     'ActionsView',
                     'ActionView',
