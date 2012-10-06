@@ -29,6 +29,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	showView: function(selector, view) {
+            //console.log("view name: " + view.constructor.toString());
 	    if (this.currentView)
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
@@ -193,6 +194,7 @@ var DateaRouter = Backbone.Router.extend({
                     self.showView('#content', self.mapItemListView());
                 }
             }); 
+<<<<<<< HEAD
         },
          
 	createReport: function(mapid) {
@@ -214,6 +216,20 @@ var DateaRouter = Backbone.Router.extend({
                 }
             });
         }
+=======
+	},
+         
+	createReport: function () {
+            //console.log("create dateo");
+            this.newMapItem = new MapItem();
+            if(!this.newMapItemView){
+                this.newMapItemView = new CreateMapItemView({model: this.newMapItem}); 
+            }
+            this.showView('#content', this.newMapItemView);
+	}
+        
+
+>>>>>>> create report views, in progress
 });
 
 $(document).ready(function () {
