@@ -1,5 +1,5 @@
-//window.api_url = "http://192.168.2.113:8000";
-window.api_url = "http://192.168.0.104:8000";
+window.api_url = "http://192.168.2.113:8000";
+//window.api_url = "http://10.0.19.113:8000";
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
         this.beforeClose();
@@ -23,15 +23,15 @@ var DateaRouter = Backbone.Router.extend({
             "action/:actionid": "actionDetail",
             "mapping/:mapid/reports":"mapItemList",
             "mapping/report/:reportid":"mapItemDetail",
-            "mapping/report/create": "createReport",
+            "mapping/:mapid/report/create": "createReport",
             //"mapping/:mapid/edit": "editMapping",
             //"mapping/:mapid/admin": "adminMapping" 
 	},
 	
 	showView: function(selector, view) {
+            //console.log("view name: " + view.constructor.toString());
 	    if (this.currentView)
 	        this.currentView.close();
-	    
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
 	    return view;
@@ -91,7 +91,7 @@ var DateaRouter = Backbone.Router.extend({
 	
 	about: function () {
 		if (!this.aboutView) {
-			this.aboutView = new AboutView();
+		    this.aboutView = new AboutView();
 		}
 		$('#content').html(this.aboutView.render().el);
                     this.headerView.selectMenuItem('about-menu');
@@ -99,7 +99,7 @@ var DateaRouter = Backbone.Router.extend({
 	
 	login: function () {
 		if (!this.session) {
-			this.session = new Session();
+		    this.session = new Session();
 		}
 		
 		if (!this.loginView) {
@@ -190,17 +190,14 @@ var DateaRouter = Backbone.Router.extend({
         },
          
 	createReport: function () {
-		//this.dateo = null;
-            console.log("create dateo");
+            //console.log("create dateo");
+            this.newMapItem = new MapItem();
+            if(!this.newMapItemView){
+                this.newMapItemView = new CreateMapItemView({model: this.newMapItem}); 
+            }
+            this.showView('#content', this.newMapItemView);
 	}
         
-        /*
-        before: {
-            "*": function(){
-                console.log("fireeeeeee");
-            }
-        }
-        */
 });
 
 $(document).ready(function () {
@@ -215,7 +212,11 @@ $(document).ready(function () {
                     'FooterView', 
                     'LoggedInHeaderView', 
                     'LoggedOutHeaderView', 
-                    'MapItemListView'], 
+                    'MapItemListView',
+                    'CreateMapItemView',
+                    'CreateMapItemOne',
+                    'CreateMapItemTwo',
+                    'CreateMapItemThree'], 
     function () {
         Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
         
