@@ -2,7 +2,7 @@ var ProfileEditView = Backbone.View.extend({
     events: {
       "click #image_input": "browseImage",  
       //"click #image_input": "browseImage",	
-      "submit #user_edit_form": "uploadImage"
+      "submit #user_edit_form": "trasnferImage"
     },
     render: function() {
         this.$el.html(this.template);
@@ -75,7 +75,7 @@ var ProfileEditView = Backbone.View.extend({
  
         var transfer = new FileTransfer();
         var options = new FileUploadOptions();
-        var image_uri = $("#file_path_input").val();
+        var image_uri = $("#image_data").val();
 
         //options.fileKey = "file";
         options.mimeType = "image/jpeg";
@@ -87,7 +87,7 @@ var ProfileEditView = Backbone.View.extend({
         params.thumb_preset = 'profile_image_large';
         params.headers = { 
             'Authorization': 'ApiKey '+ window.localUser.username + ':' + window.localUser.token, 
-            'enctype': 'multipart/formdata'
+            'enctype': 'multipart/form-data'
         };
         options.params = params;
 
@@ -119,9 +119,9 @@ var ProfileEditView = Backbone.View.extend({
             },
             {
                 quality: 50,
-                //destinationType: navigator.camera.DestinationType.FILE_URI,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
                 //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                destinationType: navigator.camera.DestinationType.DATA_URL,
+                //destinationType: navigator.camera.DestinationType.DATA_URL,
                 sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
             }
         );
