@@ -29,7 +29,7 @@ var NavBarView = Backbone.View.extend({
     //items.
     render:function(route){
        this.$el.empty();
-       console.log("from nav bar view");
+       console.log("route: " + route);
        var mdl = this.model.toJSON();
        this.$el.html(this.template(mdl));
        return this;

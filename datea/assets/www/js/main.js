@@ -39,7 +39,12 @@ var DateaRouter = Backbone.Router.extend({
 	initialize: function () {
 	    $.ajaxSetup({ crossDomain:true });
 	    $.support.cors = true;
-		        
+            /*
+	    this.bind('all', function(trigger, args){
+                var path = trigger.split(':');
+                console.log("route path: " + path[0]);
+            });	        
+            */
             if(localSession.get('logged')){
 	        this.headerView = new LoggedInHeaderView();
 		$('.header').html(this.headerView.render().el);
