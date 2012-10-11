@@ -2,7 +2,7 @@ var ProfileEditView = Backbone.View.extend({
     events: {
       "click #image_input": "browseImage",  
       //"click #image_input": "browseImage",	
-      "submit #user_edit_form": "transferImage"
+      "submit #user_edit_form": "uploadImage"
     },
     render: function() {
         this.$el.html(this.template);
@@ -119,9 +119,9 @@ var ProfileEditView = Backbone.View.extend({
             },
             {
                 quality: 50,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
+                //destinationType: navigator.camera.DestinationType.FILE_URI,
                 //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                //destinationType: navigator.camera.DestinationType.DATA_URL,
+                destinationType: navigator.camera.DestinationType.DATA_URL,
                 sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
             }
         );
@@ -155,7 +155,8 @@ var ProfileEditView = Backbone.View.extend({
         this.model.set({ 'profile': profile.toJSON() });
         
         var profile_img = new Image();
-        var image_data = "data:image/jpeg;base64," + $("#image_data").val();
+        //var image_data = "data:image/jpeg;base64," + $("#image_data").val();
+        var image_data = $("#image_data").val();
         console.log("image data: " + image_data);
 
         var img_data = {
