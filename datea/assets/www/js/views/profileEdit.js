@@ -2,7 +2,7 @@ var ProfileEditView = Backbone.View.extend({
     events: {
       "click #image_input": "browseImage",  
       //"click #image_input": "browseImage",	
-      "submit #user_edit_form": "trasnferImage"
+      "submit #user_edit_form": "transferImage"
     },
     render: function() {
         this.$el.html(this.template);
