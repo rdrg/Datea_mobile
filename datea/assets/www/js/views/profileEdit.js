@@ -79,12 +79,16 @@ var ProfileEditView = Backbone.View.extend({
 
         //options.fileKey = "file";
         options.mimeType = "image/jpeg";
+        options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
+        options.fileKey = 'image';
         options.chunkedMode = false;
+        
         params = new Object();
         params.object_type = 'DateaProfile';
         params.object_id = this.model.get('profile').id;
         params.object_field = 'image';
         params.thumb_preset = 'profile_image_large';
+
         params.headers = { 
             'Authorization': 'ApiKey '+ window.localUser.username + ':' + window.localUser.token, 
             'enctype': 'multipart/form-data'
