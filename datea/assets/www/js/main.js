@@ -24,8 +24,9 @@ var DateaRouter = Backbone.Router.extend({
         "mapping/:mapid/reports":"mapItemList",
         "mapping/report/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
-        //"mapping/:mapid/edit": "editMapping",
-        //"mapping/:mapid/admin": "adminMapping" 
+
+        "mapping/:mapid/reports/map":"mappingMap",
+    	"mapping/:mapid/reports/geoinput": "geoInput",
 	},
 	
 	showView: function(selector, view) {
@@ -161,7 +162,7 @@ var DateaRouter = Backbone.Router.extend({
         });
 	},
 
-        actionDetail: function(actionid){
+    actionDetail: function(actionid){
             if(!this.actionModel){
                 this.actionModel = new Action();
             }
@@ -180,21 +181,24 @@ var DateaRouter = Backbone.Router.extend({
             });
         },
 
-        mappingDetail: function(mapid){
-            if(!this.mapItems){
-                this.mapItems = new MapItemCollection();
-            }
-            if(!this.mapItemListView){
-                this.mapItemListView = new MapItemListView({model: this.mapItems}); 
-            }
+    mappingDetail: function(mapid){
+        console.log("show map item");
+        
+        if(!this.mapItems){
+            this.mapItems = new MapItemCollection();
+        }
+        
+        if(!this.mapItemListView){
+            this.mapItemListView = new MapItemListView({model: this.mapItems}); 
+        }
 
-            var self = this;
-            this.mapItems.fetch({
-                data: {'id': mapid},
-                success: function(){
-                    self.showView('#content', self.mapItemListView());
-                }
-            }); 
+        var self = this;
+        this.mapItems.fetch({
+            data: {'id': mapid},
+            success: function(){
+                self.showView('#content', self.mapItemListView());
+            }
+        }); 
     },
          
 	createReport: function(mapid) {
@@ -218,40 +222,74 @@ var DateaRouter = Backbone.Router.extend({
     },
        
 	mapItemMap: function(mapid) {
+		
     	if (!this.actionModel) {
     		this.actionModel = new Action({id: mapid});
-    		this.actionModel.urlRoot = '/api/v1/mapping';
+    		this.actionModel.urlRoot = '/api/v1/mapping_full';
+    	}else if (this.actionModel.get('id') == mapid) {
+    		do_fetch = false;
     	}
-    	if(!this.mapItems){
-            this.mapItems = new MapItemCollection();
-            this.mapItems.url = api_url + "/api/v1/map_item/";
-        }
         
-        this.mapItemMapView = new MapItemMapView({
-        	model: this.actionModel,
-        	collection: this.mapItems,
-        }); 
+        if (!this.mappingMapView) {
+        	this.mappingMapView = new MappingMapView({
+        		model: this.actionModel
+       	 	});
+       	}
     	
-    	var self = this;
+    	if (do_fetch) {
+    		var self = this;
+    		this.actionModel.fetch({
+    			success: function () {
+					self.showView('#content', self.mappingMapView);
+					self.mappingMapView.loadMap();
+				},
+				error: function(error) {
+					console.log("fetch error");
+				}
+			});
+		}else{
+			this.showView('#content', this.mappingMapView);
+			this.mappingMapView.loadMap();
+		}
+    },
+    
+    geoInput: function(mapid) {
     	
-    	this.actionModel.fetch({
-    		success: function (model, response) {
-				// fetch map items
-				self.mapItems.fetch({
-					data: {mapping: mapid},
-					success: function () {
-				        self.showView('#content', self.mapItemMapView);
-				        self.mapItemMapView.loadMap();
-				     },
-				     error: function(error) {
-				        console.log("fetch error");
-				     }
-				});
-    		},
-    		error: function(error) {
-				console.log("fetch error");
-			}
-    	});
+    	mapid = 16;
+    	
+    	var do_fetch = true;
+    	
+    	if (!this.actionModel) {
+    		this.actionModel = new Action({id: mapid});
+    		this.actionModel.urlRoot = '/api/v1/mapping_full';
+    	}else if (this.actionModel.get('id') == mapid) {
+    		do_fetch = false;
+    	}
+    	
+    	if (!this.mappingMapView) {
+        	this.locationInputView = new LocationInputView({
+        		mapModel: this.actionModel,
+        		model: new MapItem(),
+        		modelField: 'position',
+       	 	});
+       	}
+    	
+    	if (do_fetch) {
+    		var self = this;
+    		this.actionModel.fetch({
+    			success: function () {
+					self.showView('#content', self.locationInputView);
+					self.locationInputView.loadMap();
+				},
+				error: function(error) {
+					console.log("fetch error");
+				}
+			});
+		}else{
+			this.showView('#content', this.locationInputView);
+			this.locationInputsView.loadMap();
+		}
+    	
     },
 });
 
@@ -272,9 +310,11 @@ $(document).ready(function () {
                     'CreateMapItemView',
                     'CreateMapItemOne',
                     'CreateMapItemTwo',
-                    'CreateMapItemThree'] 
+                    'CreateMapItemThree',
+                    'MappingMapView',
+                    'LocationInputView'], 
 		
-		,function () {
+		function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	        
 	        window.localSession = new localSession();

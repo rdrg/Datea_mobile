@@ -1,4 +1,11 @@
 (function() {
+
+
+window.gettext = function(text) {
+	return text;
+}
+
+
 var olwidget = {
     /*
      * Projection transformation
@@ -125,17 +132,16 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
             mapOptions: {
                 projection: "EPSG:900913",
                 displayProjection: "EPSG:4326",
-                controls: ['LayerSwitcher', 'Navigation', 'PanZoom', 'Attribution']
             },
             // Map div stuff
             /*
             mapDivClass: '',
             */
             mapDivStyle: {
-                width: '100%',
+                width: '600px',
                 height: '500px'
             },
-            layers: ['google.streets', 'google.hybrid'],
+            layers: ['google.streets'],
             defaultLon: 0,
             defaultLat: 0,
             defaultZoom: 4,
@@ -154,13 +160,19 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
             var re = opts.mapOptions.restrictedExtent;
             opts.mapOptions.restrictedExtent = new OpenLayers.Bounds(re[0], re[1], re[2], re[3]);
         }*/
-        //opts.mapOptions.projection = new OpenLayers.Projection(opts.mapOptions.projection);
+       	opts.mapOptions.projection = new OpenLayers.Projection(opts.mapOptions.projection);
         opts.mapOptions.displayProjection = new OpenLayers.Projection(
             opts.mapOptions.displayProjection);
 
-        for (var i = 0; i < opts.mapOptions.controls.length; i++) {
-            opts.mapOptions.controls[i] = new OpenLayers.Control[opts.mapOptions.controls[i]]();
-        }
+        opts.mapOptions.controls = [
+        	new OpenLayers.Control.Attribution(),
+        	new OpenLayers.Control.TouchNavigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            }),
+            new OpenLayers.Control.Zoom(),
+        ];
         return opts;
     },
     /*
@@ -186,14 +198,6 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
             var map_type = parts[1];
 
             layers.push(map_service.map(map_type));
-
-            // workaround for problems with Microsoft layers and vector layer
-            // drift (see http://openlayers.com/dev/examples/ve-novibrate.html)
-            if (parts[0] == "ve") {
-                if (opts.mapOptions.panMethod === undefined) {
-                    opts.mapOptions.panMethod = OpenLayers.Easing.Linear.easeOut;
-                }
-            }
         }
 
         // Map super constructor
@@ -204,7 +208,7 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
                 layers.push(this.vectorLayers[i]);
             }
         } else {
-            this.vectorLayers = [];
+            this.vectorLayers 	= [];
         }
         if (layers.length > 0) {
             this.addLayers(layers);
@@ -229,9 +233,10 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
         });
         this.addControl(this.selectControl);
         this.selectControl.activate();
-        this.addControl(new olwidget.EditableLayerSwitcher());
+        //this.addControl(new olwidget.EditableLayerSwitcher());
     },
     initCenter: function() {
+
         if (this.opts.zoomToDataExtent) {
             var extent = new OpenLayers.Bounds();
             for (var i = 0; i < this.vectorLayers.length; i++) {
@@ -523,9 +528,9 @@ olwidget.InfoLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
                 		if (!feature.cluster[0].marker_image) {
                 			var size = parseInt(olwidget.calculateClusterSize(feature) / 2);
                 			var color = feature.cluster[0].color.replace('#','');
-                			return '/png/svgcircle?radius='+size+'&color='+color;
+                			return api_url+'/png/svgcircle?radius='+size+'&color='+color;
                 		}else{
-                			return feature.cluster[0].marker_image.image;
+                			return api_url+feature.cluster[0].marker_image.image;
                 		}
                 	
                 	}else{
@@ -545,7 +550,7 @@ olwidget.InfoLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
                 			values.push(count_cat[color]);
                 			colors.push(color.replace('#',''));
                 		}
-                		var url = '/png/piecluster?values='+values.join(',')+'&colors='+colors.join(',')+'&radius='+size;
+                		var url = api_url+'/png/piecluster?values='+values.join(',')+'&colors='+colors.join(',')+'&radius='+size;
                 		return url;
                 	}
                 },
@@ -621,6 +626,7 @@ olwidget.InfoLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
         
         for (var i in this.mapItems.models) {
         	var map_item = this.mapItems.models[i];
+        	console.log(i);
         	
         	if (map_item.get('position')) {
         		
@@ -715,14 +721,10 @@ olwidget.InfoLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
 
 
 olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
-	undoStack: null,
-    undoStackPos: null,
-    undoStackLength: 1000,
 
     initialize: function( model, modelField, options, centerData, boundaryData) {
         olwidget.BaseVectorLayer.prototype.initialize.apply(this,
                                                             [options]);
-        this.undoStack = [];
         this.Model = model;
         this.ModelField = modelField;
         
@@ -743,188 +745,17 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
         olwidget.BaseVectorLayer.prototype.setMap.apply(this, arguments);
         // force non-clustering, it doesn't make sense for editable maps.
         this.opts.cluster = false;
-        this.buildControls();
+        this.drawControl = new OpenLayers.Control.DrawFeature(
+            this, OpenLayers.Handler.Point, {});   
         this.readModel();
-        // init undo stack
-        if (this.opts.geometry != 'point' || this.opts.isCollection) {
-        	this.addUndoState();
-       	}
     },
-    _addDrawFeature: function(obj_type, obj_options, controls) {
-        var drawControl = new OpenLayers.Control.DrawFeature(
-            this, obj_type, obj_options);
-        drawControl.activate = function() {
-            OpenLayers.Control.prototype.activate.apply(this, []);
-            this.map.div.style.cursor = "crosshair";
-        };
-        drawControl.deactivate = function() {
-            OpenLayers.Control.prototype.deactivate.apply(this, []);
-            this.map.div.style.cursor = "auto";
-        };
-        controls.push(drawControl);
-        if (!this.defaultControl) {
-            this.defaultControl = drawControl;
-        }
-    },
-
-    buildControls: function() {
-        var controls = [];
-        var context = this;
-
-        //
-        // Custom controls:
-        //
-
-        // Clear all
-        controls.push(new OpenLayers.Control.Button({
-            displayClass: 'olControlClearFeatures',
-            trigger: function() {
-                context.clearFeatures();
-            },
-            title: gettext("clear all")
-        }));
-
-        // redo
-        if (this.opts.geometry != 'point' || this.opts.isCollection) {
-	        this.redoButton = new OpenLayers.Control.Button({
-	            displayClass: 'olControlRedo',
-	            trigger: function() {
-	                context.redo();
-	            },
-	            title: gettext("redo")
-	        });
-	        controls.push(this.redoButton);
-	    }
-
-        // undo
-        if (this.opts.geometry != 'point' || this.opts.isCollection) {
-	        this.undoButton = new OpenLayers.Control.Button({
-	            displayClass: 'olControlUndo',
-	            trigger: function() {
-	                context.undo();
-	            },
-	            title: gettext("undo")
-	        });
-	        controls.push(this.undoButton);
-	    }
-
-        // don't add duplicate functionality from single point maps.
-        if (this.opts.geometry != 'point' || this.opts.isCollection) {
-            // Delete vertex
-            controls.push(new olwidget.DeleteVertex(this, {
-                title: gettext("delete vertices")
-            }));
-        }
-
-
-        var nav = new OpenLayers.Control.Navigation({
-            "title": gettext("navigate the map")
-        });
-        controls.push(nav);
-
-        // Drawing control(s)
-        var geometries;
-        if (this.opts.geometry.constructor == Array) {
-            geometries = this.opts.geometry;
-        } else {
-            geometries = [this.opts.geometry];
-        }
-        this.defaultControl = null;
-
-        var has_point = false;
-        var has_linestring = false;
-        var has_polygon = false;
-        for (var i = 0; i < geometries.length; i++) {
-            if (geometries[i] == 'linestring')
-                has_linestring = true;
-            else if (geometries[i] == 'polygon')
-                has_polygon = true;
-            else if (geometries[i] == 'point')
-                has_point = true;
-        }
-        if (has_polygon) {
-            this._addDrawFeature(OpenLayers.Handler.Polygon, {
-                'displayClass': 'olControlDrawFeaturePolygon',
-                "title": gettext("draw polygons")
-            }, controls);
-        }
-        if (has_linestring) {
-            this._addDrawFeature(OpenLayers.Handler.Path, {
-                'displayClass': 'olControlDrawFeaturePath',
-                'title': gettext("draw lines")
-            }, controls);
-        }
-        if (has_point) {
-            this._addDrawFeature(OpenLayers.Handler.Point, {
-                'displayClass': 'olControlDrawFeaturePoint',
-                "title": gettext("draw points")
-            }, controls);
-        }
-
-        // don't add duplicate functionality from single point maps.
-        if (this.opts.geometry != 'point' || this.opts.isCollection) {
-            // Modify feature control
-            var mod = new OpenLayers.Control.ModifyFeature(this, {
-                clickout: true,
-                title: gettext("modify features")
-            });
-            controls.push(mod);
-        }
-
-        this.controls = controls;
-    },
+    
     clearFeatures: function() {
         this.removeFeatures(this.features);
         this.destroyFeatures();
         this.Model[this.ModelField] = null;
     },
-    addUndoState: function() {
-        // Put the current value of the textarea in the undo stack.
-        var value = this.Model.get(this.ModelField);
-        if (this.undoStack.length > this.undoStackPos) {
-            this.undoStack = this.undoStack.slice(0, this.undoStackPos + 1);
-        }
-        this.undoStack.push(value);
-        if (this.undoStack.length > this.undoStackLength) {
-            this.undoStack.shift();
-        }
-        this.undoStackPos = this.undoStack.length - 1;
-        this.setUndoButtonStates();
-    },
-    undo: function() {
-        // Move to previous undo stack position.
-        if (this.undoStackPos > 0) {
-            this.undoStackPos--;
-            if (this.undoStackPos < this.undoStack.length) {
-                this.Model.set(this.ModelField, this.undoStack[this.undoStackPos]);
-                this.readModel();
-            }
-        }
-        this.setUndoButtonStates();
-    },
-    redo: function() {
-        // Move to next undo stack position.
-        if (this.undoStackPos < this.undoStack.length - 1) {
-            this.undoStackPos++;
-            this.Model.set(this.ModelField, this.undoStack[this.undoStackPos]);
-            this.readModel();
-        }
-        this.setUndoButtonStates();
-    },
-    setUndoButtonStates: function() {
-        if (this.undoButton && this.undoButton.map) {
-            if (this.undoStackPos > 0) {
-                this.undoButton.activate();
-            } else {
-                this.undoButton.deactivate();
-            }
-            if (this.undoStackPos < this.undoStack.length - 1) {
-                this.redoButton.activate();
-            } else {
-                this.redoButton.deactivate();
-            }
-        }
-    },
+    
     readModel: function() {
         if (this.features) {
             this.removeFeatures(this.features);
@@ -1015,10 +846,6 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
             this.featureToModel(event.feature);
         }
         
-        if (typeof(this.boundaryData) != 'undefined' && this.boundaryData != null) {
-        	this.addUndoState();
-        }
-        
         // if adding point -> pan to point center
         if (this.opts.geometry == 'point'){
         	var center = new OpenLayers.LonLat( event.feature.geometry.x, event.feature.geometry.y);
@@ -1048,10 +875,7 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
 				this.Model.set(this.ModelField, null, {silent: true});
             }
         }
-                
-        if (typeof(this.boundaryData) != 'undefined' && this.boundaryData != null) {
-        	this.addUndoState();
-        }
+
         
         // if modifying point -> pan to point center
         if (this.opts.geometry == 'point'){
@@ -1149,324 +973,19 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
 		}
    },
    
-   setEditOn: function() {
-   		for (var i = 0; i < this.map.controls.length; i++) {
-			if (this.map.controls[i] && this.map.controls[i].CLASS_NAME =="olwidget.EditableLayerSwitcher") {
-		    	this.map.controls[i].setEditing(this.map.vectorLayers[0]);
-		    	break;
-			}
-		}
+   setEditOn: function(){
+   	   this.map.addControl(this.drawControl);
+   	   this.drawControl.activate();
+   	   this.events.on({
+            "featuremodified": this.modifyModel,
+            "featureadded": this.addModel,
+            scope: this
+        }); 
    },
     
     CLASS_NAME: "olwidget.EditableLayer"
 });
 
-
-olwidget.EditableLayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerSwitcher, {
-    // The layer we are currently editing
-    currentlyEditing: null,
-    /** A list of all editable layers, including none.  Contains an object:
-     *  {
-     *   layer: the layer,
-     *   inputElem: the rado button,
-     *   labelSpan: the name span next to the button
-     *  }
-     */
-    editableLayers: [],
-    // Panel for editing controls
-    panel: null,
-
-    initialize: function(options) {
-        OpenLayers.Control.prototype.initialize.apply(this, arguments);
-    },
-    setMap: function() {
-        OpenLayers.Control.prototype.setMap.apply(this, arguments);
-        this.map.events.on({
-            "addlayer": this.redraw,
-            "changelayer": this.redraw,
-            "removelayer": this.redraw,
-            scope: this
-        });
-    },
-    onInputClick: function(e) {
-        if (!this.inputElem.disabled) {
-            if (this.layer) {
-                this.layerSwitcher.setEditing(this.layer);
-            } else {
-                this.layerSwitcher.stopEditing();
-            }
-            this.layerSwitcher.minimizeControl();
-        }
-    },
-    stopEditing: function() {
-        if (this.currentlyEditing) {
-            var layer = this.currentlyEditing;
-            layer.events.un({
-                "featuremodified": layer.modifyModel,
-                "featureadded": layer.addModel,
-                scope: layer
-            });
-        }
-        if (this.panel) {
-            this.panel.deactivate();
-            this.panel.destroy();
-            this.panel = null;
-        }
-        // TODO: i18n
-        this.maximize.innerHTML = "Edit";
-        this.minimize.innerHTML = "(-) Edit";
-        this.currentlyEditing = null;
-        if (this.map.selectControl) {
-            this.map.selectControl.activate();
-        }
-        this.map.removeControl(this.panel);
-        this.setChecked(null);
-    },
-    setEditing: function(layer) {
-        if (this.currentlyEditing) {
-            this.stopEditing();
-        }
-        this.panel = new olwidget.EditingToolbar({
-            defaultControl: layer.defaultControl,
-            displayClass: 'olControlEditingToolbar'
-        });
-        this.panel.layer = layer;
-        this.panel.addControls(layer.controls);
-        this.map.addControl(this.panel);
-
-        this.currentlyEditing = layer;
-        this.maximize.innerHTML = gettext("Editing")+ ' "' + layer.name + '"';
-        this.minimize.innerHTML = "(-) "+gettext("Editing") + '"' + layer.name + '"';
-        layer.events.on({
-            "featuremodified": layer.modifyModel,
-            "featureadded": layer.addModel,
-            scope: layer
-        });
-        layer.setUndoButtonStates();
-        if (this.map.selectControl) {
-            this.map.selectControl.deactivate();
-        }
-
-    },
-    setChecked: function(layer) {
-        for (var i = 0; i < this.editableLayers.length; i++) {
-            if (layer == this.editableLayers[i].layer) {
-                this.editableLayers[i].inputElem.checked = true;
-                break;
-            }
-        }
-    },
-    destroy: function() {
-        OpenLayers.Event.stopObservingElement(this.div);
-        this.map.events.un({
-            "addlayer": this.redraw,
-            "changelayer": this.redraw,
-            "removelayer": this.redraw,
-            "changebaselayer": this.redraw,
-            scope: this
-        });
-        clearLayersArray();
-        OpenLayers.Control.prototype.destroy.apply(this, arguments);
-    },
-    clearLayersArray: function() {
-        for (var i = 0; i < this.editableLayers.length; i++) {
-            var layer = this.editableLayers[i];
-            OpenLayers.Event.stopObservingElement(layer.inputElem);
-            OpenLayers.Event.stopObservingElement(layer.labelSpan);
-        }
-        this.editableLayers = [];
-    },
-    draw: function() {
-        OpenLayers.Control.prototype.draw.apply(this);
-        this.loadContents();
-        this.redraw();
-        this.stopEditing();
-        return this.div;
-    },
-    buildInput: function(name, checked, layer) {
-        var input = document.createElement("input");
-        input.id = this.id + "_edit_switcher_" + this.editableLayers.length;
-        input.name = this.id + "_edit";
-        input.type = "radio";
-        input.value = name;
-        input.checked = checked;
-        var span = document.createElement("span");
-        OpenLayers.Element.addClass(span, "olwidgetLabel");
-        span.innerHTML = name;
-
-        if (layer && (!layer.inRange || !layer.visibility)) {
-            input.disabled = true;
-            OpenLayers.Element.addClass(span, "olwidgetDisabled");
-        }
-
-        var context = {
-            "inputElem": input,
-            "layer": layer,
-            "layerSwitcher": this
-        };
-        OpenLayers.Event.observe(input, "mouseup",
-            OpenLayers.Function.bindAsEventListener(this.onInputClick,
-                                                    context)
-        );
-        OpenLayers.Event.observe(span, "mouseup",
-            OpenLayers.Function.bindAsEventListener(this.onInputClick,
-                                                    context)
-        );
-
-        this.layersDiv.appendChild(input);
-        this.layersDiv.appendChild(span);
-        this.layersDiv.appendChild(document.createElement("br"));
-
-        this.editableLayers.push({
-            'layer': layer,
-            'inputElem': input,
-            'labelSpan': span
-        });
-    },
-    redraw: function() {
-        this.clearLayersArray();
-        this.layersDiv.innerHTML = "";
-        this.editingControls.innerHTML = "";
-        if (this.panel && this.panel.div) {
-            this.editingControls.appendChild(this.panel.div);
-            var clr = document.createElement("div");
-            clr.style.clear = "both";
-            this.editingControls.appendChild(clr);
-        }
-
-        // TODO: i18n
-        this.buildInput(gettext("none"), !this.currentlyEditing, null);
-
-        for (var i = 0; i < this.map.layers.length; i++) {
-            var layer = this.map.layers[i];
-            if (layer.opts && layer.opts.editable) {
-                this.buildInput(layer.name,
-                   this.currentlyEditing &&
-                       this.currentlyEditing.name == layer.name,
-                   layer);
-            }
-        }
-        if (this.editableLayers.length == 1) {
-            this.div.style.display = "none";
-        } else {
-            this.div.style.display = "";
-        }
-    },
-    ignoreEvent: function(e){
-    	if (e != null) {
-            OpenLayers.Event.stop(e);                                            
-        }
-    },
-    
-    loadContents: function() {
-        // Set event handlers such that we don't get spurious clicks or mouse
-        // ups for events not initiated in our control.
-        //OpenLayers.Event.observe(this.div, "mouseup",
-        //    OpenLayers.Function.bindAsEventListener(this.mouseDownEvent, this));
-        OpenLayers.Event.observe(this.div, "click", this.ignoreEvent);
-        //OpenLayers.Event.observe(this.div, "mousedown",
-        //    OpenLayers.Function.bindAsEventListener(this.mouseDownEvent, this));
-        OpenLayers.Event.observe(this.div, "dblclick", this.ignoreEvent);
-
-        // Optionally create rounded corners
-        this.container = document.createElement("div");
-        OpenLayers.Element.addClass(this.container, "olwidgetContainer");
-        this.div.appendChild(this.container);
-        if (this.roundedCorner) {
-            OpenLayers.Rico.Corner.round(this.div, {
-                corners: "bl br",
-                bgColor: "transparent",
-                color: this.roundedCornerColor,
-                blend: false
-            });
-            OpenLayers.Rico.Corner.changeOpacity(this.container, 0.75);
-        }
-
-        // Container for layers
-        this.layersDiv = document.createElement("div");
-        this.layersDiv.id = this.id + "_layersDiv";
-        this.layersDiv.style.display = "none";
-        OpenLayers.Element.addClass(this.layersDiv, "layersDiv");
-
-        // Container for editing controls
-        this.editingControls = document.createElement("div");
-        this.editingControls.id = this.id + "_editingControls";
-        OpenLayers.Element.addClass(this.editingControls, "editingControls");
-
-        // Heading
-        this.maximize = document.createElement("div");
-        OpenLayers.Element.addClass(this.maximize, "olwidgetMaxMin olwidgetMax");
-        this.minimize = document.createElement("div");
-        OpenLayers.Element.addClass(this.minimize, "olwidgetMaxMin olwidgetMin");
-        this.minimize.style.display = "none";
-        OpenLayers.Event.observe(this.maximize, "click",
-            OpenLayers.Function.bindAsEventListener(this.maximizeControl, this)
-        );
-        OpenLayers.Event.observe(this.maximize, "mousedown",
-            OpenLayers.Function.bindAsEventListener(this.ignoreEvent, this)
-        );
-        OpenLayers.Event.observe(this.maximize, "mouseup",
-            OpenLayers.Function.bindAsEventListener(this.ignoreEvent, this)
-        );
-        OpenLayers.Event.observe(this.minimize, "click",
-            OpenLayers.Function.bindAsEventListener(this.minimizeControl, this)
-        );
-        OpenLayers.Event.observe(this.minimize, "mousedown",
-            OpenLayers.Function.bindAsEventListener(this.ignoreEvent, this)
-        );
-        OpenLayers.Event.observe(this.minimize, "mouseup",
-            OpenLayers.Function.bindAsEventListener(this.ignoreEvent, this)
-        );
-
-        this.container.appendChild(this.maximize);
-        this.container.appendChild(this.minimize);
-        this.container.appendChild(this.editingControls);
-        var clr = document.createElement("div");
-        clr.style.clear = "both";
-        this.container.appendChild(clr);
-        this.container.appendChild(this.layersDiv);
-    },
-    maximizeControl: function(e) {
-        // Only show control if there's more than one thing to choose
-        if (this.editableLayers.length == 2 &&
-                this.editableLayers[1].layer.visibility) {
-            if (this.currentlyEditing) {
-                this.stopEditing();
-            } else {
-                this.setEditing(this.editableLayers[1].layer);
-            }
-        } else {
-            this.showControls(false);
-        }
-        if (e != null) {
-            OpenLayers.Event.stop(e);
-        }
-    },
-    minimizeControl: function(e) {
-        this.showControls(true);
-        if (e != null) {
-            OpenLayers.Event.stop(e);
-        }
-    },
-    showControls: function(minimize) {
-        this.maximize.style.display = minimize ? "" : "none";
-        this.minimize.style.display = minimize ? "none" : "";
-        this.layersDiv.style.display = minimize ? "none" : "";
-    },
-    CLASS_NAME: "olwidget.EditableLayerSwitcher"
-});
-
-/*
- * Our editing toolbar.
- */
-olwidget.EditingToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
-    onClick: function(ctrl, evt) {
-        // Keep undo button states
-        OpenLayers.Event.stop(evt ? evt : window.event);
-        this.activateControl(ctrl);
-        this.layer.setUndoButtonStates();
-    }
-});
 
 /*
  * Paginated, framed popup type, CSS stylable.
@@ -1740,124 +1259,8 @@ olwidget.Popup = OpenLayers.Class(OpenLayers.Popup.Framed, {
     CLASS_NAME: "olwidget.Popup"
 });
 
-olwidget.DeleteVertex = OpenLayers.Class(OpenLayers.Control.ModifyFeature, {
-    initialize: function(layer, options) {
-        options['toggle'] = false;
-        OpenLayers.Control.ModifyFeature.prototype.initialize.apply(this,
-            [layer, options]);
-        this.selectControl.onUnselect = this.unselectFeature;
-        var control = this;
-        this.selectControl.callbacks.clickout = function(feature) {
-            control.layer.removeFeatures(control.vertices, {silent: true});
-            control.editingFeature = null;
-            if (!this.hover && this.clickout) {
-                this.unselectAll();
-            }
-        };
-        this.editingFeature = null;
-        this.handlers.feature = new OpenLayers.Handler.Feature(
-            this, this.layer, {
-                over: this.overVertex,
-                out: this.outVertex
-            }
-        );
-    },
-    overVertex: function(feature) {
-        if (feature.geometry.CLASS_NAME === "OpenLayers.Geometry.Point") {
-            OpenLayers.Element.addClass(this.map.viewPortDiv, this.displayClass + "Over");
-        }
-    },
-    outVertex: function(feature) {
-        OpenLayers.Element.removeClass(this.map.viewPortDiv, this.displayClass + "Over");
-    },
-    activate: function() {
-        this.handlers.feature.map = this.map;
-        this.handlers.feature.activate();
-        return OpenLayers.Control.ModifyFeature.prototype.activate.apply(this, arguments);
-
-    },
-    deactivate: function() {
-        return OpenLayers.Control.ModifyFeature.prototype.deactivate.apply(this, arguments);
-    },
-    selectFeature: function(feature) {
-        this.outVertex();
-        if (feature.geometry.CLASS_NAME === "OpenLayers.Geometry.Point") {
-            if (this.editingFeature && feature.geometry.parent) {
-                if (feature.geometry.parent) {
-                    var n = feature.geometry.parent.components.length;
-                    feature.geometry.parent.removeComponent(feature.geometry);
-                    if (feature.geometry.parent.components.length == n) {
-                        // Delete the feature -- we are at min vertices
-                        this.layer.removeFeatures([this.editingFeature], {silent: true});
-                        this.layer.removeFeatures(this.vertices, {silent: true});
-                        this.editingFeature = null;
-                        this.layer.events.triggerEvent("featuremodified");
-                    } else {
-                        // Remove a vertex.
-                        this.layer.events.triggerEvent(
-                            "featuremodified", {feature: this.editingFeature});
-                        this.selectControl.select(this.editingFeature);
-                    }
-                }
-            } else {
-                // We're just a single point.  Delete it!
-                this.layer.removeFeatures([feature], {silent: true});
-                this.layer.events.triggerEvent("featuremodified");
-            }
-        } else {
-            // We must be selecting a non-point for the first time.  Show
-            // vertices and set this as the figure to be edited.
-            this.editingFeature = feature;
-            this.feature = feature;
-            this.resetVertices();
-        }
-    },
-    collectVertices: function() {
-        this.vertices = [];
-        this.virtualVertices = [];
-        var control = this;
-        function collectComponentVertices(geometry) {
-            var i, vertex, component;
-            if(geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
-                vertex = new OpenLayers.Feature.Vector(geometry);
-                vertex._sketch = true;
-                control.vertices.push(vertex);
-            } else {
-                var numVert = geometry.components.length;
-                if(geometry.CLASS_NAME == "OpenLayers.Geometry.LinearRing") {
-                    numVert -= 1;
-                }
-                for(i=0; i<numVert; ++i) {
-                    component = geometry.components[i];
-                    if(component.CLASS_NAME == "OpenLayers.Geometry.Point") {
-                        vertex = new OpenLayers.Feature.Vector(component);
-                        vertex._sketch = true;
-                        control.vertices.push(vertex);
-                    } else {
-                        collectComponentVertices(component);
-                    }
-                }
-                // No virtual vertices
-            }
-        }
-        collectComponentVertices.call(this, this.feature.geometry);
-        this.layer.addFeatures(this.vertices, {silent: true});
-    },
-
-    // override to do nothing
-    beforeSelectFeature: function() {},
-    unselectFeature: function() {},
-    dragStart: function() {},
-    dragVertex: function() {},
-    dragComplete: function() {},
-    setFeatureState: function() {},
-    handleKeypress: function() {},
-    collectDragHandle: function() {},
-    collectRadiusHandle: function() {},
-
-    CLASS_NAME: "olwidget.DeleteVertex"
-});
 
 if (typeof(window.Datea) == 'undefined') window.Datea = {};
 window.Datea.olwidget = olwidget;
 })();
+
