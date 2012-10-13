@@ -313,8 +313,8 @@ $(document).ready(function () {
                     'CreateMapItemThree',
                     'MappingMapView',
                     'LocationInputView'], 
-		
-		function () {
+
+	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	        
 	        window.localSession = new localSession();
@@ -331,6 +331,7 @@ $(document).ready(function () {
 	
 	        $('#content').jscroll();
     });
+
 });
 
 
