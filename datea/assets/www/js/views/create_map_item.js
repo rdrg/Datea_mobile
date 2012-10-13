@@ -1,8 +1,17 @@
 var CreateMapItemView = Backbone.View.extend({
 
     initialize: function(){
-        this.step = 1;
-        //this.nextView();
+        var self = this;
+       
+        if(this.options.mappingModel.get('item_categories') !== undefined){
+            console.log('setting step to 1');
+            this.step = 1;
+        }else{
+            console.log('setting step to 2');
+            this.step = 2;
+        }
+        //if this.model.attributes.
+        _.bindAll(this, 'nextView');
     },
     events: {
         "click #next_button": "render"
@@ -18,7 +27,11 @@ var CreateMapItemView = Backbone.View.extend({
         console.log("next view");
         if(this.step == 1){
             console.log("perform actions for step 1");
-            this.stepOneView = new CreateMapItemOne({model: this.model});
+            this.stepOneView = new CreateMapItemOne({
+                model: this.model,
+                mappingModel: this.options.mappingModel  
+            });
+            console.log("mapping url: " + this.model.get('action'));
             this.$("#create_mapitem_content").html(this.stepOneView.render().el); 
             this.step = 2;
         }else if(this.step == 2){

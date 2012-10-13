@@ -1,8 +1,11 @@
 var ProfileEditView = Backbone.View.extend({
+    initialize: function(){
+        _.bindAll(this, "win");
+    },
     events: {
       "click #image_input": "browseImage",  
       //"click #image_input": "browseImage",	
-      "submit #user_edit_form": "uploadImage"
+      "submit #user_edit_form": "transferImage"
     },
     render: function() {
         this.$el.html(this.template);
@@ -101,10 +104,10 @@ var ProfileEditView = Backbone.View.extend({
         //var im = $("#image_path").text();
         console.log("image: " + image_uri);    
                         
-        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
+        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win(self), self.fail(self), options);
         profile.save({}, {
             success: function() {
-                app.navigate("user/" + self.model.get("id"), { trigger: true });
+                console.log("profile saved");
             }
         });
 
@@ -123,25 +126,26 @@ var ProfileEditView = Backbone.View.extend({
             },
             {
                 quality: 50,
-                //destinationType: navigator.camera.DestinationType.FILE_URI,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
                 //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                destinationType: navigator.camera.DestinationType.DATA_URL,
+                //destinationType: navigator.camera.DestinationType.DATA_URL,
                 sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
             }
         );
     },
 
     win: function(r){
+
         console.log("Code = " + r.responseCode);
         console.log("Response= " + r.response);
         console.log("Sent = " + r.bytesSent);
+        dateaApp.navigate("user/" + this.model.get("id"), { trigger: true });
     },
 
     fail: function(error){
         console.log("error Code = " + error.code);
         console.log("upload error source: " + error.source);
         console.log("upload error target: " + error.target);
-
     },
 
     uploadImage: function(ev) {
