@@ -1,5 +1,44 @@
-<h1>Actions</h1>
-<% _.each(actions, function(action) { %>
-<img src="<%= api_url %><%= action.image %>" />
-    <p><a href="#action/<%= action.id %>"> <%= action.name %></a></p>
-<% }) %>
+<% if (actions.length === 0){ %>
+  <div id="actions_welcome">
+    <center>
+      <h1>Bienvenido a Datea!</h1>
+    </center>
+  </div>
+<% } %>
+
+<div id="actions_container">
+  <% if (actions.length === 0 ){ %>
+    <div id="actions_msg">
+      <span>Aun no te has unido a una acci&oacute;n</span>
+      <div id="actions_msg_btns">
+        <div id="actions_search">
+          <a href="#" class="btn datea_btn_yllw">
+            Encu&eacute;ntralas en la b&uacute;squeda y listados
+          </a>
+        </div>
+        <div id="actions_follow">
+          <a href="#" class="btn datea_btn_gry"> 
+            &Uacute;nete a ellas, agreg&aacute;ndolas a tus acciones
+          </a>
+        </div>
+      </div>
+    </div>
+  <% } %>
+
+  <% _.each(actions, function(action, index) { %>
+    <div class="actions_action">
+      <a href="#action/<%= action.id %>">
+        <div class="action_img">
+          <img src="<%= api_url %><%= action.image %>"/>    
+        </div>
+        <div class="action_info">
+          <%= action.name %>
+        </div>
+      </a>
+    </div>
+    <% if (index < actions.length -1) {%>
+      <hr class="action_separator">
+    <% } %>
+  <% }) %>
+
+</div>
