@@ -32,19 +32,8 @@ var olwidget = {
      * Constructors for base (tile) layers.
      */
     osm: {
-        map: function(type) {
-            return this[type]();
-        },
-        mapnik: function() {
-            // Not using OpenLayers.Layer.OSM.Mapnik constructor because of
-            // an IE6 bug.  This duplicates that constructor.
-            return new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)",
-                    [
-                        "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
-                        "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
-                        "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
-                    ],
-                    { numZoomLevels: 19 });
+        map: function() {
+            return new OpenLayers.Layer.OSM( "Simple OSM Map", { numZoomLevels: 19 });
         }
     },
     google: {
@@ -132,16 +121,23 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
             mapOptions: {
                 projection: "EPSG:900913",
                 displayProjection: "EPSG:4326",
+                theme: null,
             },
             // Map div stuff
+            
+            mapDivClass: 'map-canvas',
+            
             /*
-            mapDivClass: '',
-            */
             mapDivStyle: {
-                width: '600px',
-                height: '500px'
-            },
-            layers: ['google.streets'],
+                width: '100%',
+                height: '350px'
+            },*/
+            overlayStyle: {
+				 	fillColor: '#ff0000',
+				 	strokeColor: '#ff0000',
+				 	pointRadius: 10,
+			},
+            layers: ['osm.map'],
             defaultLon: 0,
             defaultLat: 0,
             defaultZoom: 4,
@@ -188,17 +184,18 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
 
         // Must have explicitly specified position for popups to work properly.
         if (!mapDiv.style.position) {
-            mapDiv.style.position = 'relative';
+            //mapDiv.style.position = 'relative';
         }
 
-        var layers = [];
+        var layers = [new OpenLayers.Layer.OSM( "Simple OSM Map")];
+        /*
         for (var i = 0; i < opts.layers.length; i++) {
             var parts = opts.layers[i].split(".");
             var map_service = olwidget[parts[0]];
             var map_type = parts[1];
 
             layers.push(map_service.map(map_type));
-        }
+        }*/
 
         // Map super constructor
         OpenLayers.Map.prototype.initialize.apply(this, [mapDiv.id, opts.mapOptions]);
@@ -236,7 +233,7 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
         //this.addControl(new olwidget.EditableLayerSwitcher());
     },
     initCenter: function() {
-
+		
         if (this.opts.zoomToDataExtent) {
             var extent = new OpenLayers.Bounds();
             for (var i = 0; i < this.vectorLayers.length; i++) {
@@ -410,7 +407,8 @@ olwidget.BaseVectorLayer = OpenLayers.Class(OpenLayers.Layer.Vector, {
                 "default": new OpenLayers.Style(this.opts.overlayStyle,
                     {context: this.opts.overlayStyleContext}),
                 "select": new OpenLayers.Style(this.opts.selectOverlayStyle,
-                   {context: this.opts.overlayStyleContext})
+                   {context: this.opts.overlayStyleContext}),
+                "temporary": new OpenLayers.Style({display: "none"}),
             });
         }
         if (this.opts.paging === true) {
@@ -722,7 +720,7 @@ olwidget.InfoLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
 
 olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
 
-    initialize: function( model, modelField, options, centerData, boundaryData) {
+    initialize: function( model, modelField, options, centerData, boundaryData, deviceLocInfo) {
         olwidget.BaseVectorLayer.prototype.initialize.apply(this,
                                                             [options]);
         this.Model = model;
@@ -733,6 +731,10 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
         }
         if (typeof(centerData) != "undefined") {
         	this.mapCenter = new OpenLayers.LonLat( centerData.coordinates[0], centerData.coordinates[1]);
+        }
+        if (typeof(deviceLocInfo) != 'undefined') {
+        	this.deviceCenter = new OpenLayers.LonLat( deviceLocInfo.lng, deviceLocInfo.lat);
+        	this.deviceZoom = deviceLocInfo.zoom;
         }
         
     },
@@ -956,8 +958,21 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
     	this.initCenter();
     },
     
-    initCenter: function () {
-    	if (this.features.length > 0) {
+    initCenter: function (deviceLocInfo) {
+    	
+    	if (typeof(deviceLocInfo) != 'undefined') {
+    		this.deviceCenter = new OpenLayers.LonLat( deviceLocInfo.lng, deviceLocInfo.lat);
+        	this.deviceZoom = deviceLocInfo.zoom;
+    	}
+        
+    	if (this.deviceCenter) {
+    		this.map.panTo(this.deviceCenter.transform(
+		        		this.map.displayProjection,
+		                this.map.getProjectionObject()
+		              ));
+		    this.map.zoomTo(this.deviceZoom);
+    	
+    	} else if (this.features.length > 0) {
 			this.map.zoomToExtent(this.features[0].geometry.getBounds());
 			this.map.zoomTo(Math.min(this.map.getZoom(), this.map.opts.zoomToDataExtentMin));
 			

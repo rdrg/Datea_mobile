@@ -11,7 +11,7 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-	    "": "home",
+	    "": "geoInput",
         //temporary redirection to work on actions
         // "":"allActions",
         "login": "login",
@@ -287,7 +287,7 @@ var DateaRouter = Backbone.Router.extend({
 			});
 		}else{
 			this.showView('#content', this.locationInputView);
-			this.locationInputsView.loadMap();
+			this.locationInputView.loadMap();
 		}
     	
     },
@@ -341,6 +341,7 @@ function onLoad() {
 
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
+	
 }
 
 function onMenuDown() {
