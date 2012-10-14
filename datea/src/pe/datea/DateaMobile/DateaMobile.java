@@ -18,7 +18,7 @@
  */
 
 
-package pe.datea.mobile.DateaMobile;
+package pe.datea.DateaMobile;
 
 import android.app.Activity;
 import android.os.Bundle;
