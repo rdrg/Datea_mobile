@@ -1,0 +1,105 @@
+#actions_container{
+  .datea_container;
+}
+
+#actions_welcome{
+  margin-top: -30px;
+  margin-left: -20px;
+  width: 326px;
+  .gradient_gray;
+  h1{
+    color: @w;
+  }
+}
+
+#actions_msg{
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #ffffff 86%, #dfdfdf 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(86%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 86%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#ffffff 86%,#dfdfdf 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#ffffff 86%,#dfdfdf 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#ffffff 86%,#dfdfdf 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
+
+  margin-left: -21px;
+  width: 247px;
+  height: 105px;
+  padding-left: 20px;
+  padding-right: 20px;
+  span{
+    .regular;
+    .bold;
+  }
+} 
+
+#actions_msg_btns{
+  margin-top: 10px;
+
+  .actions_btns_common{
+    background-repeat: no-repeat;
+    text-align: left;
+    font-size: 12px;
+    line-height: 13px;
+    padding-left: 25px;
+  }
+
+  #actions_search{
+    .left;
+    width: 100px;
+    a{
+      .actions_btns_common;
+      background-image: url('../img/icono_busqueda.png');
+      background-position: 5px 42px;
+    }
+    .datea_btn_yllw{
+      font-weight: normal;
+    }
+  }
+  #actions_follow{
+    .rght;
+    width: 100px;
+    margin-right: 10px;
+    a{
+      .actions_btns_common;
+      background-image: url('../img/icono_seguir.png');
+      background-position: 5px 41px;
+    }
+    .datea_btn_gry{
+      font-weight: normal;
+      background-color: @w;
+    }
+  }
+}
+
+.actions_action{
+  height: 63px;
+  margin-bottom: 10px;
+
+  a{
+    color: @gray;
+  }
+
+  .action_img{
+    .left;
+    img{
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  .action_info{
+    .rght;
+    width: 148px;
+    height: 70px;
+    background-image: url('../img/flecha1.png');
+    background-repeat: no-repeat;
+    background-position: 136px 21px;
+  }
+}
+
+ .action_separator{
+    margin-left: -21px;
+    width: 287px;
+    border-top: 1px solid @gray-bg;
+}

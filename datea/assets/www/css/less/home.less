@@ -142,10 +142,21 @@
   }
 }
 
-@media (max-width: 767px) { 
+@media (min-width: 333px) and (max-width: 767px) { 
   #home_msg{
     margin-right: -20px;
     margin-left: -20px;
+    right: 0px;
+    left: 0px;
+    position: static;
+  }
+}
+
+@media (max-width: 332px) { 
+  #home_msg{
+    margin-right: -20px;
+    margin-left: -20px;
+    //margin-top: -20px;
     right: 0px;
     left: 0px;
     position: static;

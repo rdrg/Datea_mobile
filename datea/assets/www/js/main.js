@@ -150,18 +150,18 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	myActions: function () {
-            this.actionCollection = new ActionCollection();
-            this.actionCollection.url = api_url + '/api/v1/action/';
-            var self = this;
-            //console.log("action url: " + this.actionCollection.url);
-            this.actionCollection.fetch({
-                success: function(collection, response){
-                    console.log("actions fetched");
-                    self.actionsView = new ActionsView({model:self.actionCollection});
-                    self.showView('#content', self.actionsView);
-                    //load navigation
-                }
-            });
+        this.actionCollection = new ActionCollection();
+        this.actionCollection.url = api_url + '/api/v1/action/';
+        var self = this;
+        //console.log("action url: " + this.actionCollection.url);
+        this.actionCollection.fetch({
+            success: function(collection, response){
+                console.log("actions fetched");
+                self.actionsView = new ActionsView({model:self.actionCollection});
+                self.showView('#content', self.actionsView);
+                //load navigation
+            }
+        });
 	},
 
         actionDetail: function(actionid){
