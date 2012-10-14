@@ -49,3 +49,33 @@
 .round(@p){
     border-radius: @p;
 }
+.container_shadow{
+    -webkit-box-shadow: 2px 3px 2px -1px #CCC;
+}
+
+//buttons
+.datea_btn{
+    background-image: none;
+    border: none;
+    -webkit-box-shadow: 0px 0px 2px 1px #CCC;
+    color: @gray-dark;
+    .bold;
+}
+.datea_btn_yllw{
+    .datea_btn;
+    background-color: @datea;
+}
+
+.datea_btn_gry{
+    .datea_btn;
+    background-color: @gray-bg;
+}
+
+.datea_btn_yllw:hover{
+    background-color: @gray-bg;
+    color: @gray-dark;
+}
+
+.datea_btn_gry:hover{
+    background-color: @datea;
+}

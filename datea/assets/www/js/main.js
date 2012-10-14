@@ -14,9 +14,9 @@ var DateaRouter = Backbone.Router.extend({
      
 	routes: {
 	    "": "home",
-            //temporary redirection to work on actions
-            // "":"allActions",
-            "login": "login",
+        //temporary redirection to work on actions
+        // "":"allActions",
+        "login": "login",
 	    "logout": "logout",
 	    "about": "about",
 	    "user/:userid": "userLoadProfile",
@@ -241,6 +241,8 @@ $(document).ready(function () {
         Backbone.history.start();
 
         $('dropdown-toggle').dropdown();
+
+        $('#content').jscroll();
     });
 });
 
