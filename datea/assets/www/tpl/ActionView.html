@@ -1,5 +1,35 @@
-<img src="<%= api_url %><%= image %>" />
-<p><%= name %></p>
-<p><a href="#mapping/<%= id %>/report/create"> nuevo dateo </a></p>
-<p><a href="#mapping/<%= id %>/reports"> navegar dateos </a></p>
+<div id="action_container">
+  <div id="action_header">
+    <div id="action_image">
+      <img src="<%= api_url %><%= image.image %>" />
+    </div>
+    <div id="action_info">
+      <h3><%= name %></h3>
+      <span><%= short_description%></span>
+    </div>  
+  </div>
+  
+  <div id="action_btns">
+    <a href="#mapping/<%= id %>/report/create" class="btn datea_btn_yllw" id="new_dateo"> 
+      nuevo dateo
+    </a>
+    <a href="#mapping/<%= id %>/reports" class="btn datea_btn_gry" id="browse_dateos">
+      navegar dateos
+    </a>
 
+    <a href="#" id="follow_action">
+      seguir acci&oacute;n
+    </a>
+  </div>
+
+  <hr>
+
+  <div id="action_footer">
+    <div id="action_about">
+      <a href="#">Sobre esta acci&oacute;n</a>
+    </div>
+    <div id="action_remaining">
+      <span>faltan</span>
+    </div>
+  </div>
+</div>

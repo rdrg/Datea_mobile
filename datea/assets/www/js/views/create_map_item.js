@@ -1,6 +1,7 @@
 var CreateMapItemView = Backbone.View.extend({
 
     initialize: function(){
+        
         var self = this;
        
         if(this.options.mappingModel.get('item_categories') !== undefined){
@@ -12,6 +13,7 @@ var CreateMapItemView = Backbone.View.extend({
         }
         //if this.model.attributes.
         _.bindAll(this, 'nextView');
+
     },
     events: {
         "click #next_button": "render"

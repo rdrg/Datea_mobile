@@ -2,18 +2,43 @@
 @import "home.less";
 @import "header.less";
 @import "footer.less";
+@import "login.less";
+@import "profile.less";
+@import "profileEdit.less";
+@import "actions.less";
+@import "maps.less";
 
 body{
-  //font-family: "Helvetica Neue,​Helvetica,​Arial,​sans-serif";
+  //font-family: "Helvetica Neue",​Helvetica,​Arial,​sans-serif;
   background-image: url('../img/bg.png');
+  color: @gray;
 }
 
-#content{
-    //width: 100%;
-   // margin:0px;
-   // padding: 20px;
-    
+h1{
+  color: #666666;
+  font-size: 30px;
+  margin-bottom: 0px;
 }
+
+h2{
+  color: #666666;
+  font-size: 25px;
+}
+
+h3{
+  color: #666666;
+  font-size: 15px;
+}
+
+a{
+  color: @gray;
+}
+
+a:hover{
+  color: @gray-dark;
+  text-decoration: none;
+}
+
 
 .title{
     .big;

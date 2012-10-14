@@ -18,13 +18,13 @@
  */
 
 
-package com.example.TestPhone;
+package pe.datea.mobile.DateaMobile;
 
 import android.app.Activity;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
-public class TestPhone extends DroidGap
+public class DateaMobile extends DroidGap
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
