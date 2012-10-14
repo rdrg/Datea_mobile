@@ -1,4 +1,7 @@
 var ProfileEditView = Backbone.View.extend({
+    initialize: function(){
+        _.bindAll(this, "win");
+    },
     events: {
       "click #image_input": "browseImage",  
       //"click #image_input": "browseImage",	
@@ -101,10 +104,10 @@ var ProfileEditView = Backbone.View.extend({
         //var im = $("#image_path").text();
         console.log("image: " + image_uri);    
                         
-        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
+        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win(self), self.fail(self), options);
         profile.save({}, {
             success: function() {
-                app.navigate("user/" + self.model.get("id"), { trigger: true });
+                console.log("profile saved");
             }
         });
 
@@ -132,16 +135,17 @@ var ProfileEditView = Backbone.View.extend({
     },
 
     win: function(r){
+
         console.log("Code = " + r.responseCode);
         console.log("Response= " + r.response);
         console.log("Sent = " + r.bytesSent);
+        dateaApp.navigate("user/" + this.model.get("id"), { trigger: true });
     },
 
     fail: function(error){
         console.log("error Code = " + error.code);
         console.log("upload error source: " + error.source);
         console.log("upload error target: " + error.target);
-
     },
 
     uploadImage: function(ev) {
@@ -159,7 +163,8 @@ var ProfileEditView = Backbone.View.extend({
         this.model.set({ 'profile': profile.toJSON() });
         
         var profile_img = new Image();
-        var image_data = "data:image/jpeg;base64," + $("#image_data").val();
+        //var image_data = "data:image/jpeg;base64," + $("#image_data").val();
+        var image_data = $("#image_data").val();
         console.log("image data: " + image_data);
 
         var img_data = {

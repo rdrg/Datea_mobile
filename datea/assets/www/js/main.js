@@ -1,6 +1,8 @@
+//this configuration was migrated to config.js
+//
 //window.api_url = "http://192.168.2.113:8000";
 //window.api_url = "http://10.0.19.113:8000";
-window.api_url = "http://192.168.0.4:8000";
+
 
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
@@ -151,7 +153,7 @@ var DateaRouter = Backbone.Router.extend({
             this.actionCollection = new ActionCollection();
             this.actionCollection.url = api_url + '/api/v1/action/';
             var self = this;
-            console.log("action url: " + this.actionCollection.url);
+            //console.log("action url: " + this.actionCollection.url);
             this.actionCollection.fetch({
                 success: function(collection, response){
                     console.log("actions fetched");
@@ -182,7 +184,6 @@ var DateaRouter = Backbone.Router.extend({
         },
 
         mappingDetail: function(mapid){
-            console.log("show map item");
             if(!this.mapItems){
                 this.mapItems = new MapItemCollection();
             }
@@ -198,15 +199,25 @@ var DateaRouter = Backbone.Router.extend({
             }); 
         },
          
-	createReport: function () {
-            //console.log("create dateo");
-            this.newMapItem = new MapItem();
-            if(!this.newMapItemView){
-                this.newMapItemView = new CreateMapItemView({model: this.newMapItem}); 
-            }
-            this.showView('#content', this.newMapItemView);
-	}
-        
+	createReport: function(mapid) {
+            var self = this;
+            this.mappingModel = new Action();
+            this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
+            this.mappingModel.fetch({
+                success: function(mdl, response){
+                    this.mdl = mdl;
+                    var other = this;
+                    self.newMapItem = new MapItem({
+                        action: other.mdl.get('resource_uri')
+                    });
+                    self.newMapItemView = new CreateMapItemView({
+                        model: self.newMapItem,
+                        mappingModel: self.mappingModel
+                    }); 
+                    self.showView('#content', self.newMapItemView);   
+                }
+            });
+        }
 });
 
 $(document).ready(function () {
@@ -245,7 +256,6 @@ $(document).ready(function () {
         $('#content').jscroll();
     });
 });
-
 
 
 function onLoad() {
