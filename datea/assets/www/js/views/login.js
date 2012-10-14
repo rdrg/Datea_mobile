@@ -17,7 +17,6 @@ window.LoginView = Backbone.View.extend({
 	},
 	loginSubmit: function(e) {
         e.preventDefault();
-        
         var usr = $("#usr").val();
         var pss = $("#pss").val();
         var self = this;
@@ -33,6 +32,7 @@ window.LoginView = Backbone.View.extend({
                     
                     var uname = self.model.get("username");
                     var userid = self.model.get("userid");
+                    console.log("submit login desde el cliente");
                     
                     var localdata = {
                         "username": uname,

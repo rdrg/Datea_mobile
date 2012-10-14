@@ -1,16 +1,16 @@
-<form id="user_edit_form">
-  <legend>Edita tus datos</legend>
-  <label for="fullname_in">Nombre Completo</label>
-  <input type="text" name="full_name" value="Nombre Completo" id="fullname_in"/>
-  
-  <label for="email_in">Correo electrónico</label>
-  <input type="email" name="email" value="" id="email_in">
-  
-  <label for="message_in">Nombre</label>
-  <input type="text" name="message" value="" id="message_in">
-  
-  <label for="image_input">Imágen de Perfil</label>
-  <button type="file" name="image" id="image_input">Imagen</button>
-  
-  <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+<div id="profile-edit_container">
+  <form id="user_edit_form">
+    <legend>Editar perfil</legend>
+    <input type="text" name="full_name"  id="fullname_in" placeholder="Nombre completo"/>
+    
+    <input type="email" name="email" value="" id="email_in" placeholder="Email">
+    
+    <input type="text" name="message" value="" id="message_in" placeholder="Mensaje personal"/>
+    
+    <label for="image_input">Imágen de Perfil</label>
+
+    <textarea name="file" id="image_data" />
+    <button type="file" name="image" id="image_input" class="btn datea_btn_gry">Imagen</button>
+    <button type="submit" class="btn btn-primary datea_btn_yllw">Guardar</button>
+  </form>
+</div>

@@ -9,13 +9,17 @@ window.HomeView = Backbone.View.extend({
   },
 
   events:{
-    'mousedown button#login_btn' : 'login',
+    //'mousedown button#login_btn' : 'login',
+    'click button#login_btn' : 'login',
+
     'mousedown button#explore_btn' : 'explore',
     'mousedown button#participate_btn' : 'participate'
   },
   
   login: function(data){
+    //console.log("in the login");
     $('#login_btn i').css('background-image','url(img/icono_registro_on.png)');
+    dateaApp.navigate("login", {trigger: true});
   },
 
   explore: function(data){

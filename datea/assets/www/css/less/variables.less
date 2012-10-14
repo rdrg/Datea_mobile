@@ -3,8 +3,10 @@
 @datea: #ECFF00;
 @datea-dark: #D2E303;
 @yellow-btn: #EDFF00;
+@gray: #666666;
 @gray-bg: #E3E3DD;
 @gray-dark: #4D4D4D;
+@green: #28bc45;
 
 ////dimension
 .wh(@w, @h){
@@ -48,4 +50,47 @@
 ///misc
 .round(@p){
     border-radius: @p;
+}
+.container_shadow{
+    -webkit-box-shadow: 2px 3px 2px -1px #CCC;
+}
+
+//container
+.datea_container{
+  background-color: @w;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  .round(10px);
+  .container_shadow;
+}
+
+
+//buttons
+.datea_btn{
+    background-image: none;
+    border: none;
+    -webkit-box-shadow: 0px 0px 2px 1px #CCC;
+    color: @gray-dark;
+    .bold;
+}
+.datea_btn_yllw{
+    .datea_btn;
+    background-color: @datea;
+}
+
+.datea_btn_gry{
+    .datea_btn;
+    background-color: @gray-bg;
+}
+
+.datea_btn_yllw:hover{
+    background-color: @gray-bg;
+    color: @gray-dark;
+}
+
+.datea_btn_gry:hover{
+    background-color: @datea;
 }

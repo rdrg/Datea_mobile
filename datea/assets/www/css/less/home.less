@@ -47,9 +47,7 @@
     margin-top: 20px;
     margin-left: 20px;
 }
-#login{
-    width: 112px
-}
+
 
 #register{
     width: 130px;
@@ -69,34 +67,39 @@
 .home_btn{
   padding: 8px;
   margin: 10px 20px 0px;
-  span{
-    font-weight: bold;
-    line-height: 0px;
-    text-align: left;
-  }
+  background-image: none;
+  background-color: @w;
+  border: 0px solid #BBB;
+
+  background-repeat: no-repeat;
+  background-position: 14px 7px;
+  white-space: normal;
+  padding-left: 63px;
+  text-align: left;
 }
 
 #login_btn{
   .home_btn;
-  i{
-    .home_i;    
+  //.home_btn:hover;    
     background-image: url('../img/icono_registro_off.png');
+  &:hover{
+    background-image: url('../img/icono_registro_on.png');
   }
 }
 
 #explore_btn{
   .home_btn;
-  i{
-    .home_i;
-    background-image: url('../img/icono_apoya_off.png');
+  background-image: url('../img/icono_apoya_off.png');
+  &:hover{
+    background-image: url('../img/icono_apoya_on.png');
   }
 }
 
 #participate_btn{
   .home_btn;
-  i{
-    .home_i;
-    background-image: url('../img/icono_participa_off.png');
+  background-image: url('../img/icono_participa_off.png');
+  &:hover{
+    background-image: url('../img/icono_participa_on.png');
   }
 }
 
