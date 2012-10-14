@@ -20,14 +20,14 @@ var DateaRouter = Backbone.Router.extend({
 	    "logout": "logout",
 	    "about": "about",
 	    "user/:userid": "userLoadProfile",
-            "user/edit/:userid": "userEditProfile",
-            "actions": "myActions",
-            "action/:actionid": "actionDetail",
-            "mapping/:mapid/reports":"mapItemList",
-            "mapping/report/:reportid":"mapItemDetail",
-            "mapping/:mapid/report/create": "createReport",
-            //"mapping/:mapid/edit": "editMapping",
-            //"mapping/:mapid/admin": "adminMapping" 
+        "user/edit/:userid": "userEditProfile",
+        "actions": "myActions",
+        "action/:actionid": "actionDetail",
+        "mapping/:mapid/reports":"mapItemList",
+        "mapping/report/:reportid":"mapItemDetail",
+        "mapping/:mapid/report/create": "createReport",
+        //"mapping/:mapid/edit": "editMapping",
+        //"mapping/:mapid/admin": "adminMapping" 
 	},
 	
 	showView: function(selector, view) {
@@ -125,10 +125,10 @@ var DateaRouter = Backbone.Router.extend({
 	logout: function () {
 		var logout_data = {
 		    "username": null,
-	            "token" : null,
-	            "userid": null,
-	            "logged": false
-	        };
+            "token" : null,
+            "userid": null,
+            "logged": false
+        };
 		
 	    localSession.set(logout_data);
 	    console.log(localSession.get('logged'));
@@ -137,9 +137,9 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	userLoadProfile: function (userid) {
-            localUser.fetch({ data: { 'id': userid }});
-            this.profileView = new ProfileView({ model: localUser });
-            this.showView('#content', this.profileView);
+        localUser.fetch({ data: { 'id': userid }});
+        this.profileView = new ProfileView({ model: localUser });
+        this.showView('#content', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {

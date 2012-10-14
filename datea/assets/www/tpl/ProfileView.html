@@ -1,24 +1,26 @@
-<div>
-  <h1><%= username %></h1>
-</div>
+<div id="profile_container">
+  <div>
+    <h1><%= username %></h1>
+  </div>
 
-<div>
-  <img src="<%= profile.image %>" id="profile_img" />
-</div>
+  <div>
+    <img src="<%= profile.image %>" id="profile_img" />
+  </div>
 
-<ul>
-  <li><a href="#actions">Actions</a></li>
-  <li><a href="#logout">Logout</a></li>
-</ul>
-
-<div>
   <ul>
-    <li>Fecha de ingreso: <%= date_joined %></li>
-    <li>Último ingreso: <%= last_login %></li>
-    <li>Nombre completo: <%= profile.full_name %></li>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#logout">Logout</a></li>
   </ul>
-</div>
 
-<div>
-  <a href="#user/edit/<%= id %>">Editar perfil</a>
+  <div>
+    <ul>
+      <li>Fecha de ingreso: <%= date_joined %></li>
+      <li>Último ingreso: <%= last_login %></li>
+      <li>Nombre completo: <%= profile.full_name %></li>
+    </ul>
+  </div>
+
+  <div>
+    <a href="#user/edit/<%= id %>" class="btn datea_btn_yllw">Editar perfil</a>
+  </div>
 </div> 
