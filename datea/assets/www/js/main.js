@@ -11,7 +11,7 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-	    "": "geoInput",
+	    "": "home",
         //temporary redirection to work on actions
         // "":"allActions",
         "login": "login",
@@ -329,7 +329,7 @@ $(document).ready(function () {
 	
 	        $('dropdown-toggle').dropdown();
 	
-	        $('#content').jscroll();
+	        //$('#content').jscroll();
     });
 
 });
