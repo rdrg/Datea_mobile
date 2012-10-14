@@ -9,9 +9,11 @@
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="css/master.css" rel="stylesheet" media="screen">
 
-    <!--
-    <script src="http://192.168.2.113:8080/target/target-script-min.js#anonymous"></script>
-    -->
+
+	<link rel="stylesheet" href="lib/openlayers/theme/default/style.mobile.css" type="text/css">
+    <!--<script src="http://192.168.2.113:8080/target/target-script-min.js#anonymous"></script>-->
+
+
   </head>
   <body onload="onLoad()" data-spy="scroll" data-target=".subnav" data-offset="50">
     <div id="app">
@@ -49,7 +51,12 @@
 
     <script src="js/collections/actions.js"></script>
     <script src="js/collections/images.js"></script>
-    <script src="js/collections/map_items.js"></script> 
+    <script src="js/collections/map_items.js"></script>   
+	
+	<!-- map stuff -->    
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
+	<script src="lib/openlayers/OpenLayers.js?mobile"></script>
+    <script src="lib/datea_olwidget/datea_olwidget_mobile.js"></script>
     
     <script src="js/views/home.js"></script>
     <script src="js/views/header.js"></script>
@@ -68,7 +75,10 @@
     <script src="js/views/create_map_item_two.js"></script>
     <script src="js/views/create_map_item_three.js"></script>
     <script src="js/views/nav_bar.js"></script>
-
+    <script src="js/views/mapping_map.js"></script>
+    <script src="js/views/location_input.js"></script>
+   
     <script src="js/main.js"></script>
+
   </body>
 </html>

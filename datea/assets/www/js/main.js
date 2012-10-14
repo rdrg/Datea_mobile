@@ -1,8 +1,4 @@
-//this configuration was migrated to config.js
-//
-//window.api_url = "http://192.168.2.113:8000";
-//window.api_url = "http://10.0.19.113:8000";
-
+window.api_url = "http://192.168.0.11:8000";
 
 Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
@@ -28,11 +24,13 @@ var DateaRouter = Backbone.Router.extend({
         "mapping/:mapid/reports":"mapItemList",
         "mapping/report/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
-        //"mapping/:mapid/edit": "editMapping",
-        //"mapping/:mapid/admin": "adminMapping" 
+
+        "mapping/:mapid/reports/map":"mappingMap",
+    	"mapping/:mapid/reports/geoinput": "geoInput",
 	},
 	
 	showView: function(selector, view) {
+            //console.log("view name: " + view.constructor.toString());
 	    if (this.currentView)
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
@@ -164,7 +162,7 @@ var DateaRouter = Backbone.Router.extend({
         });
 	},
 
-        actionDetail: function(actionid){
+    actionDetail: function(actionid){
             if(!this.actionModel){
                 this.actionModel = new Action();
             }
@@ -183,21 +181,25 @@ var DateaRouter = Backbone.Router.extend({
             });
         },
 
-        mappingDetail: function(mapid){
-            if(!this.mapItems){
-                this.mapItems = new MapItemCollection();
+    mappingDetail: function(mapid){
+        console.log("show map item");
+        
+        if(!this.mapItems){
+            this.mapItems = new MapItemCollection();
+        }
+        
+        if(!this.mapItemListView){
+            this.mapItemListView = new MapItemListView({model: this.mapItems}); 
+        }
+
+        var self = this;
+        this.mapItems.fetch({
+            data: {'id': mapid},
+            success: function(){
+                self.showView('#content', self.mapItemListView());
             }
-            if(!this.mapItemListView){
-                this.mapItemListView = new MapItemListView({model: this.mapItems}); 
-            }
-            var self = this;
-            this.mapItems.fetch({
-                data: {'id': mapid},
-                success: function(){
-                    self.showView('#content', self.mapItemListView());
-                }
-            }); 
-        },
+        }); 
+    },
          
 	createReport: function(mapid) {
             var self = this;
@@ -217,7 +219,78 @@ var DateaRouter = Backbone.Router.extend({
                     self.showView('#content', self.newMapItemView);   
                 }
             });
-        }
+    },
+       
+	mapItemMap: function(mapid) {
+		
+    	if (!this.actionModel) {
+    		this.actionModel = new Action({id: mapid});
+    		this.actionModel.urlRoot = '/api/v1/mapping_full';
+    	}else if (this.actionModel.get('id') == mapid) {
+    		do_fetch = false;
+    	}
+        
+        if (!this.mappingMapView) {
+        	this.mappingMapView = new MappingMapView({
+        		model: this.actionModel
+       	 	});
+       	}
+    	
+    	if (do_fetch) {
+    		var self = this;
+    		this.actionModel.fetch({
+    			success: function () {
+					self.showView('#content', self.mappingMapView);
+					self.mappingMapView.loadMap();
+				},
+				error: function(error) {
+					console.log("fetch error");
+				}
+			});
+		}else{
+			this.showView('#content', this.mappingMapView);
+			this.mappingMapView.loadMap();
+		}
+    },
+    
+    geoInput: function(mapid) {
+    	
+    	mapid = 16;
+    	
+    	var do_fetch = true;
+    	
+    	if (!this.actionModel) {
+    		this.actionModel = new Action({id: mapid});
+    		this.actionModel.urlRoot = '/api/v1/mapping_full';
+    	}else if (this.actionModel.get('id') == mapid) {
+    		do_fetch = false;
+    	}
+    	
+    	if (!this.mappingMapView) {
+        	this.locationInputView = new LocationInputView({
+        		mapModel: this.actionModel,
+        		model: new MapItem(),
+        		modelField: 'position',
+       	 	});
+       	}
+    	
+    	if (do_fetch) {
+    		var self = this;
+    		this.actionModel.fetch({
+    			success: function () {
+					self.showView('#content', self.locationInputView);
+					self.locationInputView.loadMap();
+				},
+				error: function(error) {
+					console.log("fetch error");
+				}
+			});
+		}else{
+			this.showView('#content', this.locationInputView);
+			this.locationInputView.loadMap();
+		}
+    	
+    },
 });
 
 $(document).ready(function () {
@@ -237,24 +310,28 @@ $(document).ready(function () {
                     'CreateMapItemView',
                     'CreateMapItemOne',
                     'CreateMapItemTwo',
-                    'CreateMapItemThree'], 
-    function () {
-        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
-        
-        window.localSession = new localSession();
-        window.localUser = new User();
+                    'CreateMapItemThree',
+                    'MappingMapView',
+                    'LocationInputView'], 
 
-        if(localStorage.getItem('authdata') !== undefined) {
-            var authdata = JSON.parse(localStorage.getItem('authdata'));
-            localSession.set(authdata);
-        }
-        window.dateaApp = new DateaRouter();           
-        Backbone.history.start();
-
-        $('dropdown-toggle').dropdown();
-
-        $('#content').jscroll();
+	function () {
+	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
+	        
+	        window.localSession = new localSession();
+	        window.localUser = new User();
+	
+	        if(localStorage.getItem('authdata') !== undefined) {
+	            var authdata = JSON.parse(localStorage.getItem('authdata'));
+	            localSession.set(authdata);
+	        }
+	        window.dateaApp = new DateaRouter();           
+	        Backbone.history.start();
+	
+	        $('dropdown-toggle').dropdown();
+	
+	        //$('#content').jscroll();
     });
+
 });
 
 
@@ -264,6 +341,7 @@ function onLoad() {
 
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
+	
 }
 
 function onMenuDown() {

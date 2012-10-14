@@ -1,4 +1,5 @@
 var CreateMapItemOne = Backbone.View.extend({
+
     initialize: function(){
         var self = this;
         var acc = this.model.get('action');
