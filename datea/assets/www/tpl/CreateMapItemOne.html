@@ -2,6 +2,7 @@
     <% if(has_categories){ 
     _.each(categories, function(cat){ %>
 
-    <input type="radio" name="category"> <%= cat.name %><br>
+    <input type="radio" name="category" value="<%= cat.name %>"> <%= cat.name %><br>
+
     <%  })} %>
 </form>
