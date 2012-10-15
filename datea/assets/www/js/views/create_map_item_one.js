@@ -25,7 +25,16 @@ var CreateMapItemOne = Backbone.View.extend({
     },
 
     selectCategory: function(){
-        var cat = $('[name="category"]:checked', this.$el).val();
+        var cat_id = $('[name="category"]:checked', this.$el).val();
+        var cat = null;
+        var categories = this.options.mappingModel.get('item_categories');
+        cat = _.find(categories, function(c){return c.id == cat_id;});
+        this.model.set({
+            category: cat,
+            category_id: cat.id,
+            category_name: cat.name,
+            color: cat.color
+        },{silent: true});
         console.log("cat val: " + cat);
     }
 });
