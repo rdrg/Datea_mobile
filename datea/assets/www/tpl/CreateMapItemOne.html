@@ -1,8 +1,19 @@
+<div id="step_title">
+  <strong>Paso 1: </strong> <span>Elige la categor&iacute;a apropiada:</span>  
+</div>
+
 <form>
     <% if(has_categories){ 
     _.each(categories, function(cat){ %>
-
-    <input type="radio" name="category" value="<%= cat.id %>"> <%= cat.name %><br>
-
-    <%  })} %>
+      <div class="step1_category">
+        <input type="radio" name="category" value="<%= cat.id %>" class="step1_radio">
+          <div class="step1_cat_info">
+            <div class="step1_cat_color" style="background-color: <%= cat.color%>;"></div>
+            <div class="step1_cat_name"><%= cat.name %></div>  
+          </div>
+      </div>
+    <%  }) %>
+    <% }else{ %>
+      paila
+    <%}%>
 </form>

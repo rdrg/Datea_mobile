@@ -32,19 +32,23 @@
 
 ///// fonts
 .big{
-    font-size: 26px;
+  font-size: 26px;
 }
 
 .medium{
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .regular{
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .bold{
-    font-weight: bold;
+  font-weight: bold;
+}
+
+.black{
+  color: #000000;
 }
 
 ///misc
@@ -114,33 +118,4 @@
   background-image: url('../img/flecha1.png');
   background-repeat: no-repeat;
   background-position: 204px 11px;
-}
-
-//////////////
-.viewport-flip {
-    -webkit-perspective: 1000;
-    position: absolute;
-}
-
-.ui-mobile-viewport-transitioning,
-.ui-mobile-viewport-transitioning .ui-page {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.flip {
-    -webkit-animation-duration: .65s;
-    -webkit-backface-visibility:hidden;
-    -webkit-transform:translateX(0); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
-}
-
-.flip.out {
-    -webkit-transform: rotateY(-180deg) scale(.8);
-    -webkit-animation-name: flipouttoleft;
-}
-
-.flip.in {
-    -webkit-transform: rotateY(0) scale(1);
-    -webkit-animation-name: flipinfromleft;
 }

@@ -200,23 +200,23 @@ var DateaRouter = Backbone.Router.extend({
     },
          
 	createReport: function(mapid) {
-            var self = this;
-            this.mappingModel = new Action();
-            this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
-            this.mappingModel.fetch({
-                success: function(mdl, response){
-                    this.mdl = mdl;
-                    var other = this;
-                    self.newMapItem = new MapItem({
-                        action: other.mdl.get('resource_uri')
-                    });
-                    self.newMapItemView = new CreateMapItemView({
-                        model: self.newMapItem,
-                        mappingModel: self.mappingModel
-                    }); 
-                    self.showView('#content', self.newMapItemView);   
-                }
-            });
+        var self = this;
+        this.mappingModel = new Action();
+        this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
+        this.mappingModel.fetch({
+            success: function(mdl, response){
+                this.mdl = mdl;
+                var other = this;
+                self.newMapItem = new MapItem({
+                    action: other.mdl.get('resource_uri')
+                });
+                self.newMapItemView = new CreateMapItemView({
+                    model: self.newMapItem,
+                    mappingModel: self.mappingModel
+                }); 
+                self.showView('#content', self.newMapItemView);   
+            }
+        });
     },
        
 	mappingMap: function(mapid) {
