@@ -1,0 +1,23 @@
+<div class="map-item-cluster">
+	<div class="pager">
+		<div class="prev">
+			<% if (page <= 0) { %>
+				<button class="btn back-to-map">regresar al mapa</button>
+			<% } else { %>
+				<button class="btn prev-item">anterior</button>
+			<% } %>
+		</div>
+		<% if (total_items > 1) { %>
+			<div class="counter"><%= page+1 %> de <%= total_items %></div>
+			
+			<div class="next">
+				<% if (page < total_items-1) { %>
+					<button class="btn next-item">siguiente</button>
+				<% }else{ %>
+					<button class="btn back-to-map">regresar al mapa</button>
+				<% } %>
+			</div>
+		<% } %>
+	</div>
+	<div class="current-item-content"></div>
+</div>

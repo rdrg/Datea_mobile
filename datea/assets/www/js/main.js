@@ -62,7 +62,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 
 	home: function() {
-
+			alert("hey");
             console.log("enter home"); 
             if (localSession.get('logged')) {
                 var userid = localSession.get('userid');
@@ -219,8 +219,12 @@ var DateaRouter = Backbone.Router.extend({
             });
     },
        
-	mapItemMap: function(mapid) {
+	mappingMap: function(mapid) {
 		
+		mapid = 16;
+    	
+    	var do_fetch = true;
+    	
     	if (!this.actionModel) {
     		this.actionModel = new Action({id: mapid});
     		this.actionModel.urlRoot = '/api/v1/mapping_full';
@@ -286,8 +290,7 @@ var DateaRouter = Backbone.Router.extend({
 		}else{
 			this.showView('#content', this.locationInputView);
 			this.locationInputView.loadMap();
-		}
-    	
+		}    	
     },
 });
 
@@ -310,7 +313,10 @@ $(document).ready(function () {
                     'CreateMapItemTwo',
                     'CreateMapItemThree',
                     'MappingMapView',
-                    'LocationInputView'], 
+                    'LocationInputView',
+                    'MapItemDetailView',
+                    'MapItemClusterView', 
+                    'ImageOverlayView'], 
 
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
@@ -318,7 +324,7 @@ $(document).ready(function () {
 	        window.localSession = new localSession();
 	        window.localUser = new User();
 	
-	        if(localStorage.getItem('authdata') !== undefined) {
+	        if(localStorage.getItem('authdata') != null) {
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
 	        }
@@ -327,7 +333,7 @@ $(document).ready(function () {
 	
 	        $('dropdown-toggle').dropdown();
 	
-	        //$('#content').jscroll();
+	        $('#content').jscroll();
     });
 
 });
