@@ -8,6 +8,8 @@ var MappingMapView = Backbone.View.extend({
     
     events: {
 		'click .show-current-location': 'show_current_location',
+		'click .back-to-map': 'back_to_map',
+		'click .zoom-to-item': 'zoom_to_item'
 	},
     
     render: function(){
@@ -64,8 +66,32 @@ var MappingMapView = Backbone.View.extend({
 			mapOptions.defaultBoundary = this.model.get('boundary');
 		}
 		
-		this.map = new Datea.olwidget.Map("mapping-map", [this.itemLayer], mapOptions, this.showItemsCallback);
+		this.map = new Datea.olwidget.Map("mapping-map", [this.itemLayer], mapOptions, this.show_cluster_content_callback, this);
 		//this.itemLayer.initCenter(); 
+    },
+    
+    show_cluster_content_callback: function (itemCollection, self) {
+    	self.item_cluster_view = new MapItemClusterView({collection: itemCollection});
+    	var $content = self.$el.find('.cluster-content-view');
+    	$content.html(self.item_cluster_view.render().el);
+    	$content.show();
+    },
+    
+    back_to_map: function (ev) {
+    	ev.preventDefault();
+    	this.item_cluster_view.close();
+    	this.$el.find('.cluster-content-view').hide();
+    },
+    
+    zoom_to_item: function(ev) {
+    	ev.preventDefault();
+    	var id = $(ev.currentTarget).data('id');
+    	var bone_id = this.map_items.url+id+'/';
+    	var pos = this.map_items.get(bone_id).get('position').coordinates;
+    	var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
+    	this.itemLayer.initCenter(locInfo);
+    	this.item_cluster_view.close();
+    	this.$el.find('.cluster-content-view').hide(); 
     },
     
     show_current_location: function (ev) {
