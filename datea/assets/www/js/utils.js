@@ -12,5 +12,23 @@ window.utils = {
 	        }
 	    });
 	    $.when.apply(null, defs).done(cb);
+	},
+	
+	dateFromISO: function(isostr) {
+ 		var parts = isostr.match(/\d+/g);
+ 		return new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
+	},
+
+	dateDayFromISO: function(isostr) {
+		var parts = isostr.match(/\d+/g);
+ 		return new Date(parts[0], parts[1] - 1, parts[2], 0, 0, 0);
+	},
+
+	formatDateFromISO: function(isostr, format) {
+		return  dateFromISO(isostr).format(format);
+	},
+	
+	get_base_web_url: function() {
+		return 'http:www.datea.pe';
 	}	
 }

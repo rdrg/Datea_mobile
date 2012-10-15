@@ -9,7 +9,7 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-	    "": "home",
+	    "": "mappingMap",
         //temporary redirection to work on actions
         // "":"allActions",
         "login": "login",
@@ -219,8 +219,12 @@ var DateaRouter = Backbone.Router.extend({
             });
     },
        
-	mapItemMap: function(mapid) {
+	mappingMap: function(mapid) {
 		
+		mapid = 16;
+    	
+    	var do_fetch = true;
+    	
     	if (!this.actionModel) {
     		this.actionModel = new Action({id: mapid});
     		this.actionModel.urlRoot = '/api/v1/mapping_full';

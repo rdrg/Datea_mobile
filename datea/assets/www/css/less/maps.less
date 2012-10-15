@@ -1,25 +1,19 @@
-
-#location-input-view {
+.map-view {
 	position: absolute;
 	left: 0;	
-	right: 0; 
-	bottom: 50px; 
-	top: 140px;
-	
+	right: 0;
 	.map-controls {
 		position:absolute;
 		top: 3px;
 		right: 5px;
 		z-index: 1000;
-	}
-	
-	.map-canvas {
-		position: absolute;
-		left: 0; right: 0; bottom: 0; top: 0;
-	}
+	}	
 }
 
 .map-canvas {
+	position: absolute;
+	left: 0; right: 0; bottom: 0; top: 0;
+	
 	background-color: #ccc;
 	img { max-width: none; }
 	.olControlAttribution {
@@ -34,5 +28,14 @@
 			background-color: #666;
 		}
 	}
-	
+}
+
+#location-input-view { 
+	bottom: 50px; 
+	top: 140px;
+}
+
+#mapping-map-view { 
+	bottom: 50px; 
+	top: 100px;
 }
