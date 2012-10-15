@@ -1,11 +1,11 @@
 
-var MapItemView = Backbone.View.extend({
+var MapItemDetailView = Backbone.View.extend({
 	
 	render: function() {
 		
 		var context = this.model.toJSON();
 		// hydrate context 
-		context.created = utils.formatDateFromISO(context.created, "dd/mm/yyyy - H:MM');
+		context.created = utils.formatDateFromISO(context.created, "dd/mm/yyyy - H:MM");
 		context.content = context.content.replace(/\n/g, '<br />');
 		context.full_url = utils.get_base_web_url() + this.model.get('url');
 		if (this.model.get('position') && !this.model.get('position').coordinates) {
