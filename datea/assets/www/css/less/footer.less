@@ -10,12 +10,13 @@
 }
 
 #footer{
-  background-color: @w;
+  background-color: @gray-bg;
   -webkit-box-shadow: 0px -6px 20px 0px #ccc;
   .fillWidth;
  // display: none;
   position: absolute;
   bottom: 0px;
+  text-align: center;
 }
 
 #footer > .navbar-inner{
@@ -25,21 +26,30 @@
   padding: 0px;
 }
 
+.ftr_common{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: @gray-bg;
+  width: 33%;
+}
+
 #ftr_history{
+  .ftr_common;
   .left;
   margin-left: 33%;
-  width: 33%;
+  border-right: 1px solid @w;
 }
 
 #ftr_actions{
+  .ftr_common;
   .left;
-  width: 33%;
-  margin-left: -67%;
+  margin-left: -66%;
+  border-right: 1px solid @w;
 }
 
 #ftr_profile{
+  .ftr_common;
   .left;
-  width: 33%;
 }
 
 #footer  .btn {
