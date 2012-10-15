@@ -7,11 +7,11 @@
 				<button class="btn prev-item">anterior</button>
 			<% } %>
 		</div>
-		<% if (map_items.length > 1) %>
+		<% if (total_items > 1) { %>
 			<div class="counter"><%= page+1 %> de <%= total_items %></div>
 			
 			<div class="next">
-				<% if page < total_items-1 %>
+				<% if (page < total_items-1) { %>
 					<button class="btn next-item">siguiente</button>
 				<% }else{ %>
 					<button class="btn back-to-map">regresar al mapa</button>

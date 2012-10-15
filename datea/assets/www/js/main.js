@@ -9,7 +9,7 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-	    "": "mappingMap",
+	    "": "home",
         //temporary redirection to work on actions
         // "":"allActions",
         "login": "login",
@@ -62,7 +62,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 
 	home: function() {
-
+			alert("hey");
             console.log("enter home"); 
             if (localSession.get('logged')) {
                 var userid = localSession.get('userid');
@@ -333,7 +333,7 @@ $(document).ready(function () {
 	
 	        $('dropdown-toggle').dropdown();
 	
-	        //$('#content').jscroll();
+	        $('#content').jscroll();
     });
 
 });

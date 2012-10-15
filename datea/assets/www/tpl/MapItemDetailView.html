@@ -25,11 +25,11 @@
 	
 	<% if (images){ %>
 		<div class="images">
-			<% _.each(images, function(image)){ %>
+			<% _.each(images, function(image){ %>
 				<div class="image">
 					<img src="<%= api_url+image %>" alt="" />
 				</div>
-			<% }) %>
+			<% }); %>
 		</div>
 	<% } %>
 	

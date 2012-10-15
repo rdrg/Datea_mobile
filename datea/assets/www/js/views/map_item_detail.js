@@ -13,7 +13,7 @@ var MapItemDetailView = Backbone.View.extend({
 		}
 		//context.tweet_text = this.model.get('extract');
 		//context.hashtag = this.options.mappingModel.get('hashtag');
-		this.$el.html( this.template(context));
+		this.$el.html(this.template(context));
 		
 		// get replies
 		/*
