@@ -31,14 +31,16 @@ function onDeviceReady() {
 }
 
 
-function locAccuracy2Zoom(acc) {
+function locAccuracy2Zoom(acc, min, max) {
 	
-	var min = 12;
-	var max = 18;
+	var min = min || 12;
+	var max = max || 18;
+	var coef = max - min;
+	
 	if (typeof(acc) == 'undefined') {
 		return min;
 	}
-	acc = (1 - (Math.sqrt(acc) / 350)) * 6;
+	acc = (1 - (Math.sqrt(acc) / 350)) * coef;
 	var zoom = parseInt(Math.round(acc + min));
 	if (zoom < min) zoom = min;
 	else if (zoom > max) zoom = max; 
@@ -71,14 +73,12 @@ window.LocationInputView = Backbone.View.extend({
 				function (position) {
 					if (typeof(position.coords.latitude) != 'undefined') {
 						var zoom = locAccuracy2Zoom(position.coords.accuracy);
-						var initCenter = {lat: position.coords.latitude, lng: position.coords.longitude, zoom: zoom};
-						self.createMap(initCenter);
-						//geolocation.clearWatch(self.LocWatchId);
+						var deviceLocInfo = {lat: position.coords.latitude, lng: position.coords.longitude, zoom: zoom};
+						self.createMap(deviceLocInfo);
 					}
 				},
 				function(error) {
 					self.createMap();
-					//geolocation.clearWatch(self.LocWatchId);
 				},
 				{
 					maximumAge: 5000, 
@@ -89,7 +89,7 @@ window.LocationInputView = Backbone.View.extend({
 		//}, false);
 	},
 	
-	createMap: function(initCenter) {
+	createMap: function(deviceLocInfo) {
     	
     	this.inputLayer = new Datea.olwidget.EditableLayer(
 			this.model, 
@@ -99,7 +99,7 @@ window.LocationInputView = Backbone.View.extend({
 			}, 
 			this.options.mapCenter, 
 			this.options.mapBoundary,
-			initCenter
+			deviceLocInfo
 		);
 		
 		// BUILD MAP OPTIONS
@@ -108,8 +108,8 @@ window.LocationInputView = Backbone.View.extend({
 		}
 		
 		if (typeof(initCenter) != 'undefined') {
-			mapOptions.defaultLon = initCenter.lng;
-			mapOptions.defaultLat =  initCenter.lat;
+			mapOptions.defaultLon = deviceLocInfo.lng;
+			mapOptions.defaultLat =  deviceLocInfo.lat;
 			
 		} else if (this.mapModel.get('center') && this.mapModel.get('center').coordinates) {
 			mapOptions.defaultLon = this.mapModel.get('center').coordinates[0];
