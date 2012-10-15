@@ -290,8 +290,7 @@ var DateaRouter = Backbone.Router.extend({
 		}else{
 			this.showView('#content', this.locationInputView);
 			this.locationInputView.loadMap();
-		}
-    	
+		}    	
     },
 });
 
@@ -316,14 +315,16 @@ $(document).ready(function () {
                     'MappingMapView',
                     'LocationInputView',
                     'MapItemDetailView',
-                    'MapItemClusterView'], 
+                    'MapItemClusterView', 
+                    'ImageOverlayView'], 
+
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	        
 	        window.localSession = new localSession();
 	        window.localUser = new User();
 	
-	        if(localStorage.getItem('authdata') !== undefined) {
+	        if(localStorage.getItem('authdata') != null) {
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
 	        }
