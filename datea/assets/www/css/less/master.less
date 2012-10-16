@@ -16,6 +16,7 @@ body{
   //font-family: "Helvetica Neue",​Helvetica,​Arial,​sans-serif;
   background-image: url('../img/bg.png');
   color: @gray;
+  padding: 0px;
 }
 
 h1{
@@ -41,6 +42,25 @@ a{
 a:hover{
   color: @gray-dark;
   text-decoration: none;
+}
+
+#app{
+  width: 100%;
+  height: 100%;
+}
+
+#main{
+  position: absolute;
+  z-index: 1;
+  top: 54px;
+  bottom: 0px;
+  width: 100%
+}
+
+.container{
+  width: 91%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 
