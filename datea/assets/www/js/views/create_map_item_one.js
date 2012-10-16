@@ -5,14 +5,16 @@ var CreateMapItemOne = Backbone.View.extend({
         var acc = this.model.get('action');
         var cats = [];
         _.each(this.options.mappingModel.get('item_categories'), function(cat){
-            console.log("category: " + JSON.stringify(cat));
+            //console.log("category: " + JSON.stringify(cat));
             cats.push(cat);
         });
 
         this.context = this.model.toJSON();
         this.context.has_categories = true;
         this.context.categories = cats;
+        this.context.step = this.options.step;
         _.bindAll(this, 'render');
+        console.log("this is step: " + this.context.step);
     },
 
     events: {

@@ -11,20 +11,19 @@ var DateaRouter = Backbone.Router.extend({
 	routes: {
 	    "": "home",
         //temporary redirection to work on actions
-        // "":"allActions",
+        //"":"myActions",
         "login": "login",
-	    "logout": "logout",
-	    "about": "about",
-	    "user/:userid": "userLoadProfile",
+        "logout": "logout",
+        "about": "about",
+        "user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
         "actions": "myActions",
         "action/:actionid": "actionDetail",
-        "mapping/:mapid/reports":"mapItemList",
+        //"mapping/:mapid/reports":"mapItemList",
         "mapping/report/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
-
-        "mapping/:mapid/reports/map":"mappingMap",
-    	"mapping/:mapid/reports/geoinput": "geoInput",
+        "mapping/:mapid/reports/map":"mappingMap"
+    	//"mapping/:mapid/reports/geoinput": "geoInput"
 	},
 	
 	showView: function(selector, view) {
@@ -97,7 +96,7 @@ var DateaRouter = Backbone.Router.extend({
 	
 	about: function () {
 		if (!this.aboutView) {
-		    this.aboutView = new AboutView();
+        	    this.aboutView = new AboutView();
 		}
 		$('#content').html(this.aboutView.render().el);
                     this.headerView.selectMenuItem('about-menu');
@@ -116,7 +115,7 @@ var DateaRouter = Backbone.Router.extend({
 
         setTimeout(function(){
                 window.myScroll.refresh();
-        }, 0)
+        }, 0);
 	},
 	
 	logout: function () {
@@ -140,7 +139,7 @@ var DateaRouter = Backbone.Router.extend({
         
         setTimeout(function(){
             window.myScroll.refresh();
-        }, 0)
+        }, 0);
 	},
 	
 	userEditProfile: function (userid) {
@@ -149,7 +148,7 @@ var DateaRouter = Backbone.Router.extend({
         
         setTimeout(function(){
                 window.myScroll.refresh();
-        }, 0)
+        }, 0);
 	},
 	
 	myActions: function () {
@@ -165,7 +164,7 @@ var DateaRouter = Backbone.Router.extend({
                 //load navigation
                 setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0)
+                }, 0);
             }
         });
 	},
@@ -187,11 +186,9 @@ var DateaRouter = Backbone.Router.extend({
                 //load navigation
                 setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0)
+                }, 0);
             }
         });
-      
-
     },
 
     mappingDetail: function(mapid){
@@ -213,7 +210,7 @@ var DateaRouter = Backbone.Router.extend({
 
                 setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0)
+                }, 0);
             }
         });
     },
@@ -237,14 +234,14 @@ var DateaRouter = Backbone.Router.extend({
 
                 setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0)
+                }, 0);
             }
         });
     },
        
 	mappingMap: function(mapid) {
 		
-		mapid = 16;
+		//mapid = 16;
     	
     	var do_fetch = true;
     	
@@ -280,7 +277,7 @@ var DateaRouter = Backbone.Router.extend({
     
     geoInput: function(mapid) {
     	
-    	mapid = 16;
+    	//mapid = 16;
     	
     	var do_fetch = true;
     	
