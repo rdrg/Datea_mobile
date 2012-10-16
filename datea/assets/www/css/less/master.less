@@ -13,10 +13,12 @@
 
 
 body{
-  //font-family: "Helvetica Neue",​Helvetica,​Arial,​sans-serif;
   background-image: url('../img/bg.png');
   color: @gray;
   padding: 0px;
+  -webkit-user-select: none;
+  -webkit-text-size-adjust: none;
+  font-family: helvetica;
 }
 
 h1{
@@ -58,8 +60,10 @@ a:hover{
   position: absolute;
   z-index: 1;
   top: 54px;
-  bottom: 0px;
-  width: 100%
+  left: 0px;
+  bottom: 20px;
+  width: 100%;
+  overflow: auto;
 }
 
 .container{
