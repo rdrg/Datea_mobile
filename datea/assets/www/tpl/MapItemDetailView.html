@@ -4,7 +4,7 @@
 	
 	<div class="head post-user-data">
 		<div class="user-picture">
-			<img src="<%= user.profile.image_small %>" alt="<%= user.username %>" />
+			<img src="<%= api_url+user.image_small %>" alt="<%= user.username %>" />
 		</div>
 		<div class="data">
 			<div class="username">por <b><%= user.username %></b></div>
@@ -16,8 +16,8 @@
 		
 		<div class="category">
 			<% if (category){ %> <span class="badge" style="background-color: <%= color %>"><%= category_name %></span>&nbsp;<% } %>
-			<a class="show-map-item-loc" href="#" data-id="<%= id %>" title="open in map">
-				<i data-id="<%= id %>" class="mira"></i>
+			<a class="zoom-to-item" href="#" data-id="<%= id %>" title="open in map">
+				<i data-id="<%= id %>" class="crosshair"></i>
 			</a>
 		</div>
 		<div class="field"><%= content %></div>
@@ -25,17 +25,23 @@
 	
 	<% if (images){ %>
 		<div class="images">
-			<% _.each(images, function(image)){ %>
+			<% _.each(images, function(image){ %>
 				<div class="image">
 					<img src="<%= api_url+image %>" alt="" />
 				</div>
-			<% }) %>
+			<% }); %>
 		</div>
 	<% } %>
 	
 	<div class="widgets"></div>
 	
-	<div class="replies" style="display:none"></div>
+	<% if (replies && replies.length > 0) { %>
+		<div class="item-replies-wrap">
+			<div class="replies-title">Respuestas</div>
+			<div class="item-replies"></div>
+		</div>
+	<% } %>
 	
-	<div class="comments"></div>
+	<div class="item-comments"></div>
+	
 </div>

@@ -8,7 +8,7 @@
     <div id="profile_picture" class="left">
       <img src="<%= api_url %><%= profile.image %>" id="profile_img" />
     </div>
-    <div id="profile_stats" class="rght">
+    <div id="profile_stats" class="left">
       <div id="profile_dateos">
         <img src="img/dateo_mini.png" alt="">
          <%= profile.item_count %> dateos
@@ -33,8 +33,8 @@
   <hr id="profile_separator">
 
 
-  <div>
-    <a id="profile_edit" href="#user/edit/<%= id %>" class="btn datea_btn_yllw">editar perfil</a>
+  <div id="profile_btns">
+    <a id="profile_edit" href="#user/edit/<%= id %>" class="btn datea_btn_yllw" data-ftrans="slide">editar perfil</a>
     <a id="profile_logout" href="#logout" class="btn datea_btn_gry">cerrar sesi&oacute;n</a>
   </div>
 </div> 

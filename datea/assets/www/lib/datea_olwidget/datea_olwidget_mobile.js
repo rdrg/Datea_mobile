@@ -106,11 +106,12 @@ var olwidget = {
 
 olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
     
-    initialize: function(mapDivID, vectorLayers, options, showItemsCallback) {
+    initialize: function(mapDivID, vectorLayers, options, showItemsCallback, mappingView) {
         this.vectorLayers = vectorLayers;
         this.opts = this.initOptions(options);
         this.initMap(mapDivID, this.opts);
         this.showItemsCallback = showItemsCallback;
+        this.mappingView = mappingView;
     },
     /*
      * Extend the passed in options with defaults, and create unserialized
@@ -287,8 +288,7 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
     		var id = feature.layer.mapItems.url+feature.item_id+'/';
     		models.push(feature.layer.mapItems.get(id));
     	}
-    	if (this.showItemsCallback) this.showItemsCallback(new MapItemCollection(models));
-    	console.log(new MapItemCollection(models));
+    	if (this.showItemsCallback) this.showItemsCallback(new MapItemCollection(models), this.mappingView);
     },
     CLASS_NAME: "olwidget.Map"
 });

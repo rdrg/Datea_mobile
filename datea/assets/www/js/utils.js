@@ -25,7 +25,7 @@ window.utils = {
 	},
 
 	formatDateFromISO: function(isostr, format) {
-		return  dateFromISO(isostr).format(format);
+		return  this.dateFromISO(isostr).format(format);
 	},
 	
 	get_base_web_url: function() {

@@ -1,11 +1,11 @@
 
-var MapItemView = Backbone.View.extend({
+var MapItemDetailView = Backbone.View.extend({
 	
 	render: function() {
 		
 		var context = this.model.toJSON();
 		// hydrate context 
-		context.created = utils.formatDateFromISO(context.created, "dd/mm/yyyy - H:MM');
+		context.created = utils.formatDateFromISO(context.created, "dd/mm/yyyy - H:MM");
 		context.content = context.content.replace(/\n/g, '<br />');
 		context.full_url = utils.get_base_web_url() + this.model.get('url');
 		if (this.model.get('position') && !this.model.get('position').coordinates) {
@@ -13,43 +13,34 @@ var MapItemView = Backbone.View.extend({
 		}
 		//context.tweet_text = this.model.get('extract');
 		//context.hashtag = this.options.mappingModel.get('hashtag');
-		this.$el.html( this.template(context));
+		this.$el.html(this.template(context));
 		
-		// get replies
-		/*
-		var responses = new Datea.MapItemResponseCollection();
-		var self = this;
-		responses.fetch({
-			data: {map_items__in: this.model.get('id'), order_by:'created'},
-			success: function (collection, response) {
-				if (collection.length > 0) {
-					var $replies = self.$el.find('.replies');
-					_.each(collection.models, function(model){
-						$replies.append(new Datea.MapItemResponseView({model: model}).render().el); 
-					});
-					$replies.show();
-				}
-			}
-		})
+		// render replies, if any
+		if (context.replies && context.replies.length > 0) {
+			$reply_div = this.$el.find('.item-replies');
+			var replyCollection = new MapItemResponseCollection(context.replies);
+			replyCollection.each(function(model){
+				$reply_div.append(new MapItemResponseView({model: model}).render().el); 
+			});
+		}
 		
 		// comments
-		this.comments = new Datea.CommentCollection();
+		this.comments = new CommentCollection(context.comments);
 		var self = this;
-		this.comment_view = new Datea.CommentsView({
-			el: this.$el.find('.comments'),
-			model: this.comments,
+		this.comment_view = new CommentListView({
+			el: this.$el.find('.item-comments'),
+			collection: this.comments,
 			object_type: 'dateamapitem',
 			object_id: this.model.get('id'),
 			callback: function () {
-				self.model.set({comment_count: (self.model.get('comment_count') + 1)});
+				self.model.set({comment_count: (self.model.get('comment_count') + 1)},{ silent: true });
 			}
-		})
-		this.comments.fetch({
-			data: {'object_type': 'dateamapitem', 'object_id': this.model.get('id'), order_by: 'created'} 
 		});
+		this.comment_view.render();
 		
 		//***************
 		// widgets
+		/*
 		var $widgets = this.$el.find('.datea-widgets');
 		
 		// FOLLOW WIDGET

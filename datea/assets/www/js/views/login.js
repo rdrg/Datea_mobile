@@ -54,6 +54,10 @@ window.LoginView = Backbone.View.extend({
                     };
                     
                     dateaApp.navigate("user/" + userid, { trigger : true });
+                    //render loggedIn header
+                    this.headerView = new LoggedInHeaderView();
+                    $('#header').html(this.headerView.render().el);
+
                 } else if(response.error) {
                     $("#result").html(response.error);
                 }

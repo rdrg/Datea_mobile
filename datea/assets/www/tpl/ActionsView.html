@@ -27,7 +27,7 @@
 
   <% _.each(actions, function(action, index) { %>
     <div class="actions_action">
-      <a href="#action/<%= action.id %>">
+      <a href="#action/<%= action.id %>" class="action_detail">
         <div class="action_img">
           <img src="<%= api_url %><%= action.image %>"/>    
         </div>
