@@ -9,7 +9,7 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-	    "": "mappingMap",
+	    "": "home",
         //temporary redirection to work on actions
         // "":"allActions",
         "login": "login",
