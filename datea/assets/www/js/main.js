@@ -321,6 +321,7 @@ var DateaRouter = Backbone.Router.extend({
     },
 });
 
+
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
@@ -356,7 +357,8 @@ $(document).ready(function () {
 	            localSession.set(authdata);
 	        }
 	        window.dateaApp = new DateaRouter();           
-	        Backbone.history.start();     
+	        Backbone.history.start();  
+   
 
     });
 
@@ -365,6 +367,15 @@ $(document).ready(function () {
 
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
+
+
+    // Initializing BackStack.StackNavigator for the #container div
+    window.stackNavigator = new BackStack.StackNavigator({
+        el: '#main'
+    });
+
+    // Pushing FirstView on to the stack
+    //window.stackNavigator.pushView(FirstView);
 }
 
 function onDeviceReady() {
@@ -380,6 +391,10 @@ function onDeviceReady() {
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
     window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
+
+    
+
+
 }
 
 function onMenuDown() {
