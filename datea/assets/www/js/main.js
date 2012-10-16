@@ -344,7 +344,10 @@ $(document).ready(function () {
                     'LocationInputView',
                     'MapItemDetailView',
                     'MapItemClusterView', 
-                    'ImageOverlayView'], 
+                    'ImageOverlayView',
+                    'CommentView',
+                    'CommentListView',
+                    'MapItemResponseView'], 
 
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";

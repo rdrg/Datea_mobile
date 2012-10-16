@@ -4,7 +4,7 @@
 	
 	<div class="head post-user-data">
 		<div class="user-picture">
-			<img src="<%= api_url+user.profile.image_small %>" alt="<%= user.username %>" />
+			<img src="<%= api_url+user.image_small %>" alt="<%= user.username %>" />
 		</div>
 		<div class="data">
 			<div class="username">por <b><%= user.username %></b></div>
@@ -35,7 +35,13 @@
 	
 	<div class="widgets"></div>
 	
-	<div class="replies" style="display:none"></div>
+	<% if (replies && replies.length > 0) { %>
+		<div class="item-replies-wrap">
+			<div class="replies-title">Respuestas</div>
+			<div class="item-replies"></div>
+		</div>
+	<% } %>
 	
-	<div class="comments"></div>
+	<div class="item-comments"></div>
+	
 </div>
