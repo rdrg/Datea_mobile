@@ -1,7 +1,7 @@
 var ActionsView = Backbone.View.extend({
 	initialize: function () {
-        //fetch actions according to user status
-	this.render();
+       //fetch actions according to user status
+	   this.render();
     },
 
     render: function () {
@@ -23,6 +23,6 @@ var ActionsView = Backbone.View.extend({
 
     clickDetail_handler: function(event){
         console.log('click handler');
-        window.stackNavigator.pushView(ActionView);
-    }
+        this.stackNavigator.pushView(ActionView);
+    } 
 });

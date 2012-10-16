@@ -370,11 +370,11 @@ function onLoad() {
 
     // Initializing BackStack.StackNavigator for the #container div
     window.stackNavigator = new BackStack.StackNavigator({
-        el: '#main'
+        el: '#content'
     });
 
     // Pushing FirstView on to the stack
-    //window.stackNavigator.pushView(FirstView);
+    window.stackNavigator.pushView(ActionsView);
 }
 
 function onDeviceReady() {
