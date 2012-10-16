@@ -45,17 +45,17 @@ var DateaRouter = Backbone.Router.extend({
                 console.log("route path: " + path[0]);
             });	        
             */
-            if(localSession.get('logged')){
-	        this.headerView = new LoggedInHeaderView();
-		$('#header').html(this.headerView.render().el);
+        if(localSession.get('logged')){
+	      this.headerView = new LoggedInHeaderView();
+		  $('#header').html(this.headerView.render().el);
 	    }else{
-                this.headerView = new LoggedOutHeaderView();
-                $('#header').html(this.headerView.render().el);
-            }
-            //$('.header').html(this.headerView.render().el);
-            this.navBar = new NavBar({});
-            this.navBarView = new NavBarView({model: this.navBar});
-            $('#footer').html(this.navBarView.render().el);
+            this.headerView = new LoggedOutHeaderView();
+            $('#header').html(this.headerView.render().el);
+        }
+        //$('.header').html(this.headerView.render().el);
+        this.navBar = new NavBar({});
+        this.navBarView = new NavBarView({model: this.navBar});
+        $('#footer').html(this.navBarView.render().el);
 
 	    //this.footerView = new FooterView();
 	    //$('.footer').html(this.footerView.render().el);
@@ -111,12 +111,8 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.loginView) {
 			this.loginView = new LoginView({ model: this.session });
 		}
-		//clean window
-                //$('#home_msg').remove();
-		$('.header').removeAttr('id');
 
 		this.showView('#content', this.loginView);
-	    $('.header').html(this.headerView.render().el);
 
         setTimeout(function(){
                 window.myScroll.refresh();
@@ -143,7 +139,7 @@ var DateaRouter = Backbone.Router.extend({
         this.showView('#content', this.profileView);
         
         setTimeout(function(){
-                window.myScroll.refresh();
+            window.myScroll.refresh();
         }, 0)
 	},
 	
