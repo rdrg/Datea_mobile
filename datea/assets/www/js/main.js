@@ -47,15 +47,15 @@ var DateaRouter = Backbone.Router.extend({
             */
             if(localSession.get('logged')){
 	        this.headerView = new LoggedInHeaderView();
-		$('.header').html(this.headerView.render().el);
+		$('#header').html(this.headerView.render().el);
 	    }else{
                 this.headerView = new LoggedOutHeaderView();
-                $('.header').html(this.headerView.render().el);
+                $('#header').html(this.headerView.render().el);
             }
             //$('.header').html(this.headerView.render().el);
             this.navBar = new NavBar({});
             this.navBarView = new NavBarView({model: this.navBar});
-            $('.footer').html(this.navBarView.render().el);
+            $('#footer').html(this.navBarView.render().el);
 
 	    //this.footerView = new FooterView();
 	    //$('.footer').html(this.footerView.render().el);
@@ -200,23 +200,23 @@ var DateaRouter = Backbone.Router.extend({
     },
          
 	createReport: function(mapid) {
-            var self = this;
-            this.mappingModel = new Action();
-            this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
-            this.mappingModel.fetch({
-                success: function(mdl, response){
-                    this.mdl = mdl;
-                    var other = this;
-                    self.newMapItem = new MapItem({
-                        action: other.mdl.get('resource_uri')
-                    });
-                    self.newMapItemView = new CreateMapItemView({
-                        model: self.newMapItem,
-                        mappingModel: self.mappingModel
-                    }); 
-                    self.showView('#content', self.newMapItemView);   
-                }
-            });
+        var self = this;
+        this.mappingModel = new Action();
+        this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
+        this.mappingModel.fetch({
+            success: function(mdl, response){
+                this.mdl = mdl;
+                var other = this;
+                self.newMapItem = new MapItem({
+                    action: other.mdl.get('resource_uri')
+                });
+                self.newMapItemView = new CreateMapItemView({
+                    model: self.newMapItem,
+                    mappingModel: self.mappingModel
+                }); 
+                self.showView('#content', self.newMapItemView);   
+            }
+        });
     },
        
 	mappingMap: function(mapid) {
@@ -335,8 +335,8 @@ $(document).ready(function () {
 	        Backbone.history.start();
 	
 	        $('dropdown-toggle').dropdown();
-	
-	        $('#content').jscroll();
+	       
+
     });
 
 });
@@ -344,6 +344,8 @@ $(document).ready(function () {
 
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
+    var myScroll = new iScroll('main');
+   // document.addEventListener('DOMContentLoaded', function () { setTimeout(loadScroll, 200); }, false);
 }
 
 function onDeviceReady() {
@@ -352,6 +354,10 @@ function onDeviceReady() {
 }
 
 function onMenuDown() {
-	$('.footer').toggle();
+	$('#footer').toggle();
+}
+
+function loadScroll(){
+    
 }
 
