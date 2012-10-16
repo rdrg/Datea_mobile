@@ -1,15 +1,18 @@
 var CreateMapItemTwo = Backbone.View.extend({
     initialize: function(){
-        _.bindAll(this, "addImageOverlay");
+        _.bindAll(this);
+        console.log("this is step: " + this.options.step);
+        this.context = Object();
+        this.context.step = this.options.step;
     },
-
+    
     events: {
         "click #image_input": "addImageOverlay",
         "change #description": "setDescription"
     },
 
     render: function(){
-        this.$el.html(this.template());
+        this.$el.html(this.template(this.context));
         return this;
     },
 

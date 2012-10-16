@@ -9,22 +9,21 @@ Backbone.View.prototype.close = function () {
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
-	    "": "mappingMap",
+	//"": "mappingMap",
         //temporary redirection to work on actions
-        // "":"allActions",
+        "":"myActions",
         "login": "login",
-	    "logout": "logout",
-	    "about": "about",
-	    "user/:userid": "userLoadProfile",
+        "logout": "logout",
+        "about": "about",
+        "user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
         "actions": "myActions",
         "action/:actionid": "actionDetail",
-        "mapping/:mapid/reports":"mapItemList",
+        //"mapping/:mapid/reports":"mapItemList",
         "mapping/report/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
-
         "mapping/:mapid/reports/map":"mappingMap",
-    	"mapping/:mapid/reports/geoinput": "geoInput",
+    	//"mapping/:mapid/reports/geoinput": "geoInput"
 	},
 	
 	showView: function(selector, view) {
@@ -98,7 +97,7 @@ var DateaRouter = Backbone.Router.extend({
 	
 	about: function () {
 		if (!this.aboutView) {
-		    this.aboutView = new AboutView();
+        	    this.aboutView = new AboutView();
 		}
 		$('#content').html(this.aboutView.render().el);
                     this.headerView.selectMenuItem('about-menu');
@@ -203,6 +202,7 @@ var DateaRouter = Backbone.Router.extend({
             var self = this;
             this.mappingModel = new Action();
             this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
+            //this.mappingModel.url = api_url + '/api/v1/mapping/';
             this.mappingModel.fetch({
                 success: function(mdl, response){
                     this.mdl = mdl;
@@ -221,7 +221,7 @@ var DateaRouter = Backbone.Router.extend({
        
 	mappingMap: function(mapid) {
 		
-		mapid = 16;
+		//mapid = 16;
     	
     	var do_fetch = true;
     	
@@ -257,7 +257,7 @@ var DateaRouter = Backbone.Router.extend({
     
     geoInput: function(mapid) {
     	
-    	mapid = 16;
+    	//mapid = 16;
     	
     	var do_fetch = true;
     	
