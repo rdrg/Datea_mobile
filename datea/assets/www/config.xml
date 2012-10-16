@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "pe.datea.DateaMobile"
-        versionCode="10" 
+        id        = "pe.datea.mobile"
+        versionCode="0" 
         version   = "0.0.1">
 
     <!-- doc @ https://build.phonegap.com/docs/config-xml-->
@@ -18,7 +18,6 @@
     </author>
 
     <preference name="phonegap-version" value="2.0.0" />
-    <preference name="orientation" value="portrait" />
     <preference name="fullscreen" value="true" />
 
     <!-- android specific configurations -->
@@ -35,5 +34,13 @@
     <gap:splash src="splash/android/xhdpi.png" gap:platform="android" gap:density="xhdpi" />
 
     <!-- permissions -->
-    <preference name="permissions" value="none"/>
+    <feature name="http://api.phonegap.com/1.0/camera"/>
+    <feature name="http://api.phonegap.com/1.0/geolocation"/>
+    <feature name="http://api.phonegap.com/1.0/media"/>
+    <feature name="http://api.phonegap.com/1.0/network"/>
+
+    <!-- access -->
+    <!-- TODO: update domain to datea.pe -->
+    <access origin="*" /> 
+    
 </widget>
