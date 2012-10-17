@@ -376,13 +376,11 @@ $(document).ready(function () {
                             success: function(mdl, res){
                                 //console.log("model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
-                                        window.myFollows = new Follows({});
-                                        myFollows = localUser.get('follows');
-                                        console.log('follows: ' + JSON.stringify(myFollows));
+                                        window.myFollows = new FollowCollection(mdl.get('follows'));
+                                        //console.log('follows: ' + JSON.stringify(myFollows));
                                 }
                                 if(mdl.get('votes') !== undefined){
-                                    window.myVotes = new Votes({});
-                                    myVotes = localUser.get('votes');
+                                    window.myVotes = new VoteCollection(mdl.get('votes'));
                                 }
                             },
                             error: function(){
