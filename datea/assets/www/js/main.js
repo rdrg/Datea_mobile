@@ -64,8 +64,9 @@ var DateaRouter = Backbone.Router.extend({
         console.log("enter home"); 
         if (localSession.get('logged')) {
             var userid = localSession.get('userid');
-            localUser.fetch({ data: { 'id': userid }});   
-           
+            
+            //localUser.fetch({ data: { 'id': userid }});   
+        
             if (!this.actionCollection) {
                 this.actionCollection = new ActionCollection();
                 this.actionCollection.url = api_url + '/api/v1/action/';
@@ -112,10 +113,11 @@ var DateaRouter = Backbone.Router.extend({
 		}
 
 		this.showView('#content', this.loginView);
-
+        
         setTimeout(function(){
                 window.myScroll.refresh();
         }, 0);
+        
 	},
 	
 	logout: function () {
@@ -140,15 +142,18 @@ var DateaRouter = Backbone.Router.extend({
         setTimeout(function(){
             window.myScroll.refresh();
         }, 0);
+        
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#content', this.profileEditView);
         
+        
         setTimeout(function(){
                 window.myScroll.refresh();
         }, 0);
+        
 	},
 	
 	myActions: function () {
@@ -162,9 +167,11 @@ var DateaRouter = Backbone.Router.extend({
                 self.actionsView = new ActionsView({model:self.actionCollection});
                 self.showView('#content', self.actionsView);
                 //load navigation
+                
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
+                
             }
         });
 	},
@@ -184,9 +191,11 @@ var DateaRouter = Backbone.Router.extend({
                 }
                 self.showView('#content', self.actionView);
                 //load navigation
+                
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
+                
             }
         });
     },
@@ -207,10 +216,11 @@ var DateaRouter = Backbone.Router.extend({
             data: {'id': mapid},
             success: function(){
                 self.showView('#content', self.mapItemListView());
-
+                
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
+                
             }
         });
     },
@@ -231,10 +241,11 @@ var DateaRouter = Backbone.Router.extend({
                     mappingModel: self.mappingModel
                 }); 
                 self.showView('#content', self.newMapItemView);   
-
+                
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
+                
             }
         });
     },
@@ -348,14 +359,40 @@ $(document).ready(function () {
 	        window.localSession = new localSession();
 	        window.localUser = new User();
 	
-	        if(localStorage.getItem('authdata') != null) {
+	        if(localStorage.getItem('authdata') !== undefined) {
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
+                    //bootstrap user data
+                    if(localSession.get('logged')){
+                        userid = localSession.get('userid');
+                        console.log('token: ' + localSession.get('token'));
+                        localUser.fetch({ 
+                            data: { 
+                                'id': userid, 
+                                'user_full': 1 
+                            },
+                            success: function(mdl, res){
+                                //console.log("model: " + JSON.stringify(mdl.toJSON()));
+                                if(mdl.get('follows') !== undefined ){
+                                        window.myFollows = new Follows({});
+                                        myFollows = localUser.get('follows');
+                                        console.log('follows: ' + JSON.stringify(myFollows));
+                                }
+                                if(mdl.get('votes') !== undefined){
+                                    window.myVotes = new Votes({});
+                                    myVotes = localUser.get('votes');
+                                }
+                            },
+                            error: function(){
+                                console.log("some error fetching");
+                            }
+                        
+                        });  
+                        
+                    }
 	        }
 	        window.dateaApp = new DateaRouter();           
-	        Backbone.history.start();  
-   
-
+	        Backbone.history.start();   
     });
 
 });
@@ -366,10 +403,11 @@ function onLoad() {
 
 
     // Initializing BackStack.StackNavigator for the #container div
+    
     window.stackNavigator = new BackStack.StackNavigator({
         el: '#main'
     });
-
+    
     // Pushing FirstView on to the stack
     //window.stackNavigator.pushView(FirstView);
 }
@@ -387,9 +425,6 @@ function onDeviceReady() {
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
     window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
-
-    
-
 
 }
 
