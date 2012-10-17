@@ -1,5 +1,3 @@
-
-
 function onLocTestSuccess(position) {
     $('.loc-data').html('Lat: '  + position.coords.latitude      + ', ' +
                         'Lng: ' + position.coords.longitude     + ', ' +
@@ -30,7 +28,6 @@ function onDeviceReady() {
 	window.LocWatchId = navigator.geolocation.watchPosition(onLocTestSuccess, onLocTestError, options)
 }
 
-
 function locAccuracy2Zoom(acc, min, max) {
 	
 	var min = min || 12;
@@ -55,10 +52,12 @@ window.LocationInputView = Backbone.View.extend({
 	initialize: function() {
 		this.mapModel = this.options.mapModel;
 		this.modelField = this.options.modelField;
+                //this.context = new Object();
+                //this.context.step = this.options.step;
 	},
 	
 	events: {
-		'click .show-current-location': 'show_current_location',
+		'click .show-current-location': 'show_current_location'
 	},
 	
 	render: function () {	
@@ -83,7 +82,7 @@ window.LocationInputView = Backbone.View.extend({
 				{
 					maximumAge: 5000, 
 					timeout: 5000, 
-					enableHighAccuracy: true,
+					enableHighAccuracy: true
 				}
 			);
 		//}, false);
@@ -104,7 +103,7 @@ window.LocationInputView = Backbone.View.extend({
 		
 		// BUILD MAP OPTIONS
 		var mapOptions = {
-			'defaultZoom': 12,
+			'defaultZoom': 12
 		}
 		
 		if (typeof(initCenter) != 'undefined') {
@@ -139,11 +138,8 @@ window.LocationInputView = Backbone.View.extend({
     		{
 				maximumAge: 5000, 
 				timeout: 5000, 
-				enableHighAccuracy: true,
+				enableHighAccuracy: true
 			}
     	);
-    }
-	
-	
-	
+    }	
 });
