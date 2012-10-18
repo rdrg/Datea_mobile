@@ -17,12 +17,13 @@ var ActionsView = Backbone.View.extend({
         return this;
     },
 
+    
     events: {
         'click .action_detail' : 'clickDetail_handler' 
     },
 
     clickDetail_handler: function(event){
         console.log('click handler');
-        this.stackNavigator.pushView(ActionView);
-    } 
+        window.stackNavigator.pushView(ActionView);
+    }
 });

@@ -77,7 +77,7 @@ var CreateMapItemView = Backbone.View.extend({
             //event.preventDefault();
             console.log("sending image");
             var self = this;
-            
+                        
             var transfer = new FileTransfer();
             var options = new FileUploadOptions();
             var images = this.model.get('images');
@@ -87,6 +87,7 @@ var CreateMapItemView = Backbone.View.extend({
             options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
             options.fileKey = 'image';
             options.chunkedMode = false;
+            options.user = localUser;
             
             params = new Object();
 
@@ -98,7 +99,7 @@ var CreateMapItemView = Backbone.View.extend({
             */
             //params.object_field = 'image';
             params.headers = { 
-                'Authorization': 'ApiKey '+ window.localUser.username + ':' + window.localUser.token, 
+                'Authorization': 'ApiKey '+ localUser.get('username') + ':' + localUser.get('token'), 
                 'enctype': 'multipart/form-data'
             };
             options.params = params;

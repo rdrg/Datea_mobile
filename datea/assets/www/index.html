@@ -12,20 +12,20 @@
 
 	<link rel="stylesheet" href="lib/openlayers/theme/default/style.mobile.css" type="text/css">
     <link rel="stylesheet" href="lib/transition/transition.min.css" type="text/css">
-    <!--<script src="http://192.168.0.4:8080/target/target-script-min.js#anonymous"></script>-->
+    <!--<script src="http://192.168.2.113:8080/target/target-script-min.js#anonymous"></script> -->
   </head>
 
   <body onload="onLoad()">
    
-        <div id="header">
-        </div>
-        <div id="main">
-            <div class="container">
-                <div id="content" class="span12"></div>
-            </div>
-        </div>
-        <div id="footer">
-        </div>
+		<div id="header">
+		</div>
+		<div id="main">
+		    <div class="container">
+		        <div id="content" class="span12"></div>
+		    </div>
+		</div>
+		<div id="footer">
+		</div>
     
 
     <script src="lib/cordova-2.0.0.js"></script>
@@ -52,13 +52,17 @@
     <script src="js/models/nav_bar.js"></script>
     <script src="js/models/comment.js"></script>
     <script src="js/models/map_item_response.js"></script>   
+    <script src="js/models/follow.js"></script>   
+    <script src="js/models/vote.js"></script>   
 
     <script src="js/collections/actions.js"></script>
     <script src="js/collections/images.js"></script>
     <script src="js/collections/map_items.js"></script>
     <script src="js/collections/comments.js"></script>
-    <script src="js/collections/map_item_responses.js"></script>     
-	
+    <script src="js/collections/map_item_responses.js"></script>     	
+    <script src="js/collections/follows.js"></script>     
+    <script src="js/collections/votes.js"></script>     
+
 	<!-- map stuff -->    
     <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
 	<script src="lib/openlayers/OpenLayers.js?mobile"></script>
@@ -89,6 +93,8 @@
     <script src="js/views/comment.js"></script>
     <script src="js/views/comment_list.js"></script>
     <script src="js/views/map_item_response.js"></script>
+    <script src="js/views/follow_widget.js"></script>
+    <script src="js/views/vote_widget.js"></script>
 
     <script src="js/main.js"></script>
 
