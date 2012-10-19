@@ -16,6 +16,7 @@ var ImageOverlayView = Backbone.View.extend({
     },
 
     captureImage: function(event){
+        this.hideOverlay();
         var self = this;
         event.preventDefault();
         navigator.camera.getPicture(
@@ -43,6 +44,7 @@ var ImageOverlayView = Backbone.View.extend({
      },
 
      browseImage: function(event){
+        this.hideOverlay();
         var self = this;
         event.preventDefault();
         navigator.camera.getPicture(
@@ -69,5 +71,10 @@ var ImageOverlayView = Backbone.View.extend({
      },
      cancel:function(){
         console.log("canceling");
-     }
+        this.hideOverlay();
+    },
+
+    hideOverlay: function(){
+        $("#overlay").hide("fast");
+    }
 });

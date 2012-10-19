@@ -52,6 +52,8 @@ var CreateMapItemTwo = Backbone.View.extend({
     addImageOverlay: function(event){
         event.preventDefault();
         this.imageOverlay = new ImageOverlayView({model: this.model});
-        this.$("#overlay").html(this.imageOverlay.render().el);
-     }
+        $("#overlay").html(this.imageOverlay.render().el);
+        $("#footer").hide("fast");
+        $("#overlay").show("fast");
+    },
 });
