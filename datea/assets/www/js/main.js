@@ -76,7 +76,7 @@ var DateaRouter = Backbone.Router.extend({
             //console.log("action url: " + this.actionCollection.url);
             this.actionCollection.fetch({
                 success: function(collection, response){
-                    //console.log("actions fetched");
+                    console.log("actions fetched");
                     if(!self.actionsView){
                         self.actionsView = new ActionsView({model:self.actionCollection});
                     }
@@ -158,7 +158,7 @@ var DateaRouter = Backbone.Router.extend({
 	
 	myActions: function () {
         this.actionCollection = new ActionCollection();
-        this.actionCollection.url = api_url + '/api/v1/action/';
+        this.actionCollection.url = api_url + '/api/v1/action/search/';
         var self = this;
         //console.log("action url: " + this.actionCollection.url);
         this.actionCollection.fetch({
@@ -179,9 +179,8 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.actionModel){
             this.actionModel = new Action();
         }
-        this.actionModel.url = api_url + "/api/v1/mapping/" + actionid;
+        this.actionModel.url = api_url + "/api/v1/mapping/" + actionid+'/';
         var self = this;
-
         this.actionModel.fetch({
             success: function(){
                 //console.log("action fetched");
@@ -407,7 +406,7 @@ function onLoad() {
     });
     
     // Pushing FirstView on to the stack
-    window.stackNavigator.pushView(ActionsView);
+    //window.stackNavigator.pushView(ActionsView);
 }
 
 function onDeviceReady() {
@@ -428,3 +427,7 @@ function onDeviceReady() {
 function onMenuDown() {
 	$('#footer').toggle();
 }
+
+window.myScroll = {
+	refresh: function() {console.log('fake refresh myscroll')}
+};

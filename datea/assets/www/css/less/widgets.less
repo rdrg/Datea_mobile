@@ -1,0 +1,29 @@
+.follow-widget {
+	
+	cursor: pointer;
+	
+	.widget-icon {
+		width: 35px;
+		display: block;
+		float: left;
+		height: 37px;
+		background: url(../img/seguir_large.png) no-repeat 0px 0px;
+		margin-right: 10px;
+	}
+	
+	.widget-text {
+		line-height: 15px;
+		.widget-counter {
+			
+		}
+		.widget-label {
+			font-size: 12px;
+		}
+	}
+	
+	&:hover, &.active {
+		.widget-icon {
+			background: url(../img/seguir_large.png) no-repeat -35px 0px;
+		}
+	}
+}

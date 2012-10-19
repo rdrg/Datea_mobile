@@ -29,10 +29,10 @@
 	Backbone.oldSync = Backbone.sync;
 	Backbone.sync = function( method, model, options ) {
 		var headers = '';
-	
-		if ( Backbone.Tastypie.apiKey && Backbone.Tastypie.apiKey.username.length ) {
+		
+		if (localSession.get('username') != '' &&  localSession.get('token') != '') {
 			headers = _.extend( {
-				'Authorization': 'ApiKey ' + Backbone.Tastypie.apiKey.username + ':' + Backbone.Tastypie.apiKey.key
+				'Authorization': 'ApiKey ' + localSession.get('username') + ':' + localSession.get('token')
 			}, options.headers );
 			options.headers = headers;
 		}

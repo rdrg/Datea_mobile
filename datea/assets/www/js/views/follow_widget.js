@@ -69,6 +69,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 	
 	follow: function(ev) {
 		ev.preventDefault();
+		console.log(localSession);
 		
 		if (this.options.read_only) return;
 		

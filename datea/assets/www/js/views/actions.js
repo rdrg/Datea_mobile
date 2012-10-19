@@ -1,11 +1,12 @@
 var ActionsView = Backbone.View.extend({
 	initialize: function () {
        //fetch actions according to user status
-	   this.render();
+	   //this.render();
     },
 
     render: function () {
         var action_list = [];
+        //if (typeof(this.model) == 'undefined') return;
 	   _.each(this.model.models, function (action) {
             action_list.push(action.toJSON());
         });
