@@ -1,3 +1,3 @@
 var VoteCollection = Backbone.Collection.extend({
-    url : api_url + "/api/v1/vote/"
+    url : "/api/v1/vote/"
 });

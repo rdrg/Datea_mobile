@@ -3,7 +3,9 @@ var CreateMapItemView = Backbone.View.extend({
     initialize: function(){
         
         var self = this;
-       
+        
+        //console.log("local user token: " + localSession.get('token'));
+
         if(this.options.mappingModel.get('item_categories') !== undefined){
             console.log('setting step to 1');
             this.step = 1;
@@ -65,6 +67,7 @@ var CreateMapItemView = Backbone.View.extend({
                 step: this.step,
                 modelField: 'position'
             });
+
             this.$("#create_mapitem_content").html(this.locationView.render().el);
             this.locationView.loadMap();
             this.step = 4;
@@ -98,8 +101,10 @@ var CreateMapItemView = Backbone.View.extend({
             params.thumb_preset = 'profile_image_large';
             */
             //params.object_field = 'image';
+            params.thumb_preset = 'profile_image_large';
+            console.log("user: " + localSession.get('username') + "key: " + localSession.get('token'));
             params.headers = { 
-                'Authorization': 'ApiKey '+ localUser.get('username') + ':' + localUser.get('token'), 
+                'Authorization': 'ApiKey '+ localSession.get('username') + ':' + localSession.get('token'), 
                 'enctype': 'multipart/form-data'
             };
             options.params = params;
@@ -110,7 +115,7 @@ var CreateMapItemView = Backbone.View.extend({
             //var im = $("#image_path").text();
             console.log("image: " + image_uri);    
                             
-            transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win(self), self.fail(self), options);
+            transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 
            // }
         },
@@ -140,6 +145,14 @@ var CreateMapItemView = Backbone.View.extend({
             console.log("Code = " + r.responseCode);
             console.log("Response= " + r.response);
             console.log("Sent = " + r.bytesSent);
+            //this.el.save();
+            //console.log("response: " + r.resource);
+           
+            //this.dateoImage = r.resource;
+            
+            //this.model.set({'image': this.dateoImage});
+            //this.model.save();    
+            
         },
 
         fail: function(error){

@@ -93,7 +93,7 @@ var ProfileEditView = Backbone.View.extend({
         params.thumb_preset = 'profile_image_large';
 
         params.headers = { 
-            'Authorization': 'ApiKey '+ window.localUser.username + ':' + window.localUser.token, 
+            'Authorization': 'ApiKey '+ localSession.username + ':' + localSession.token, 
             'enctype': 'multipart/form-data'
         };
         options.params = params;
@@ -183,7 +183,7 @@ var ProfileEditView = Backbone.View.extend({
                 data: img_data,
                 crossDomain: true,
                 //processData: false,
-                headers: { 'Authorization': 'ApiKey '+ window.localUser.username + ':' + window.localUser.token }
+                headers: { 'Authorization': 'ApiKey '+ localSession.get('username') + ':' + localSession.get('token') }
             });
             
             profile.save({}, {
