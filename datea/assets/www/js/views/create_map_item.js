@@ -65,10 +65,16 @@ var CreateMapItemView = Backbone.View.extend({
                 step: this.step,
                 modelField: 'position'
             });
-            this.$("#create_mapitem_content").html(this.locationView.render().el);
+            $("#map_overlay").html(this.locationView.render().el);
             this.locationView.loadMap();
+
+            $("#main").css('bottom','auto');
+            $("#footer").hide("fast");
+            $("#map_overlay").show("fast");
+
             this.step = 4;
         }else if(this.step == 4){
+            $("#map_overlay").hide("fast");
             this.transferImage();
         }
     },

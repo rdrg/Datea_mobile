@@ -2,13 +2,22 @@
   .datea_container;
   border: 2px solid @gray-bg;
   -webkit-box-shadow: none;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 #create_mapitem_header{
-  width: 277px;
+  width: 100%;
   height: 32px;
-  margin-left: -20px;
   border-bottom: 1px solid @gray-bg;
+  text-align: center;
+}
+
+#create_container{
+  height: 27px;
+  width: 275px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #create_title{
@@ -44,9 +53,9 @@
 #back_arrow{
   .left;
   width: 0px;
-  border-top: 11px solid @w;
+  border-top: 12px solid @w;
   border-right: 20px solid @gray-bg;
-  border-bottom: 11px solid @w;
+  border-bottom: 12px solid @w;
   //.round(5px);
 }
 #back_arrow_body{
@@ -67,9 +76,9 @@
 #next_arrow{
   .rght;
   width: 0px;
-  border-top: 11px solid @w;
+  border-top: 12px solid @w;
   border-left: 20px solid @datea;
-  border-bottom: 11px solid @w;
+  border-bottom: 12px solid @w;
   //.round(5px);
 }
 #next_arrow_body{
@@ -87,6 +96,11 @@
   margin-bottom: 10px;
 }
 
+#create_mapitem_content{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 // setp 1
 .step1_category{
   min-height: 20px;
@@ -97,8 +111,9 @@
   .left;
 }
 .step1_cat_info{
-  .rght;
-  width: 215px; 
+  .left;
+  width: 87%;
+  margin-left: 5px; 
 }
 
 .step1_cat_color{
@@ -110,9 +125,45 @@
 }
 
 .step1_cat_name{
-  .rght;
+  .left;
   .black;
-  width: 187px;
+  width: 89%;
+  margin-left: 5px;
 }
 
 // step 2
+#description{
+  width: 94%;
+}
+#image_input{
+  width: 90%;
+  margin-top: 10px;
+}
+#overlay{
+  display: none;
+  position: absolute;
+  background-color: @gray-bg;
+  width: 100%;
+  height: 130px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 200; 
+  padding-top: 30px;
+  a{
+    width: 255px;
+  }
+}
+.over_btn{
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#map_overlay{
+  display: none;
+  //position: absolute;
+  z-index: 90;
+  top: 50px;
+  left: 0px;
+  height: 90%
+}

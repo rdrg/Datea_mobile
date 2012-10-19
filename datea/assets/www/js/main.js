@@ -402,20 +402,20 @@ function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
 
 
-    // Initializing BackStack.StackNavigator for the #container div
+    /*// Initializing BackStack.StackNavigator for the #container div
     
     window.stackNavigator = new BackStack.StackNavigator({
         el: '#content'
     });
     
     // Pushing FirstView on to the stack
-    window.stackNavigator.pushView(ActionsView);
+    window.stackNavigator.pushView(ActionsView);*/
 }
 
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
 
-    //var myScroll;
+    /*//var myScroll;
     function loaded() {
         window.myScroll = new iScroll('main',{
             hScroll : false,
@@ -424,7 +424,7 @@ function onDeviceReady() {
         });
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
+    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);*/
 
 }
 
