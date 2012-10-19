@@ -1,7 +1,7 @@
 var ActionsView = Backbone.View.extend({
 	initialize: function () {
-        //fetch actions according to user status
-	this.render();
+       //fetch actions according to user status
+	   this.render();
     },
 
     render: function () {

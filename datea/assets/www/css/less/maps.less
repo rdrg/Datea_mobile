@@ -2,9 +2,10 @@
 	position: absolute;
 	left: 0;	
 	right: 0;
+	z-index: 0;
 	.map-controls {
 		position:absolute;
-		top: 3px;
+		top: 95px;
 		right: 5px;
 		z-index: 1000;
 	}	
@@ -22,6 +23,9 @@
 		bottom: 0px;
 		font-size: 10px;
 	}
+	.olControlZoom{
+		top: 99px;
+	}
 	.olControlZoomIn, .olControlZoomOut {
 		background-color: #999;
 		&:hover {
@@ -31,10 +35,11 @@
 	border: 1px solid red;
 }
 
+
 #location-input-view { 
-	bottom: 50px; 
+	bottom: 0px; 
 	//top: 140px;
-        top: 180px;
+  top: 53px;
 }
 
 #mapping-map-view { 
