@@ -193,7 +193,7 @@ var DateaRouter = Backbone.Router.extend({
                 //load navigation
                 
                 setTimeout(function(){
-                    window.myScroll.refresh();
+                    //window.myScroll.refresh();
                 }, 0);
                 
             }

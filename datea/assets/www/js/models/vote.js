@@ -1,3 +1,3 @@
 var Vote = Backbone.Model.extend({
-    urlRoot : api_url + "/api/v1/vote/"
+    urlRoot : "/api/v1/vote/"
 });

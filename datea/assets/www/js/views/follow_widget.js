@@ -79,10 +79,10 @@ var FollowWidgetBaseView = Backbone.View.extend({
 		if (this.options.silent) set_options.silent = true; 
 		
 		if (this.model.isNew()) {
-			
 			var self = this;
 			this.model.save({},{
 				success: function (model, response) {
+					console.log("hey");
 					self.render();
 					self.$el.removeClass('loading');
 				}
