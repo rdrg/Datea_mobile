@@ -27,6 +27,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 		
 		this.$el.addClass(this.options.object_type);
 		if (this.options.read_only) this.$el.addClass('read-only');
+		
 	},
 	
 	events: {
@@ -54,7 +55,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 		}else if (this.options.read_only) {
 			context.label = 'siguen';
 		}else{
-			context.label = 'no seguir';
+			context.label = 'siguiendo';
 		}
 		return context;
 	},
@@ -69,7 +70,6 @@ var FollowWidgetBaseView = Backbone.View.extend({
 	
 	follow: function(ev) {
 		ev.preventDefault();
-		console.log(localSession);
 		
 		if (this.options.read_only) return;
 		
@@ -81,14 +81,18 @@ var FollowWidgetBaseView = Backbone.View.extend({
 		
 		if (this.model.isNew()) {
 			var self = this;
-			this.model.save({},{
+			this.model.save({}, {
 				success: function (model, response) {
-					console.log("hey");
+					console.log("success follow");
+					console.log(model);
 					self.render();
 					self.$el.removeClass('loading');
+				},
+				error: function(error) {
+					console.log('error');
 				}
 			});
-			localUser.attributes.follows.push(this.model.toJSON());
+			//localUser.attributes.follows.push(this.model.toJSON());
 			this.followed_model.set('follow_count', this.followed_model.get('follow_count') + 1, set_options);
 			
 		}else {
@@ -97,7 +101,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 				if (item.id == id) return true;
 			}));
 			this.model.destroy();
-			this.model = new Datea.Follow({
+			this.model = new Follow({
 				object_type: this.model.get('object_type'),
 				object_id: this.model.get('object_id'),
 				follow_key: this.model.get('follow_key'),
@@ -107,6 +111,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 			this.$el.removeClass('loading');
 		}
 	},
+	
 });
 
 var FollowActionWidgetView = FollowWidgetBaseView.extend({
