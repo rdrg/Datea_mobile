@@ -114,9 +114,9 @@ var DateaRouter = Backbone.Router.extend({
 
 		this.showView('#content', this.loginView);
         
-        setTimeout(function(){
+        /*setTimeout(function(){
                 window.myScroll.refresh();
-        }, 0);
+        }, 0);*/
         
 	},
 	
@@ -139,9 +139,9 @@ var DateaRouter = Backbone.Router.extend({
         this.profileView = new ProfileView({ model: localUser });
         this.showView('#content', this.profileView);
         
-        setTimeout(function(){
+        /*setTimeout(function(){
             window.myScroll.refresh();
-        }, 0);
+        }, 0);*/
         
 	},
 	
@@ -150,9 +150,9 @@ var DateaRouter = Backbone.Router.extend({
         this.showView('#content', this.profileEditView);
         
         
-        setTimeout(function(){
+        /*setTimeout(function(){
                 window.myScroll.refresh();
-        }, 0);
+        }, 0);*/
         
 	},
 	
@@ -167,10 +167,9 @@ var DateaRouter = Backbone.Router.extend({
                 self.actionsView = new ActionsView({model:self.actionCollection});
                 self.showView('#content', self.actionsView);
                 //load navigation
-                
-                setTimeout(function(){
+                /*setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0);
+                }, 0);*/
             }
         });
 	},
@@ -188,11 +187,10 @@ var DateaRouter = Backbone.Router.extend({
                     self.actionView = new ActionView({model: self.actionModel});
                 }
                 self.showView('#content', self.actionView);
-                //load navigation
-                
-                setTimeout(function(){
+                //load navigation  
+                /*setTimeout(function(){
                     //window.myScroll.refresh();
-                }, 0);
+                }, 0);*/
             }
         });
     },
@@ -214,11 +212,9 @@ var DateaRouter = Backbone.Router.extend({
             success: function(){
                 self.showView('#content', self.mapItemListView());
                 
-                setTimeout(function(){
+                /*setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0);
-                
-                
+                }, 0);*/
             }
         });
     },
@@ -240,9 +236,9 @@ var DateaRouter = Backbone.Router.extend({
                 }); 
                 self.showView('#content', self.newMapItemView);   
                 
-                setTimeout(function(){
+                /*setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0);
+                }, 0);*/
             }
         });
     },
@@ -351,7 +347,8 @@ $(document).ready(function () {
                     'MapItemResponseView',
                     'FollowActionWidgetView',
                     'VoteWidgetView',
-                    'CommentWidgetView'], 
+                    'CommentWidgetView',
+                    ], 
 
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
@@ -400,20 +397,19 @@ function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
 
 
-    // Initializing BackStack.StackNavigator for the #container div
-    
+    /*// Initializing BackStack.StackNavigator 
     window.stackNavigator = new BackStack.StackNavigator({
         el: '#main'
     });
-    
     // Pushing FirstView on to the stack
-    //window.stackNavigator.pushView(ActionsView);
+    //window.stackNavigator.pushView(ActionsView);*/
 }
 
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
+    document.addEventListener("offline", onOffline, false);
 
-    //var myScroll;
+    /*//scroll
     function loaded() {
         window.myScroll = new iScroll('main',{
             hScroll : false,
@@ -422,12 +418,30 @@ function onDeviceReady() {
         });
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
+    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);*/
 }
 
 function onMenuDown() {
 	$('#footer').toggle();
 }
+
+function onOffline(){
+    navigator.notification.alert(
+        'Datea necesita estar conectado a Internet',
+        offLineAlertDismissed,
+        'Sin Conexion',
+        'ok'
+    );
+}
+
+function offLineAlertDismissed() {
+    if (navigator.app && navigator.app.exitApp) {
+        navigator.app.exitApp();
+    } else if (navigator.device && navigator.device.exitApp) {
+        navigator.device.exitApp();
+    }
+}
+
 
 window.myScroll = {
 	refresh: function() {console.log('fake refresh myscroll')}
