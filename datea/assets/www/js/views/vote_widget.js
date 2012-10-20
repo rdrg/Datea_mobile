@@ -23,7 +23,7 @@ var VoteWidgetView = Backbone.View.extend({
 			var vote_data = _.find(uvotes, function(item){
 				return item.object_type == self.options.object_type && item.object_id == self.options.object_id;
 			});
-			this.model = new Vote(vote_data);
+			if (vote_data) this.model = new Vote(vote_data);
 		}
 		if (typeof(this.model) == 'undefined') {
 			this.model = new Vote({
@@ -33,6 +33,7 @@ var VoteWidgetView = Backbone.View.extend({
 		}
 		this.$el.addClass(this.options.object_type);
 		if (this.options.read_only) this.$el.addClass('read-only');
+		if (this.options.add_class) this.$el.addClass(this.options.add_class);
 	},
 	
 	events: {
@@ -44,9 +45,9 @@ var VoteWidgetView = Backbone.View.extend({
 		context.vote_count = this.voted_model.get('vote_count');
 		
 		if (this.model.isNew()) {
-			context.label = 'apoya';
+			context.label = 'apoyar';
 		}else{
-			context.label = 'ya apoya';
+			context.label = 'apoyando';
 		}
 		this.$el.html( this.template(context));
 
@@ -70,13 +71,12 @@ var VoteWidgetView = Backbone.View.extend({
 			var self = this;
 			this.model.save({},{
 				success: function (model, response) {
-					self.render();
 					self.$el.removeClass('loading');
+					localUser.attributes.votes.push(self.model.toJSON());
+					self.voted_model.set('vote_count', self.voted_model.get('vote_count') + 1);
+					self.render();
 				}
 			});
-			Datea.my_user_votes.add(this.model);
-			localUser.attributes.votes.push(this.model.toJSON());
-			this.voted_model.set('vote_count', this.voted_model.get('vote_count') + 1);
 		}
 		/*
 		}else {

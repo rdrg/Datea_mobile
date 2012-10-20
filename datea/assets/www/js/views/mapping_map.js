@@ -13,7 +13,7 @@ var MappingMapView = Backbone.View.extend({
 	},
     
     render: function(){
-    	this.map_items = new MapItemCollection(this.model.get('map_items'))
+    	this.map_items = new MapItemCollection(this.model.get('map_items'));
         this.$el.html(this.template());
         return this;
     },

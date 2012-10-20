@@ -34,7 +34,7 @@ var CommentListView = Backbone.View.extend({
 		var self = this;
 		comment.save({},{
 			'success': function(model, response) {
-				self.collection.add(model);
+				self.add_comment(model);
 				self.$el.find('.submit-comment').removeAttr('disabled');
 			},
 			'error': function(error) {
@@ -45,8 +45,9 @@ var CommentListView = Backbone.View.extend({
     },
     
     add_comment: function (model) {
+    	this.collection.add(model);
 		var $com_list = this.$el.find('.comment-list');
-		var new_comment = new Datea.CommentItemView({model: model});
+		var new_comment = new CommentView({model: model});
 		new_comment.render();
 		new_comment.$el.hide();
 		$com_list.append(new_comment.el);

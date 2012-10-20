@@ -33,7 +33,7 @@ var MapItemClusterView = Backbone.View.extend({
 	
 	show_prev_item: function(ev) {
 		ev.preventDefault(); 
-		this.page++;
+		this.page--;
 		this.render();
 	}, 
 	

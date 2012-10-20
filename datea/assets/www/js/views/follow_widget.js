@@ -14,7 +14,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 			var follow_data = _.find(ufollows, function(item){
 				return item.follow_key == follow_key;
 			});
-			this.model = new Follow(follow_data);
+			if (follow_data) this.model = new Follow(follow_data);
 		}
 		if (typeof(this.model) == 'undefined') {
 			this.model = new Follow({

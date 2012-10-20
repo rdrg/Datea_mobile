@@ -350,7 +350,8 @@ $(document).ready(function () {
                     'CommentListView',
                     'MapItemResponseView',
                     'FollowActionWidgetView',
-                    'VoteWidgetView'], 
+                    'VoteWidgetView',
+                    'CommentWidgetView'], 
 
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";

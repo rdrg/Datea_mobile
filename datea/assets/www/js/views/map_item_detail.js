@@ -33,16 +33,17 @@ var MapItemDetailView = Backbone.View.extend({
 			object_type: 'dateamapitem',
 			object_id: this.model.get('id'),
 			callback: function () {
-				self.model.set({comment_count: (self.model.get('comment_count') + 1)},{ silent: true });
+				self.model.set({comment_count: (self.model.get('comment_count') + 1)});
 			}
 		});
 		this.comment_view.render();
 		
 		//***************
 		// widgets
-		/*
-		var $widgets = this.$el.find('.datea-widgets');
 		
+		var $widgets = this.$el.find('.widgets');
+		
+		/*
 		// FOLLOW WIDGET
 		this.follow_widget = new Datea.FollowWidgetView({
 			object_type: 'dateamapitem',
@@ -53,18 +54,22 @@ var MapItemDetailView = Backbone.View.extend({
 			style: 'full-small', 
 		});
 		$widgets.append(this.follow_widget.render().el);
-		
+		*/
 		
 		// VOTE WIDGET
-		this.vote_widget = new Datea.VoteWidgetView({
+		this.vote_widget = new VoteWidgetView({
 			object_type: 'dateamapitem',
 			object_id: this.model.get('id'),
-			object_name: gettext('report'),
+			object_name: 'dateo',
 			voted_model: this.model,
-			style: 'full-small' 
+			add_class: 'big-button' 
 		});
 		$widgets.append(this.vote_widget.render().el);
-		*/
+		
+		// COMMENT WIDGET
+		this.comment_widget = new CommentWidgetView({model:this.model});
+		$widgets.append(this.comment_widget.render().el);
+		
 		return this;
 	},
 
