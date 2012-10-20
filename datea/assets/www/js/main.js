@@ -36,7 +36,19 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	initialize: function () {
-	    $.ajaxSetup({ crossDomain:true });
+	    $.ajaxSetup({ 
+            beforeSend: function(){
+                $('#spinner').fadeIn("fast");
+            },
+            complete: function(){
+                $('#spinner').fadeOut("fast");
+                
+                setTimeout(function () {
+                    myScroll.refresh();
+                }, 0);
+            },
+            crossDomain:true 
+        });
 	    $.support.cors = true;
             /*
 	    this.bind('all', function(trigger, args){
@@ -409,7 +421,7 @@ function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
 
-    /*//scroll
+    //scroll
     function loaded() {
         window.myScroll = new iScroll('main',{
             hScroll : false,
@@ -418,7 +430,7 @@ function onDeviceReady() {
         });
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);*/
+    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
 }
 
 function onMenuDown() {

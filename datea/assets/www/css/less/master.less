@@ -11,8 +11,6 @@
 @import "createMapItem.less";
 @import "map_item.less";
 @import "widgets.less";
-@import "offline.less";
-
 
 
 body{
@@ -89,4 +87,19 @@ a:hover{
   margin: 0 auto;
   float:none;
   //background-color: blue;
+}
+
+//spinner
+#spinner{
+  position: absolute;
+  display: none;
+  top: 53px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 9999;
+  background-color: rgba(185, 185, 185, 0.34);
+  background-image: url('../img/spinner.gif');
+  background-repeat: no-repeat;
+  background-position: 50% 46%;
 }

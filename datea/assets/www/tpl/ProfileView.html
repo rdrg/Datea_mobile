@@ -1,7 +1,9 @@
 <div id="profile_container">
   <div id="profile_name">
     <h1><%= username %></h1>
-    <span><%= profile.full_name %></span>
+    <% if(profile.full_name) {%>
+      <span><%= profile.full_name %></span>
+    <% } %>
   </div>
 
   <div id="profile_info">
