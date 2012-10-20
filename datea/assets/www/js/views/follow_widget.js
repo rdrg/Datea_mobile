@@ -83,8 +83,6 @@ var FollowWidgetBaseView = Backbone.View.extend({
 			var self = this;
 			this.model.save({}, {
 				success: function (model, response) {
-					console.log("success follow");
-					console.log(model);
 					self.render();
 					self.$el.removeClass('loading');
 				},
