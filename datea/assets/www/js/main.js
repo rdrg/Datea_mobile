@@ -24,6 +24,7 @@ var DateaRouter = Backbone.Router.extend({
         "mapping/:mapid/reports/map":"mappingMap",
         "mapping/:mapid/reports/:reportid":"mapItemDetail",
     	//"mapping/:mapid/reports/geoinput": "geoInput"
+    	"history": "openHistory",
 	},
 	
 	showView: function(selector, view) {
@@ -290,9 +291,11 @@ var DateaRouter = Backbone.Router.extend({
     		do_fetch = false;
     	}
         
-        this.mappingMapView = new MappingMapView({
+        if (!this.mappingMapView) {
+        	this.mappingMapView = new MappingMapView({
         		model: this.actionModel
        	 	});
+       	}
     	
     	if (do_fetch) {
     		var self = this;
@@ -331,9 +334,7 @@ var DateaRouter = Backbone.Router.extend({
 			    	self.mappingMapView.itemLayer.initCenter(locInfo);
 			    }
     		}
-    		setTimeout(function(){
-    			self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
-    		}, 500);
+    		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	});
     },
     
@@ -374,6 +375,19 @@ var DateaRouter = Backbone.Router.extend({
 			this.locationInputView.loadMap();
 		}    	
     },
+    
+    openHistory: function () {
+    	
+    	if (!this.historyListView) {
+        	this.historyListView = new HistoryListView({
+        		user_model: localUser,
+       	 	});
+        }
+        
+    	this.showView('#content', this.historyListView);
+    	this.historyListView.fetch_models();
+    
+    }
 });
 
 
@@ -408,6 +422,8 @@ $(document).ready(function () {
                     'FollowActionWidgetView',
                     'VoteWidgetView',
                     'CommentWidgetView',
+                    'HistoryItemView',
+                    'HistoryListView'
                     ], 
 
 	function () {

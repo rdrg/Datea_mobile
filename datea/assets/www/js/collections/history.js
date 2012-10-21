@@ -1,4 +1,4 @@
 var HistoryCollection = Backbone.Collection.extend({
     model: HistoryModel,
-    url: '/api/v1/history/'
+    url: api_url +'/api/v1/history/'
 });
