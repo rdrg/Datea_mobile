@@ -4,17 +4,10 @@ var CreateMapItemView = Backbone.View.extend({
         
         var self = this;
         
+        this.step = 1;    
         //console.log("local user token: " + localSession.get('token'));
-
-        if(this.options.mappingModel.get('item_categories') !== undefined){
-            console.log('setting step to 1');
-            this.step = 1;
-        }else{
-            console.log('setting step to 2');
-            this.step = 2;
-        }
         //if this.model.attributes.
-        _.bindAll(this, 'nextView');
+        _.bindAll(this);
 
     },
     events: {
@@ -32,15 +25,15 @@ var CreateMapItemView = Backbone.View.extend({
 
         if(this.step == 1){
             console.log("perform actions for step 1");
-            this.stepOneView = new CreateMapItemOne({
+            this.stepOneTwoView = new CreateMapItemOneTwo({
                 model: this.model,
                 mappingModel: this.options.mappingModel, 
                 step : this.step
             });
             console.log("mapping url: " + this.model.get('action'));
-            this.$("#create_mapitem_content").html(this.stepOneView.render().el); 
+            this.$("#create_mapitem_content").html(this.stepOneTwoView.render().el); 
             this.step = 2;
-
+        /*
         }else if(this.step == 2){
             console.log("perform actions for step 2");
                this.stepTwoView = new CreateMapItemTwo({
@@ -50,17 +43,10 @@ var CreateMapItemView = Backbone.View.extend({
             });
             this.$("#create_mapitem_content").html(this.stepTwoView.render().el); 
             this.step = 3;
-
-        }else if(this.step == 3){
+        */
+        }else if(this.step == 2){
             console.log("perform actions for step 3");
-            /*
-            this.stepThreeView = new CreateMapItemThree({
-                model: this.model,
-                mappingModel: this.options.mappingModel,
-                step : this.step
-            });
-            this.$("#create_mapitem_content").html(this.stepThreeView.render().el);
-            */
+            
             this.locationView = new LocationInputView({
                 model: this.model,
                 mapModel: this.options.mappingModel,
@@ -75,10 +61,11 @@ var CreateMapItemView = Backbone.View.extend({
             $("#footer").hide("fast");
             $("#map_overlay").show("fast");
 
-            this.step = 4;
-        }else if(this.step == 4){
+            this.step = 3;
+        }else if(this.step == 3){
             $("#map_overlay").hide("fast");
             this.transferImage();
+
         }
     },
 
@@ -100,12 +87,6 @@ var CreateMapItemView = Backbone.View.extend({
             
             params = new Object();
 
-            /*
-            params.object_type = 'DateaProfile';
-            params.object_id = this.model.get('profile').id;
-            params.object_field = 'image';
-            params.thumb_preset = 'profile_image_large';
-            */
             //params.object_field = 'image';
             params.thumb_preset = 'profile_image_large';
             console.log("user: " + localSession.get('username') + "key: " + localSession.get('token'));
@@ -151,14 +132,25 @@ var CreateMapItemView = Backbone.View.extend({
             console.log("Code = " + r.responseCode);
             console.log("Response= " + r.response);
             console.log("Sent = " + r.bytesSent);
-            //this.el.save();
-            //console.log("response: " + r.resource);
-           
+            //this.model.save();
+            var jres = JSON.parse(r.response);
+
+            console.log("response: " + JSON.stringify(jres.resource));
+            var im = jres.resource;
+            //console.log("val: " + j.resource);
             //this.dateoImage = r.resource;
-            
-            //this.model.set({'image': this.dateoImage});
-            //this.model.save();    
-            
+            var self = this;
+            this.model.set({image: im});
+            this.model.save({}, {
+                success: function(){
+                    console.log("saved");
+                    self.stepFourView = new CreateMapItemFour({
+                        model : self.model,
+                        mappingModel : self.options.mappingModel
+                    });
+                    self.$("#create_mapitem_content").html(self.stepFourView.render().el);
+                }
+            });    
         },
 
         fail: function(error){
@@ -166,5 +158,4 @@ var CreateMapItemView = Backbone.View.extend({
             console.log("upload error source: " + error.source);
             console.log("upload error target: " + error.target);
         }
-
 });

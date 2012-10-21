@@ -161,11 +161,11 @@ var DateaRouter = Backbone.Router.extend({
 		this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#content', this.profileEditView);
         
-        
-        /*setTimeout(function(){
+        /*
+        setTimeout(function(){
                 window.myScroll.refresh();
-        }, 0);*/
-        
+        }, 0);
+        */
 	},
 	
 	myActions: function () {
@@ -223,10 +223,12 @@ var DateaRouter = Backbone.Router.extend({
             data: {'id': mapid},
             success: function(){
                 self.showView('#content', self.mapItemListView());
-                
-                /*setTimeout(function(){
+                /*
+                setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0);*/
+                }, 0);
+                */
+                
             }
         });
     },
@@ -247,10 +249,11 @@ var DateaRouter = Backbone.Router.extend({
                     mappingModel: self.mappingModel
                 }); 
                 self.showView('#content', self.newMapItemView);   
-                
-                /*setTimeout(function(){
+                /*
+                setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0);*/
+                }, 0);
+                */
             }
         });
     },
@@ -355,9 +358,11 @@ $(document).ready(function () {
                     'LoggedOutHeaderView', 
                     'MapItemListView',
                     'CreateMapItemView',
-                    'CreateMapItemOne',
+                    'CreateMapItemOneTwo',
+                    //'CreateMapItemOne',
                     'CreateMapItemTwo',
                     'CreateMapItemThree',
+                    'CreateMapItemFour',
                     'MappingMapView',
                     'LocationInputView',
                     'MapItemDetailView',
@@ -404,9 +409,7 @@ $(document).ready(function () {
                             error: function(){
                                 console.log("some error fetching");
                             }
-                        
-                        });  
-                        
+                        });        
                     }
 	        }
 	        window.dateaApp = new DateaRouter();           
@@ -420,10 +423,13 @@ function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
 
 
-    /*// Initializing BackStack.StackNavigator 
+    // Initializing BackStack.StackNavigator for the #container div
+    /*
     window.stackNavigator = new BackStack.StackNavigator({
         el: '#main'
     });
+    */
+    
     // Pushing FirstView on to the stack
     //window.stackNavigator.pushView(ActionsView);*/
 }
@@ -432,6 +438,8 @@ function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
 
+    //var myScroll;
+    /*
     //scroll
     function loaded() {
         window.myScroll = new iScroll('main',{
@@ -442,6 +450,7 @@ function onDeviceReady() {
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
     window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
+    */
 }
 
 function onMenuDown() {

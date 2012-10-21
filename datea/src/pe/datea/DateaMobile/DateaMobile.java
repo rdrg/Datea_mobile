@@ -33,4 +33,3 @@ public class DateaMobile extends DroidGap
         super.loadUrl("file:///android_asset/www/index.html");
     }
 }
-
