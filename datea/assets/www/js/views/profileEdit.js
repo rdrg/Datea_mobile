@@ -157,7 +157,9 @@ var ProfileEditView = Backbone.View.extend({
         console.log("Sent = " + r.bytesSent);
         var self = this;
    		this.model.save({}, {
-            success: function() {
+            success: function(model) {
+            	console.log('profile save success');
+            	console.log(model.get('profile').image);
                 dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
             },
          	error: function(error) {

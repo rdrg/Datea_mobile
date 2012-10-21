@@ -20,9 +20,9 @@ var DateaRouter = Backbone.Router.extend({
         "actions": "myActions",
         "action/:actionid": "actionDetail",
         //"mapping/:mapid/reports":"mapItemList",
-        "mapping/:mapid/reports/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
-        "mapping/:mapid/reports/map":"mappingMap"
+        "mapping/:mapid/reports/map":"mappingMap",
+        "mapping/:mapid/reports/:reportid":"mapItemDetail",
     	//"mapping/:mapid/reports/geoinput": "geoInput"
 	},
 	
@@ -300,13 +300,18 @@ var DateaRouter = Backbone.Router.extend({
     	var self = this;
     	this.mappingMap( mapping_id, function(){
     		// find model data in actionModel map items
-    		var item_data = _.find(self.actionModel.get('map_items'),function(item){
-    			return item.get('id') == item_id;
+    		var item_data = _.find(self.actionModel.get('map_items'), function(item){
+    			return item.id == item_id;
     		});
     		var item_model =  new MapItem(item_data);
     		var clusterCol = new MapItemCollection([item_model]);
     		if (item_model.get('position') && item_model.get('position').coordinates) {
-    			self.mappingMapView.zoom_to_item(item_model);
+    			//self.mappingMapView.zoom_to_item(item_model);
+    			var pos = item_model.get('position').coordinates;
+			    var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
+			    if (self.mappingMapView.itemLayer) {
+			    	self.mappingMapView.itemLayer.initCenter(locInfo);
+			    }
     		}
     		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	});

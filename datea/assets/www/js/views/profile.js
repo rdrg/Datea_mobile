@@ -6,6 +6,7 @@ var ProfileView = Backbone.View.extend({
 
     render: function() {
     	var mdl = this.model.toJSON();
+    	console.log(mdl.profile.image);
     	
     	if (!mdl.username) {
     		return this;

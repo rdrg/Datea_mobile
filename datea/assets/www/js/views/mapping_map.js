@@ -20,6 +20,7 @@ var MappingMapView = Backbone.View.extend({
     
     loadMap : function() {
 		var self = this;
+
 		//document.addEventListener("deviceready", function() {
 			navigator.geolocation.getCurrentPosition( 
 				function (position) {
@@ -42,7 +43,8 @@ var MappingMapView = Backbone.View.extend({
 	},
     
     createMap: function(deviceLocInfo) {
-    	this.itemLayer = new Datea.olwidget.InfoLayer(
+    	
+		this.itemLayer = new Datea.olwidget.InfoLayer(
 			this.model, this.map_items,
 			{'name': 'Dateos', 'cluster': true},
 			deviceLocInfo
