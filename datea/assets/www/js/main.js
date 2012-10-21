@@ -36,7 +36,19 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	initialize: function () {
-	    $.ajaxSetup({ crossDomain:true });
+	    $.ajaxSetup({ 
+            beforeSend: function(){
+                $('#spinner').fadeIn("fast");
+            },
+            complete: function(){
+                $('#spinner').fadeOut("fast");
+                
+                setTimeout(function () {
+                    myScroll.refresh();
+                }, 0);
+            },
+            crossDomain:true 
+        });
 	    $.support.cors = true;
             /*
 	    this.bind('all', function(trigger, args){
@@ -113,11 +125,11 @@ var DateaRouter = Backbone.Router.extend({
 		}
 
 		this.showView('#content', this.loginView);
-        /*
-        setTimeout(function(){
+        
+        /*setTimeout(function(){
                 window.myScroll.refresh();
-        }, 0);
-        */
+        }, 0);*/
+        
 	},
 	
 	logout: function () {
@@ -138,11 +150,11 @@ var DateaRouter = Backbone.Router.extend({
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
         this.showView('#content', this.profileView);
-        /*
-        setTimeout(function(){
+        
+        /*setTimeout(function(){
             window.myScroll.refresh();
-        }, 0);
-        */
+        }, 0);*/
+        
 	},
 	
 	userEditProfile: function (userid) {
@@ -167,11 +179,9 @@ var DateaRouter = Backbone.Router.extend({
                 self.actionsView = new ActionsView({model:self.actionCollection});
                 self.showView('#content', self.actionsView);
                 //load navigation
-               /* 
-                setTimeout(function(){
+                /*setTimeout(function(){
                     window.myScroll.refresh();
-                }, 0);
-                */
+                }, 0);*/
             }
         });
 	},
@@ -189,12 +199,10 @@ var DateaRouter = Backbone.Router.extend({
                     self.actionView = new ActionView({model: self.actionModel});
                 }
                 self.showView('#content', self.actionView);
-                //load navigation
-                /*
-                setTimeout(function(){
+                //load navigation  
+                /*setTimeout(function(){
                     //window.myScroll.refresh();
-                }, 0);
-                */
+                }, 0);*/
             }
         });
     },
@@ -356,7 +364,8 @@ $(document).ready(function () {
                     'MapItemResponseView',
                     'FollowActionWidgetView',
                     'VoteWidgetView',
-                    'CommentWidgetView'], 
+                    'CommentWidgetView',
+                    ], 
 
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
@@ -372,7 +381,9 @@ $(document).ready(function () {
                         userid = localSession.get('userid');
                         console.log('token: ' + localSession.get('token'));
                         localUser.fetch({ 
-                            data: { 
+                            data: {
+                            	'username': localSession.get('username'),
+                            	'api_key': localSession.get('token'),
                                 'id': userid, 
                                 'user_full': 1 
                             },
@@ -411,14 +422,16 @@ function onLoad() {
     */
     
     // Pushing FirstView on to the stack
-    //window.stackNavigator.pushView(ActionsView);
+    //window.stackNavigator.pushView(ActionsView);*/
 }
 
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
+    document.addEventListener("offline", onOffline, false);
 
     //var myScroll;
     /*
+    //scroll
     function loaded() {
         window.myScroll = new iScroll('main',{
             hScroll : false,
@@ -434,6 +447,24 @@ function onDeviceReady() {
 function onMenuDown() {
 	$('#footer').toggle();
 }
+
+function onOffline(){
+    navigator.notification.alert(
+        'Datea necesita estar conectado a Internet',
+        offLineAlertDismissed,
+        'Sin Conexion',
+        'ok'
+    );
+}
+
+function offLineAlertDismissed() {
+    if (navigator.app && navigator.app.exitApp) {
+        navigator.app.exitApp();
+    } else if (navigator.device && navigator.device.exitApp) {
+        navigator.device.exitApp();
+    }
+}
+
 
 window.myScroll = {
 	refresh: function() {console.log('fake refresh myscroll')}

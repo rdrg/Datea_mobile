@@ -8,7 +8,8 @@ var ProfileEditView = Backbone.View.extend({
       "submit #user_edit_form": "transferImage"
     },
     render: function() {
-        this.$el.html(this.template);
+    	console.log(this.model.toJSON());
+        this.$el.html(this.template(this.model.toJSON()));
         return this;
     },
 
@@ -62,76 +63,91 @@ var ProfileEditView = Backbone.View.extend({
 
     transferImage: function(event){
         event.preventDefault();
-        console.log("sending image");
+
         var self = this;
         var profile = new Profile(this.model.get('profile'));
         
         profile.set({
-            "full_name": $("#fullname_in").val(),
-            "email": $("#email_in").val(),
-            "message": $("#message_in").val()
+            full_name: $("#fullname_in").val(),
+            message: $("#message_in").val()
         });
         
-        this.model.set({ 'profile': profile.toJSON() });
-        
-        var profile_img = new Image();
- 
-        var transfer = new FileTransfer();
-        var options = new FileUploadOptions();
-        var image_uri = $("#image_data").val();
-
-        //options.fileKey = "file";
-        options.mimeType = "image/jpeg";
-        options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
-        options.fileKey = 'image';
-        options.chunkedMode = false;
-        
-        params = new Object();
-        params.object_type = 'DateaProfile';
-        params.object_id = this.model.get('profile').id;
-        params.object_field = 'image';
-        params.thumb_preset = 'profile_image_large';
-
-        params.headers = { 
-            'Authorization': 'ApiKey '+ localSession.username + ':' + localSession.token, 
-            'enctype': 'multipart/form-data'
-        };
-        options.params = params;
-
-        //if(localStorage.getItem("authdata")) {
-            //var authdata = JSON.parse(localStorage.getItem("authdata"));
-                    
-        //var im = $("#image_path").text();
-        console.log("image: " + image_uri);    
-                        
-        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win(self), self.fail(self), options);
-        profile.save({}, {
-            success: function() {
-                console.log("profile saved");
-            }
+        this.model.set({ 
+        	profile: profile.toJSON(),
+        	email: $("#email_in").val(), 
         });
-
-       // }
+        
+        var image_uri=  $("#image_data").val();
+        
+        if (image_uri != '') {
+        	console.log("sending image");
+	        var profile_img = new Image();
+	 
+	        var transfer = new FileTransfer();
+	        var options = new FileUploadOptions();
+	
+	        //options.fileKey = "file";
+	        options.mimeType = "image/jpeg";
+	        options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
+	        options.fileKey = 'image';
+	        options.chunkedMode = false;
+	        
+	        var params = {
+	        	object_type: 'DateaProfile',
+	        	object_id: this.model.get('profile').id,
+	        	object_field: 'image',
+	        	thumb_preset: 'profile_image_large'
+	        };
+	
+	        params.headers = { 
+	            'Authorization': 'ApiKey '+ localSession.username + ':' + localSession.token, 
+	            'enctype': 'multipart/form-data'
+	        };
+	        options.params = params;
+	
+	        //if(localStorage.getItem("authdata")) {
+	            //var authdata = JSON.parse(localStorage.getItem("authdata"));
+	                    
+	        //var im = $("#image_path").text();
+	        console.log("image: " + image_uri);    
+	                        
+	        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win(self), self.fail(self), options);
+		}else{
+			var self = this;
+			this.model.save({}, {
+	            success: function() {
+	                dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
+	            },
+	         	error: function(error) {
+	         		alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+	         	}
+	        });
+		}
     },
  
     browseImage: function(event){
         event.preventDefault();
-        navigator.camera.getPicture(
-            function(imageURI){
-                //alert(imageURI);
-                $("#image_data").val(imageURI);
-            },
-            function(message){
-                alert(message);
-            },
-            {
-                quality: 50,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                //destinationType: navigator.camera.DestinationType.DATA_URL,
-                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
-            }
-        );
+        if (!this.image_browser_opened) {
+        	this.image_browser_opened = true;
+	        navigator.camera.getPicture(
+	            function(imageURI){
+	                //alert(imageURI);
+	                this.image_browser_opened = false;
+	                $("#image_data").val(imageURI);
+	            },
+	            function(message){
+	            	this.image_browser_opened = false;
+	                alert(message);
+	            },
+	            {
+	                quality: 50,
+	                destinationType: navigator.camera.DestinationType.FILE_URI,
+	                //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+	                //destinationType: navigator.camera.DestinationType.DATA_URL,
+	                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+	            }
+	        );
+	    }
     },
 
     win: function(r){
@@ -139,7 +155,15 @@ var ProfileEditView = Backbone.View.extend({
         console.log("Code = " + r.responseCode);
         console.log("Response= " + r.response);
         console.log("Sent = " + r.bytesSent);
-        dateaApp.navigate("user/" + this.model.get("id"), { trigger: true });
+        var self = this;
+   		this.model.save({}, {
+            success: function() {
+                dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
+            },
+         	error: function(error) {
+         		alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+         	}
+        });
     },
 
     fail: function(error){
