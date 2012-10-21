@@ -73,38 +73,53 @@ var CreateMapItemView = Backbone.View.extend({
             //event.preventDefault();
             console.log("sending image");
             var self = this;
-                        
-            var transfer = new FileTransfer();
-            var options = new FileUploadOptions();
-            var images = this.model.get('images');
-            var image_uri = images[0];
-            //options.fileKey = "file";
-            options.mimeType = "image/jpeg";
-            options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
-            options.fileKey = 'image';
-            options.chunkedMode = false;
-            options.user = localUser;
             
-            params = new Object();
+            if(this.model.get('images') !== undefined){            
+                var transfer = new FileTransfer();
+                var options = new FileUploadOptions();
+                var images = this.model.get('images');
+                var image_uri = images[0];
+                //options.fileKey = "file";
+                options.mimeType = "image/jpeg";
+                options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
+                options.fileKey = 'image';
+                options.chunkedMode = false;
+                options.user = localUser;
+                
+                params = new Object();
 
-            //params.object_field = 'image';
-            params.thumb_preset = 'profile_image_large';
-            console.log("user: " + localSession.get('username') + "key: " + localSession.get('token'));
-            params.headers = { 
-                'Authorization': 'ApiKey '+ localSession.get('username') + ':' + localSession.get('token'), 
-                'enctype': 'multipart/form-data'
-            };
-            options.params = params;
+                //params.object_field = 'image';
+                params.thumb_preset = 'profile_image_large';
+                console.log("user: " + localSession.get('username') + "key: " + localSession.get('token'));
+                params.headers = { 
+                    'Authorization': 'ApiKey '+ localSession.get('username') + ':' + localSession.get('token'), 
+                    'enctype': 'multipart/form-data'
+                };
+                options.params = params;
 
-            //if(localStorage.getItem("authdata")) {
-                //var authdata = JSON.parse(localStorage.getItem("authdata"));
-                        
-            //var im = $("#image_path").text();
-            console.log("image: " + image_uri);    
+                //if(localStorage.getItem("authdata")) {
+                    //var authdata = JSON.parse(localStorage.getItem("authdata"));
                             
-            transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
+                //var im = $("#image_path").text();
+                console.log("image: " + image_uri);    
+                                
+                transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 
-           // }
+            }else{
+                var self = this;    
+                this.model.save({}, {
+                    success: function(){
+                        console.log("saved");
+                        self.stepFourView = new CreateMapItemFour({
+                            model : self.model,
+                            mappingModel : self.options.mappingModel
+                        });
+                        self.$("#create_mapitem_content").html(self.stepFourView.render().el);
+                    }
+                });    
+
+               //this.saveMapItem();
+            }
         },
      
         browseImage: function(event){
@@ -141,6 +156,8 @@ var CreateMapItemView = Backbone.View.extend({
             //this.dateoImage = r.resource;
             var self = this;
             this.model.set({image: im});
+            //this.saveMapItem();
+            
             this.model.save({}, {
                 success: function(){
                     console.log("saved");
@@ -157,5 +174,22 @@ var CreateMapItemView = Backbone.View.extend({
             console.log("error Code = " + error.code);
             console.log("upload error source: " + error.source);
             console.log("upload error target: " + error.target);
+        },
+
+        saveMapItem: function(){
+             var self = this;
+             this.model.save({}, {
+                success: function(){
+                    console.log("saved");
+                    self.stepFourView = new CreateMapItemFour({
+                        model : self.model,
+                        mappingModel : self.options.mappingModel
+                    });
+                    self.$("#create_mapitem_content").html(self.stepFourView.render().el);
+                },
+                error: function(){
+                    alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+                }
+            });          
         }
 });
