@@ -20,7 +20,7 @@ var DateaRouter = Backbone.Router.extend({
         "actions": "myActions",
         "action/:actionid": "actionDetail",
         //"mapping/:mapid/reports":"mapItemList",
-        "mapping/report/:reportid":"mapItemDetail",
+        "mapping/:mapid/reports/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
         "mapping/:mapid/reports/map":"mappingMap"
     	//"mapping/:mapid/reports/geoinput": "geoInput"
@@ -255,7 +255,7 @@ var DateaRouter = Backbone.Router.extend({
         });
     },
        
-	mappingMap: function(mapid) {
+	mappingMap: function(mapid, callback_func) {
 		
 		//mapid = 16;
     	
@@ -280,6 +280,7 @@ var DateaRouter = Backbone.Router.extend({
     			success: function () {
 					self.showView('#content', self.mappingMapView);
 					self.mappingMapView.loadMap();
+					if (typeof(callback_func) != 'undefined') callback_func();
 				},
 				error: function(error) {
 					console.log("fetch error");
@@ -288,7 +289,15 @@ var DateaRouter = Backbone.Router.extend({
 		}else{
 			this.showView('#content', this.mappingMapView);
 			this.mappingMapView.loadMap();
+			if (typeof(callback_func) != 'undefined') callback_func();
 		}
+    },
+    
+    mapItemDetail: function(mapping_id, item_id) {
+    	var self = this;
+    	this.mappingMap(mapping_id, function(){
+    		
+    	});
     },
     
     geoInput: function(mapid) {
