@@ -111,7 +111,7 @@ var ProfileEditView = Backbone.View.extend({
 	        //var im = $("#image_path").text();
 	        console.log("image: " + image_uri);    
 	                        
-	        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win(self), self.fail(self), options);
+	        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 		}else{
 			var self = this;
 			this.model.save({}, {
@@ -151,14 +151,16 @@ var ProfileEditView = Backbone.View.extend({
     },
 
     win: function(r){
-
-        console.log("Code = " + r.responseCode);
-        console.log("Response= " + r.response);
-        console.log("Sent = " + r.bytesSent);
+		
+		var jres = JSON.parse(r.response);
+        var im = jres.resource;
+        
+        consloe.log("win");
+        console.log(im.image);
+           
         var self = this;
-   		this.model.save({}, {
+   		this.model.save({image: im}, {
             success: function(model) {
-            	console.log('profile save success');
             	console.log(model.get('profile').image);
                 dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
             },
