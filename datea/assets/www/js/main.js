@@ -290,12 +290,9 @@ var DateaRouter = Backbone.Router.extend({
     		do_fetch = false;
     	}
         
-        if (!this.mappingMapView) {
-        	console.log("CREATE MAIN MAP VIEW")
-        	this.mappingMapView = new MappingMapView({
+        this.mappingMapView = new MappingMapView({
         		model: this.actionModel
        	 	});
-       	}
     	
     	if (do_fetch) {
     		var self = this;
@@ -334,7 +331,9 @@ var DateaRouter = Backbone.Router.extend({
 			    	self.mappingMapView.itemLayer.initCenter(locInfo);
 			    }
     		}
-    		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
+    		setTimeout(function(){
+    			self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
+    		}, 500);
     	});
     },
     
