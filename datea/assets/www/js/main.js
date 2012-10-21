@@ -297,6 +297,7 @@ var DateaRouter = Backbone.Router.extend({
     },
     
     mapItemDetail: function(mapping_id, item_id) {
+    	console.log("MAP ITEM DETAIL "+item_id);
     	var self = this;
     	this.mappingMap( mapping_id, function(){
     		// find model data in actionModel map items

@@ -153,7 +153,6 @@ var CreateMapItemView = Backbone.View.extend({
             }); 
             this.model.save({}, {
                 success: function(){
-                	consle.log(this.options.mappingModel);
                 	 /*
                      self.options.mappingModel.save({
                         success: function(){
@@ -165,14 +164,14 @@ var CreateMapItemView = Backbone.View.extend({
                     });
                    console.log("saved");
                    */
-                    if (this.options.mappingModel.attributes.map_items) {
-                    	this.options.mappingModel.attributes.map_items.unshift(this.model.toJSON());	
+                    if (self.options.mappingModel.attributes.map_items) {
+                    	self.options.mappingModel.attributes.map_items.unshift(self.model.toJSON());	
                     }else{
-                    	this.options.mappingModel.set('map_items',[this.model.toJSON()],{silent: true});
+                    	self.options.mappingModel.set('map_items',[self.model.toJSON()],{silent: true});
                     }
                  
-                    this.options.mappingModel.set({
-                    	item_count: this.options.mappingMOdel.get('item_count') + 1
+                    self.options.mappingModel.set({
+                    	item_count: self.options.mappingModel.get('item_count') + 1
                     });
                     self.stepFourView = new CreateMapItemFour({
                         model : self.model,
