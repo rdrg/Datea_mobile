@@ -5,6 +5,7 @@ var ActionsView = Backbone.View.extend({
     },
 
     render: function () {
+        
         var action_list = [];
         //if (typeof(this.model) == 'undefined') return;
 	   _.each(this.model.models, function (action) {
