@@ -20,6 +20,7 @@ var MappingMapView = Backbone.View.extend({
     
     loadMap : function() {
 		var self = this;
+
 		//document.addEventListener("deviceready", function() {
 			navigator.geolocation.getCurrentPosition( 
 				function (position) {
@@ -42,7 +43,8 @@ var MappingMapView = Backbone.View.extend({
 	},
     
     createMap: function(deviceLocInfo) {
-    	this.itemLayer = new Datea.olwidget.InfoLayer(
+    	
+		this.itemLayer = new Datea.olwidget.InfoLayer(
 			this.model, this.map_items,
 			{'name': 'Dateos', 'cluster': true},
 			deviceLocInfo
@@ -83,11 +85,20 @@ var MappingMapView = Backbone.View.extend({
     	this.$el.find('.cluster-content-view').hide();
     },
     
-    zoom_to_item: function(ev) {
-    	ev.preventDefault();
-    	var id = $(ev.currentTarget).data('id');
-    	var bone_id = this.map_items.url+id+'/';
-    	var pos = this.map_items.get(bone_id).get('position').coordinates;
+    zoom_to_item: function(arg) {
+    	if (typeof(arg.attributes) != 'undefined'){
+			var mdl = arg;
+		}else{
+			if (typeof(arg.currentTarget) != 'undefined') {
+				arg.preventDefault();
+				var id = $(arg.currentTarget).data('id');
+			}else{
+				var id = parseInt(arg);
+			}
+			var bone_id = this.map_items.url+id+'/';
+	    	var mdl = this.map_items.get(bone_id)
+		}
+        var pos = mdl.get('position').coordinates;
     	var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
     	this.itemLayer.initCenter(locInfo);
     	this.item_cluster_view.close();

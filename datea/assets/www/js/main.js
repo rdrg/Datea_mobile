@@ -20,9 +20,9 @@ var DateaRouter = Backbone.Router.extend({
         "actions": "myActions",
         "action/:actionid": "actionDetail",
         //"mapping/:mapid/reports":"mapItemList",
-        "mapping/report/:reportid":"mapItemDetail",
         "mapping/:mapid/report/create": "createReport",
-        "mapping/:mapid/reports/map":"mappingMap"
+        "mapping/:mapid/reports/map":"mappingMap",
+        "mapping/:mapid/reports/:reportid":"mapItemDetail",
     	//"mapping/:mapid/reports/geoinput": "geoInput"
 	},
 	
@@ -258,7 +258,7 @@ var DateaRouter = Backbone.Router.extend({
         });
     },
        
-	mappingMap: function(mapid) {
+	mappingMap: function(mapid, callback_func) {
 		
 		//mapid = 16;
     	
@@ -283,6 +283,7 @@ var DateaRouter = Backbone.Router.extend({
     			success: function () {
 					self.showView('#content', self.mappingMapView);
 					self.mappingMapView.loadMap();
+					if (typeof(callback_func) != 'undefined') callback_func();
 				},
 				error: function(error) {
 					console.log("fetch error");
@@ -291,7 +292,29 @@ var DateaRouter = Backbone.Router.extend({
 		}else{
 			this.showView('#content', this.mappingMapView);
 			this.mappingMapView.loadMap();
+			if (typeof(callback_func) != 'undefined') callback_func();
 		}
+    },
+    
+    mapItemDetail: function(mapping_id, item_id) {
+    	var self = this;
+    	this.mappingMap( mapping_id, function(){
+    		// find model data in actionModel map items
+    		var item_data = _.find(self.actionModel.get('map_items'), function(item){
+    			return item.id == item_id;
+    		});
+    		var item_model =  new MapItem(item_data);
+    		var clusterCol = new MapItemCollection([item_model]);
+    		if (item_model.get('position') && item_model.get('position').coordinates) {
+    			//self.mappingMapView.zoom_to_item(item_model);
+    			var pos = item_model.get('position').coordinates;
+			    var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
+			    if (self.mappingMapView.itemLayer) {
+			    	self.mappingMapView.itemLayer.initCenter(locInfo);
+			    }
+    		}
+    		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
+    	});
     },
     
     geoInput: function(mapid) {
