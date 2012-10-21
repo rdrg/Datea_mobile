@@ -91,6 +91,7 @@ var HistoryListView = Backbone.View.extend({
     			params.sender_type = 'vote';
     			break;
     	}
+    	console.log(params);
     	this.model.fetch({ data: params });
     },
     
@@ -110,7 +111,6 @@ var HistoryListView = Backbone.View.extend({
     	if (this.model.meta.total_count > this.model.meta.limit + this.model.meta.offset) {
        		add_pager = true;  
     	}
-    	console.log(add_pager);
     	
     	if (this.model.size() > 0) {
 	    	var self = this;
@@ -140,7 +140,7 @@ var HistoryListView = Backbone.View.extend({
     reset_event: function(ev) {
     	this.render_filter();
     	this.render_page();
-    	console.log(this.model.meta);
+    	//console.log(this.model.meta);
     } 
 	
 });
