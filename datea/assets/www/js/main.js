@@ -190,7 +190,7 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.actionModel){
             this.actionModel = new Action();
         }
-        this.actionModel.url = api_url + "/api/v1/mapping/" + actionid+'/';
+        this.actionModel.url = api_url + "/api/v1/mapping_full/" + actionid+'/';
         var self = this;
         this.actionModel.fetch({
             success: function(){
@@ -234,28 +234,47 @@ var DateaRouter = Backbone.Router.extend({
     },
          
 	createReport: function(mapid) {
-        var self = this;
-        this.mappingModel = new Action();
-        this.mappingModel.url = api_url + '/api/v1/mapping_full/' + mapid;
-        this.mappingModel.fetch({
-            success: function(mdl, response){
-                this.mdl = mdl;
-                var other = this;
-                self.newMapItem = new MapItem({
-                    action: other.mdl.get('resource_uri')
-                });
-                self.newMapItemView = new CreateMapItemView({
-                    model: self.newMapItem,
-                    mappingModel: self.mappingModel
-                }); 
-                self.showView('#content', self.newMapItemView);   
-                /*
-                setTimeout(function(){
-                    window.myScroll.refresh();
-                }, 0);
-                */
-            }
-        });
+        
+        var do_fetch = true;
+        
+        if (!this.actionModel) {
+    		this.actionModel = new Action({id: mapid});
+    		this.actionModel.urlRoot = '/api/v1/mapping_full';
+    	}else if (this.actionModel.get('id') == mapid) {
+    		do_fetch = false;
+    	}
+		
+		if (do_fetch) {
+    		var self = this;
+	        this.actionModel.fetch({
+	            success: function(mdl, response){
+	                this.mdl = mdl;
+	                var other = this;
+	                self.newMapItem = new MapItem({
+	                    action: other.mdl.get('resource_uri')
+	                });
+	                self.newMapItemView = new CreateMapItemView({
+	                    model: self.newMapItem,
+	                    mappingModel: self.actionModel
+	                }); 
+	                self.showView('#content', self.newMapItemView);   
+	                /*
+	                setTimeout(function(){
+	                    window.myScroll.refresh();
+	                }, 0);
+	                */
+	            }
+	        });
+	    }else{
+	    	this.newMapItem = new MapItem({
+                action: this.actionModel.get('resource_uri')
+            });
+            this.newMapItemView = new CreateMapItemView({
+                model: this.newMapItem,
+                mappingModel: this.actionModel
+            }); 
+            this.showView('#content', this.newMapItemView); 
+	    }
     },
        
 	mappingMap: function(mapid, callback_func) {
@@ -272,6 +291,7 @@ var DateaRouter = Backbone.Router.extend({
     	}
         
         if (!this.mappingMapView) {
+        	console.log("CREATE MAIN MAP VIEW")
         	this.mappingMapView = new MappingMapView({
         		model: this.actionModel
        	 	});
@@ -297,7 +317,7 @@ var DateaRouter = Backbone.Router.extend({
     },
     
     mapItemDetail: function(mapping_id, item_id) {
-    	console.log("MAP ITEM DETAIL "+item_id);
+
     	var self = this;
     	this.mappingMap( mapping_id, function(){
     		// find model data in actionModel map items
