@@ -367,7 +367,9 @@ $(document).ready(function () {
                         userid = localSession.get('userid');
                         console.log('token: ' + localSession.get('token'));
                         localUser.fetch({ 
-                            data: { 
+                            data: {
+                            	'username': localSession.get('username'),
+                            	'api_key': localSession.get('token'),
                                 'id': userid, 
                                 'user_full': 1 
                             },
