@@ -298,8 +298,17 @@ var DateaRouter = Backbone.Router.extend({
     
     mapItemDetail: function(mapping_id, item_id) {
     	var self = this;
-    	this.mappingMap(mapping_id, function(){
-    		
+    	this.mappingMap( mapping_id, function(){
+    		// find model data in actionModel map items
+    		var item_data = _.find(self.actionModel.get('map_items'),function(item){
+    			return item.get('id') == item_id;
+    		});
+    		var item_model =  new MapItem(item_data);
+    		var clusterCol = new MapItemCollection([item_model]);
+    		if (item_model.get('position') && item_model.get('position').coordinates) {
+    			self.mappingMapView.zoom_to_item(item_model);
+    		}
+    		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	});
     },
     
