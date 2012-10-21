@@ -236,7 +236,7 @@ var DateaRouter = Backbone.Router.extend({
 	createReport: function(mapid) {
         var self = this;
         this.mappingModel = new Action();
-        this.mappingModel.url = api_url + '/api/v1/mapping/' + mapid;
+        this.mappingModel.url = api_url + '/api/v1/mapping_full/' + mapid;
         this.mappingModel.fetch({
             success: function(mdl, response){
                 this.mdl = mdl;

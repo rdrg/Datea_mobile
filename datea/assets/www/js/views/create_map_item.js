@@ -5,8 +5,6 @@ var CreateMapItemView = Backbone.View.extend({
         var self = this;
         
         this.step = 1;    
-        //console.log("local user token: " + localSession.get('token'));
-        //if this.model.attributes.
         _.bindAll(this);
 
     },
@@ -96,29 +94,11 @@ var CreateMapItemView = Backbone.View.extend({
                     'enctype': 'multipart/form-data'
                 };
                 options.params = params;
-
-                //if(localStorage.getItem("authdata")) {
-                    //var authdata = JSON.parse(localStorage.getItem("authdata"));
-                            
-                //var im = $("#image_path").text();
                 console.log("image: " + image_uri);    
-                                
                 transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 
             }else{
-                var self = this;    
-                this.model.save({}, {
-                    success: function(){
-                        console.log("saved");
-                        self.stepFourView = new CreateMapItemFour({
-                            model : self.model,
-                            mappingModel : self.options.mappingModel
-                        });
-                        self.$("#create_mapitem_content").html(self.stepFourView.render().el);
-                    }
-                });    
-
-               //this.saveMapItem();
+               this.saveMapItem();
             }
         },
      
@@ -147,27 +127,12 @@ var CreateMapItemView = Backbone.View.extend({
             console.log("Code = " + r.responseCode);
             console.log("Response= " + r.response);
             console.log("Sent = " + r.bytesSent);
-            //this.model.save();
             var jres = JSON.parse(r.response);
-
             console.log("response: " + JSON.stringify(jres.resource));
             var im = jres.resource;
-            //console.log("val: " + j.resource);
-            //this.dateoImage = r.resource;
             var self = this;
             this.model.set({image: im});
-            //this.saveMapItem();
-            
-            this.model.save({}, {
-                success: function(){
-                    console.log("saved");
-                    self.stepFourView = new CreateMapItemFour({
-                        model : self.model,
-                        mappingModel : self.options.mappingModel
-                    });
-                    self.$("#create_mapitem_content").html(self.stepFourView.render().el);
-                }
-            });    
+            this.saveMapItem();
         },
 
         fail: function(error){
@@ -177,10 +142,26 @@ var CreateMapItemView = Backbone.View.extend({
         },
 
         saveMapItem: function(){
-             var self = this;
-             this.model.save({}, {
+            var self = this;
+            var count = this.options.mappingModel.get('item_count');
+            count++; 
+            var mapItems = this.options.mappingModel.get('map_items');
+            mapItems.push(this.model);
+            this.options.mappingModel.set({
+                map_tems: mapItems,
+                item_count: count
+            }); 
+            this.model.save({}, {
                 success: function(){
-                    console.log("saved");
+                     self.options.mappingModel.save({
+                        success: function(){
+                            console.log('mapping model saved');
+                        },
+                        error: function(){
+                            alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+                        }
+                    });
+                   console.log("saved");
                     self.stepFourView = new CreateMapItemFour({
                         model : self.model,
                         mappingModel : self.options.mappingModel
