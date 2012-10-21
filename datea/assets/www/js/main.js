@@ -113,11 +113,11 @@ var DateaRouter = Backbone.Router.extend({
 		}
 
 		this.showView('#content', this.loginView);
-        
+        /*
         setTimeout(function(){
                 window.myScroll.refresh();
         }, 0);
-        
+        */
 	},
 	
 	logout: function () {
@@ -138,22 +138,22 @@ var DateaRouter = Backbone.Router.extend({
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
         this.showView('#content', this.profileView);
-        
+        /*
         setTimeout(function(){
             window.myScroll.refresh();
         }, 0);
-        
+        */
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#content', this.profileEditView);
         
-        
+        /*
         setTimeout(function(){
                 window.myScroll.refresh();
         }, 0);
-        
+        */
 	},
 	
 	myActions: function () {
@@ -167,10 +167,11 @@ var DateaRouter = Backbone.Router.extend({
                 self.actionsView = new ActionsView({model:self.actionCollection});
                 self.showView('#content', self.actionsView);
                 //load navigation
-                
+               /* 
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
+                */
             }
         });
 	},
@@ -189,10 +190,11 @@ var DateaRouter = Backbone.Router.extend({
                 }
                 self.showView('#content', self.actionView);
                 //load navigation
-                
+                /*
                 setTimeout(function(){
                     //window.myScroll.refresh();
                 }, 0);
+                */
             }
         });
     },
@@ -213,11 +215,11 @@ var DateaRouter = Backbone.Router.extend({
             data: {'id': mapid},
             success: function(){
                 self.showView('#content', self.mapItemListView());
-                
+                /*
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
-                
+                */
                 
             }
         });
@@ -239,10 +241,11 @@ var DateaRouter = Backbone.Router.extend({
                     mappingModel: self.mappingModel
                 }); 
                 self.showView('#content', self.newMapItemView);   
-                
+                /*
                 setTimeout(function(){
                     window.myScroll.refresh();
                 }, 0);
+                */
             }
         });
     },
@@ -338,9 +341,11 @@ $(document).ready(function () {
                     'LoggedOutHeaderView', 
                     'MapItemListView',
                     'CreateMapItemView',
-                    'CreateMapItemOne',
+                    'CreateMapItemOneTwo',
+                    //'CreateMapItemOne',
                     'CreateMapItemTwo',
                     'CreateMapItemThree',
+                    'CreateMapItemFour',
                     'MappingMapView',
                     'LocationInputView',
                     'MapItemDetailView',
@@ -384,9 +389,7 @@ $(document).ready(function () {
                             error: function(){
                                 console.log("some error fetching");
                             }
-                        
-                        });  
-                        
+                        });        
                     }
 	        }
 	        window.dateaApp = new DateaRouter();           
@@ -401,10 +404,11 @@ function onLoad() {
 
 
     // Initializing BackStack.StackNavigator for the #container div
-    
+    /*
     window.stackNavigator = new BackStack.StackNavigator({
         el: '#main'
     });
+    */
     
     // Pushing FirstView on to the stack
     //window.stackNavigator.pushView(ActionsView);
@@ -414,6 +418,7 @@ function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
 
     //var myScroll;
+    /*
     function loaded() {
         window.myScroll = new iScroll('main',{
             hScroll : false,
@@ -423,6 +428,7 @@ function onDeviceReady() {
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
     window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
+    */
 }
 
 function onMenuDown() {
