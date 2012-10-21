@@ -53,7 +53,7 @@ var CreateMapItemTwo = Backbone.View.extend({
         event.preventDefault();
         this.imageOverlay = new ImageOverlayView({model: this.model});
         $("#overlay").html(this.imageOverlay.render().el);
-        $("#footer").hide("fast");
+        this.eventAggregator.trigger("footer:hide");
         $("#overlay").show("fast");
     },
 });
