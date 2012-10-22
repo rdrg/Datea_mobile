@@ -13,7 +13,9 @@ var CreateMapItemView = Backbone.View.extend({
     },
 
     render: function(){
-        this.$el.html(this.template());
+        var context = {};
+        context.step = this.step;
+        this.$el.html(this.template(context));
         this.nextView();
         return this;
     },
@@ -52,18 +54,15 @@ var CreateMapItemView = Backbone.View.extend({
                 modelField: 'position'
             });
 
-            $("#map_overlay").html(this.locationView.render().el);
+            //$("#main").html(this.locationView.render().el);
+            this.$("#create_mapitem_content").html(this.locationView.render().el); 
             this.locationView.loadMap();
 
-            $("#main").css('bottom','auto');
             this.eventAggregator.trigger("footer:hide");
-            $("#map_overlay").show("fast");
 
             this.step = 3;
         }else if(this.step == 3){
-            $("#map_overlay").fadeOut("fast");
             this.transferImage();
-
         }
     },
 

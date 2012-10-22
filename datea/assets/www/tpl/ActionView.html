@@ -1,41 +1,43 @@
-<div id="action_container">
-  <div id="action_header">
-    <div id="action_image">
-      <img src="<%= api_url %><%= image_thumb %>" />
-    </div>
-    <div id="action_info">
-      <h3><%= name %></h3>
-      <span><%= short_description%></span>
-    </div>  
-  </div>
-  
-  <div id="action_btns">
-    <a href="#mapping/<%= id %>/report/create" class="btn datea_btn_yllw" id="new_dateo"> 
-      nuevo dateo
-    </a>
-    <a href="#mapping/<%= id %>/reports/map" class="btn datea_btn_gry" id="browse_dateos">
-      navegar dateos
-    </a>
-
-    <div class="follow-button"></div>
- 
-  </div>
-
-  <hr>
-
-  <div id="action_footer">
-    <div id="action_about">
-      <h3>Sobre esta acci&oacute;n</h3>
-      <% if (image) { %>
-      	<img src="<%= api_url %><%= image %>" />
-	  <% } %>	
-		
-      <h4>misi&oacute;n / objetivos </h4>
-      <p><%= mission %></p>
-
-      <h4>qu&eacute; ocurrir&aacute; con los datos?</h4>
-      <p><%= information_destiny %></p>
+<div id="wrapper">
+  <div id="action_container">
+    <div id="action_header">
+      <div id="action_image">
+        <img src="<%= api_url %><%= image_thumb %>" />
+      </div>
+      <div id="action_info">
+        <h3><%= name %></h3>
+        <span><%= short_description%></span>
+      </div>  
     </div>
     
-  </div>
+    <div id="action_btns">
+      <a href="#mapping/<%= id %>/report/create" class="btn datea_btn_yllw" id="new_dateo"> 
+        nuevo dateo
+      </a>
+      <a href="#mapping/<%= id %>/reports/map" class="btn datea_btn_gry" id="browse_dateos">
+        navegar dateos
+      </a>
+
+      <div class="follow-button"></div>
+   
+    </div>
+
+    <hr>
+
+    <div id="action_footer">
+      <div id="action_about">
+        <h3>Sobre esta acci&oacute;n</h3>
+        <% if (image) { %>
+          <img src="<%= api_url %><%= image %>" />
+      <% } %> 
+      
+        <h4>misi&oacute;n / objetivos </h4>
+        <p><%= mission %></p>
+
+        <h4>qu&eacute; ocurrir&aacute; con los datos?</h4>
+        <p><%= information_destiny %></p>
+      </div>
+      
+    </div>
+  </div>  
 </div>
