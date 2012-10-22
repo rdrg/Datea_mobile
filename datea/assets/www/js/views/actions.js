@@ -43,7 +43,7 @@ var ActionsView = Backbone.View.extend({
 
     fetch_models: function(){
         
-        var params = {
+        this.params = {
             limit: this.items_per_page,
             offset: this.page * this.items_per_page
             //following_user: this.user_model.get('id');
@@ -51,39 +51,41 @@ var ActionsView = Backbone.View.extend({
 
          if(this.options.search_term !== undefined && this.options.search_term !== '-'){
             console.log("search term: " + this.options.search_term); 
-            params.q = this.options.search_term;  
+            this.params.q = this.options.search_term;  
         }
 
         if(this.options.category_filter !== undefined && this.options.category_filter !== '-'){
             console.log("catefgory filter: " + this.options.category_filter);
-            params.category_filter = this.options.category_filter;
+            this.params.category_id = this.options.category_filter;
         }
 
         if(this.options.order_by !== undefined && this.options.order_by !== '-'){
             console.log("order by: " + this.options.category_filter);
-            params.order_by = this.options.order_by;
+            if(this.options.order_by == "distance"){
+                navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
+            }
+            this.params.order_by = this.options.order_by;
         }
-       
 
         if(this.model.meta
                 && this.model.total_count
-                && params.limit + params.offset >= this.model.meta.total_count){
+                && this.params.limit + this.params.offset >= this.model.meta.total_count){
                     return;
                 }
         
         switch(this.selected_mode){
 
             case 'my_actions':
-                params.following_user = this.user_model.get('id');
+                this.params.following_user = this.user_model.get('id');
                 console.log("my actions selected");
                 break;
 
     	    case 'own_actions':
-                params.user_id = this.user_model.get('id');
+                this.params.user_id = this.user_model.get('id');
                 break;
 
             case 'featured_actions':
-                params.featured = 1;
+                this.params.featured = 1;
                 break;
    
             case 'all_actions':
@@ -93,14 +95,26 @@ var ActionsView = Backbone.View.extend({
 
         var self = this;
         this.model.fetch({
-            data: params,
+            data: this.params,
             success: function(){
                 console.log("models fetched");
                 self.render();
             }
         });
+    },
+
+    location_success: function(position){
+        this.params.lat = position.coords.latitude;
+        this.params.lng = position.coords.longitude;
+        //this.params.order_by = 'distance';
+    },
+
+    location_err: function(error){
+        alert("location not available");
+        //falling back to created
+        this.params.order_by = 'created';
     }
-   
+ 
     /*
     events: {
         'click .action_detail' : 'clickDetail_handler' 

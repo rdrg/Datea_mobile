@@ -13,19 +13,26 @@
             Filtrar por Categor&iacute;a:
         </div>
 
-        <select id="category_filter" ></select>
+        <select id="category_filter" >
+            <% _.each(cat_list, function(cat){ %>
+                <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
+            <% })%>
+        </select>
         <br>
         <div>
             Ordenar por:
         </div>
+
         <select id="order_by"> 
             <option value="featured" name="destacadas" selected="selected">Destacadas</option>
             <option value="-" name="recientes">Recientes</option>
-            <option value="close" name="cercanas">Cercanas</option>
+            <option value="distance" name="cercanas">Cercanas</option>
         </select>
+
         <br>
         <br>
         <br>
+
         <a href="#" id="submit_search">Mostrar Resultados</a>
     </form>
 </div>

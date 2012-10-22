@@ -384,17 +384,31 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     searchForm: function(){
-        if(!this.searchFormView){
-            this.searchFormView = new SearchFormView();
+        var self = this;
+        if(!this.categoryCollection){
+            this.categoryCollection = new CategoryCollection();
         }
-        this.showView("#main", this.searchFormView );
+
+        if(!this.searchFormView){
+            this.searchFormView = new SearchFormView({
+                model: this.categoryCollection
+            });
+        }
+        this.categoryCollection.fetch({
+            success: function(){
+               console.log("categories fetched"); 
+                self.showView("#main", self.searchFormView );
+            }
+        })
     },
 
     searchQuery : function(term, cat, order){
          
-         if(!this.actionCollection){
+        var self = this; 
+        if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
+
     	if (!this.searchResultView) {
         	this.searchResultView = new ActionsView({
                         model: this.actionCollection,
@@ -405,7 +419,6 @@ var DateaRouter = Backbone.Router.extend({
                         order_by: order                    
     	 	});
         }
-        
     	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
        
