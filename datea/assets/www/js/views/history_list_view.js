@@ -26,10 +26,12 @@ var HistoryListView = Backbone.View.extend({
 		});*/
 	},
 	
-	render:function (ev) {
-    	this.$el.html( this.template());
-    	this.build_filter_options();
-        return this;
+    postRender: function(){
+         this.scroller = new iScroll('main',{
+            hScroll : false,
+            fixedScrollbar: false,
+            hideScrollbar: true,
+        });
     },
     
     // build filter options according to user
