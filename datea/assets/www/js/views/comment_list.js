@@ -2,6 +2,7 @@ var CommentListView = Backbone.View.extend({
     
     events: {
     	'submit #comment-form': 'submit_comment',
+      'focus #comment-input': 'typing',
     },
     
     render: function(){
@@ -15,6 +16,10 @@ var CommentListView = Backbone.View.extend({
         });
         
         return this;
+    },
+
+    typing: function(event){
+      $("#comment-input").autosize();
     },
     
     submit_comment: function (ev) {
@@ -46,13 +51,13 @@ var CommentListView = Backbone.View.extend({
     
     add_comment: function (model) {
     	this.collection.add(model);
-		var $com_list = this.$el.find('.comment-list');
-		var new_comment = new CommentView({model: model});
-		new_comment.render();
-		new_comment.$el.hide();
-		$com_list.append(new_comment.el);
-		new_comment.$el.slideDown('normal');
-		if (this.options.callback) this.options.callback(model);
+  		var $com_list = this.$el.find('.comment-list');
+  		var new_comment = new CommentView({model: model});
+  		new_comment.render();
+  		new_comment.$el.hide();
+  		$com_list.append(new_comment.el);
+  		new_comment.$el.slideDown('normal');
+  		if (this.options.callback) this.options.callback(model);
 	}
     
 });

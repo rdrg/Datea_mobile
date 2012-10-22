@@ -62,5 +62,6 @@ var CreateMapItemOneTwo = Backbone.View.extend({
 
     typing: function(event){
         this.eventAggregator.trigger("footer:hide");
+        $("#description").autosize();
     }
 });
