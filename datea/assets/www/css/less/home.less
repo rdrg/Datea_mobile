@@ -81,7 +81,7 @@
 #login_btn{
   .home_btn;
   //.home_btn:hover;    
-    background-image: url('../img/icono_registro_off.png');
+  background-image: url('../img/icono_registro_off.png');
   &:hover{
     background-image: url('../img/icono_registro_on.png');
   }
@@ -90,17 +90,25 @@
 #explore_btn{
   .home_btn;
   background-image: url('../img/icono_apoya_off.png');
-  &:hover{
-    background-image: url('../img/icono_apoya_on.png');
+  cursor: default;
+  &:active{
+    box-shadow: none;
   }
+  /*&:hover{
+    background-image: url('../img/icono_apoya_on.png');
+  }*/
 }
 
 #participate_btn{
   .home_btn;
   background-image: url('../img/icono_participa_off.png');
-  &:hover{
-    background-image: url('../img/icono_participa_on.png');
+  cursor: default;
+  &:active{
+    box-shadow: none;
   }
+  /*&:hover{
+    background-image: url('../img/icono_participa_on.png');
+  }*/
 }
 
 
