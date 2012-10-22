@@ -56,12 +56,12 @@ var CreateMapItemView = Backbone.View.extend({
             this.locationView.loadMap();
 
             $("#main").css('bottom','auto');
-            $("#footer").hide("fast");
+            this.eventAggregator.trigger("footer:hide");
             $("#map_overlay").show("fast");
 
             this.step = 3;
         }else if(this.step == 3){
-            $("#map_overlay").hide("fast");
+            $("#map_overlay").fadeOut("fast");
             this.transferImage();
 
         }
