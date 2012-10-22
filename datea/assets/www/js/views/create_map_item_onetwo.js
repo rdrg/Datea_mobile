@@ -21,7 +21,8 @@ var CreateMapItemOneTwo = Backbone.View.extend({
     events: {
         "click #image_input": "addImageOverlay",
         "change #description": "setDescription",
-        "click :input[type=radio]": "selectCategory"
+        "click :input[type=radio]": "selectCategory",
+        "focus #description" : "typing"
     },
 
     render: function(){
@@ -55,7 +56,11 @@ var CreateMapItemOneTwo = Backbone.View.extend({
         event.preventDefault();
         this.imageOverlay = new ImageOverlayView({model: this.model});
         $("#overlay").html(this.imageOverlay.render().el);
-        $("#footer").hide("fast");
+        this.eventAggregator.trigger("footer:hide");
         $("#overlay").show("fast");
+    },
+
+    typing: function(event){
+        this.eventAggregator.trigger("footer:hide");
     }
 });

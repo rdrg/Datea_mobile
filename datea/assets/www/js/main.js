@@ -6,6 +6,11 @@ Backbone.View.prototype.close = function () {
     this.unbind();
 };
 
+Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
+Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
+    $("#footer").fadeOut("fast");
+});
+
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
@@ -51,7 +56,8 @@ var DateaRouter = Backbone.Router.extend({
             crossDomain:true 
         });
 	    $.support.cors = true;
-            /*
+
+             /*
 	    this.bind('all', function(trigger, args){
                 var path = trigger.split(':');
                 console.log("route path: " + path[0]);
@@ -68,7 +74,7 @@ var DateaRouter = Backbone.Router.extend({
         this.navBar = new NavBar({});
         this.navBarView = new NavBarView({model: this.navBar});
         $('#footer').html(this.navBarView.render().el);
-
+  
 	    //this.footerView = new FooterView();
 	    //$('.footer').html(this.footerView.render().el);
 	},
@@ -128,11 +134,6 @@ var DateaRouter = Backbone.Router.extend({
 		}
 
 		this.showView('#content', this.loginView);
-        
-        /*setTimeout(function(){
-                window.myScroll.refresh();
-        }, 0);*/
-        
 	},
 	
 	logout: function () {
@@ -153,22 +154,11 @@ var DateaRouter = Backbone.Router.extend({
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
         this.showView('#content', this.profileView);
-        
-        /*setTimeout(function(){
-            window.myScroll.refresh();
-        }, 0);*/
-        
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#content', this.profileEditView);
-        
-        /*
-        setTimeout(function(){
-                window.myScroll.refresh();
-        }, 0);
-        */
 	},
 	
 	myActions: function () {
@@ -181,10 +171,6 @@ var DateaRouter = Backbone.Router.extend({
                 //console.log("actions fetched");
                 self.actionsView = new ActionsView({model:self.actionCollection});
                 self.showView('#content', self.actionsView);
-                //load navigation
-                /*setTimeout(function(){
-                    window.myScroll.refresh();
-                }, 0);*/
             }
         });
 	},
@@ -214,10 +200,6 @@ var DateaRouter = Backbone.Router.extend({
                     self.actionView = new ActionView({model: self.actionModel});
                 }
                 self.showView('#content', self.actionView);
-                //load navigation  
-                /*setTimeout(function(){
-                    //window.myScroll.refresh();
-                }, 0);*/
             }
         });
     },
@@ -238,12 +220,6 @@ var DateaRouter = Backbone.Router.extend({
             data: {'id': mapid},
             success: function(){
                 self.showView('#content', self.mapItemListView());
-                /*
-                setTimeout(function(){
-                    window.myScroll.refresh();
-                }, 0);
-                */
-                
             }
         });
     },
@@ -436,8 +412,7 @@ $(document).ready(function () {
                     'CommentWidgetView',
                     'HistoryItemView',
                     'HistoryListView'
-                    ], 
-
+                    ],
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
 	        
@@ -475,9 +450,8 @@ $(document).ready(function () {
                     }
 	        }
 	        window.dateaApp = new DateaRouter();           
-	        Backbone.history.start();   
+	        Backbone.history.start();
     });
-
 });
 
 
@@ -500,8 +474,6 @@ function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
 
-    //var myScroll;
-    /*
     //scroll
     function loaded() {
         window.myScroll = new iScroll('main',{
@@ -512,7 +484,6 @@ function onDeviceReady() {
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
     window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
-    */
 }
 
 function onMenuDown() {
