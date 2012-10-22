@@ -3,12 +3,17 @@
 	left: 0;	
 	right: 0;
 	z-index: 0;
+	height: 100%;
 	.map-controls {
 		position:absolute;
 		top: 95px;
 		right: 5px;
 		z-index: 1000;
 	}	
+}
+
+#content{
+	min-height: 500px;
 }
 
 .map-canvas {
@@ -34,23 +39,13 @@
 	}
 }
 
-
 #location-input-view { 
-/*	bottom: 0px; 
-	//top: 140px;
-  top: 53px;*/
-  bottom: 50px;
-  top: 100px;
-  z-index: 1px;
+	bottom: 0px; 
+  top: 53px;
 }
 
-#mapping-map-view { 
-/*	bottom: 0px; 
-	top: 0px;
-*/
-	  bottom: 50px;
-  top: 100px;
-  z-index: 1px;
+#mapping-map{
+	height: 100%;
 }
 
 .cluster-content-view {
