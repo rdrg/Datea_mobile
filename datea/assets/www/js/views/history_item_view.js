@@ -38,7 +38,6 @@ var HistoryItemView = Backbone.View.extend({
 		}
 
 		var context = this.model.toJSON();
-		console.log(context);
 		context.receiver_html = recv_arr.join(', ');
 		context.title_html = history_tpls[stype+'_sender'](context);
 		context.link = context.receiver_items[0].url;

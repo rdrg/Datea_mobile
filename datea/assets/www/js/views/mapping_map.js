@@ -13,9 +13,11 @@ var MappingMapView = Backbone.View.extend({
 	},
     
     render: function(){
+      this.eventAggregator.trigger("footer:hide");
     	this.map_items = new MapItemCollection(this.model.get('map_items'));
-        this.$el.html(this.template());
-        return this;
+      this.$el.html(this.template());
+      this.$el.fadeIn("fast");
+      return this;
     },
     
     loadMap : function() {
@@ -73,6 +75,7 @@ var MappingMapView = Backbone.View.extend({
     },
     
     show_cluster_content_callback: function (itemCollection, self) {
+      $('#mapping-map-view').fadeOut('fast');
     	self.item_cluster_view = new MapItemClusterView({collection: itemCollection});
     	var $content = self.$el.find('.cluster-content-view');
     	$content.html(self.item_cluster_view.render().el);
@@ -82,7 +85,8 @@ var MappingMapView = Backbone.View.extend({
     back_to_map: function (ev) {
     	ev.preventDefault();
     	this.item_cluster_view.close();
-    	this.$el.find('.cluster-content-view').hide();
+    	this.$el.find('.cluster-content-view').fadeOut("fast");
+      $('#mapping-map-view').fadeIn('fast');
     },
     
     zoom_to_item: function(arg) {
@@ -98,7 +102,8 @@ var MappingMapView = Backbone.View.extend({
 			var bone_id = this.map_items.url+id+'/';
 	    	var mdl = this.map_items.get(bone_id)
 		}
-        var pos = mdl.get('position').coordinates;
+      $('#mapping-map-view').fadeIn('fast');
+      var pos = mdl.get('position').coordinates;
     	var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
     	this.itemLayer.initCenter(locInfo);
     	this.item_cluster_view.close();
