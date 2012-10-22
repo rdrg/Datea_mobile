@@ -35,7 +35,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	showView: function(selector, view) {
-            //console.log("view name: " + view.constructor.toString());
+        //console.log("view name: " + view.constructor.toString());
 	    if (this.currentView)
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
@@ -114,7 +114,7 @@ var DateaRouter = Backbone.Router.extend({
                 this.homeView = new HomeView();
             }
             
-            this.showView('#content', this.homeView);
+            this.showView('#main', this.homeView);
         }
 	},
 	
@@ -122,8 +122,8 @@ var DateaRouter = Backbone.Router.extend({
 		if (!this.aboutView) {
         	    this.aboutView = new AboutView();
 		}
-		$('#content').html(this.aboutView.render().el);
-                    this.headerView.selectMenuItem('about-menu');
+		$('#main').html(this.aboutView.render().el);
+        this.headerView.selectMenuItem('about-menu');
 	},
 	
 	login: function () {
@@ -135,7 +135,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 		}
 
-		this.showView('#content', this.loginView);
+		this.showView('#main', this.loginView);
 	},
 	
 	logout: function () {
@@ -155,12 +155,12 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        this.showView('#content', this.profileView);
+        this.showView('#main', this.profileView);
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#content', this.profileEditView);
+        this.showView('#main', this.profileEditView);
 	},
 	
 	myActions: function () {
@@ -172,7 +172,7 @@ var DateaRouter = Backbone.Router.extend({
             success: function(collection, response){
                 //console.log("actions fetched");
                 self.actionsView = new ActionsView({model:self.actionCollection});
-                self.showView('#content', self.actionsView);
+                self.showView('#main', self.actionsView);
             }
         });
 	},
@@ -254,7 +254,7 @@ var DateaRouter = Backbone.Router.extend({
 	                    model: self.newMapItem,
 	                    mappingModel: self.actionModel
 	                }); 
-	                self.showView('#content', self.newMapItemView);   
+	                self.showView('#main', self.newMapItemView);   
 	                /*
 	                setTimeout(function(){
 	                    window.myScroll.refresh();
@@ -357,7 +357,7 @@ var DateaRouter = Backbone.Router.extend({
     		var self = this;
     		this.actionModel.fetch({
     			success: function () {
-					self.showView('#content', self.locationInputView);
+					self.showView('#main', self.locationInputView);
 					self.locationInputView.loadMap();
 				},
 				error: function(error) {
@@ -365,7 +365,7 @@ var DateaRouter = Backbone.Router.extend({
 				}
 			});
 		}else{
-			this.showView('#content', this.locationInputView);
+			this.showView('#main', this.locationInputView);
 			this.locationInputView.loadMap();
 		}    	
     },
@@ -377,7 +377,7 @@ var DateaRouter = Backbone.Router.extend({
        	 	});
         }
         
-    	this.showView('#content', this.historyListView);
+    	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models(); 
     },
 
@@ -385,7 +385,7 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.searchFormView){
             this.searchFormView = new SearchFormView();
         }
-        this.showView("#content", this.searchFormView );
+        this.showView("#main", this.searchFormView );
     },
 
     searchQuery : function(term, cat, order){
@@ -404,7 +404,7 @@ var DateaRouter = Backbone.Router.extend({
     	 	});
         }
         
-    	this.showView('#content', this.searchResultView);
+    	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
        
     }
