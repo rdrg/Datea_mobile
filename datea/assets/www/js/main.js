@@ -10,6 +10,9 @@ Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
 Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
+Backbone.View.prototype.scroll = function(){
+    this.scroller = new iScroll('main');
+}
 
 var DateaRouter = Backbone.Router.extend({
      
@@ -40,6 +43,7 @@ var DateaRouter = Backbone.Router.extend({
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
+        this.currentView.scroll();
 	    return view;
 	},
 	
@@ -50,10 +54,6 @@ var DateaRouter = Backbone.Router.extend({
             },
             complete: function(){
                 $('#spinner').fadeOut("fast");
-                
-                setTimeout(function () {
-                    myScroll.refresh();
-                }, 0);
             },
             crossDomain:true 
         });
@@ -156,6 +156,9 @@ var DateaRouter = Backbone.Router.extend({
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
         this.showView('#main', this.profileView);
+        if (this.profileView.postRender){
+            this.profileView.postRender();
+        }
 	},
 	
 	userEditProfile: function (userid) {
@@ -508,7 +511,7 @@ function onDeviceReady() {
     document.addEventListener("offline", onOffline, false);
 
     //scroll
-    function loaded() {
+    /*function loaded() {
         window.myScroll = new iScroll('main',{
             hScroll : false,
             fixedScrollbar: false,
@@ -516,7 +519,7 @@ function onDeviceReady() {
         });
     }
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
+    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);*/
 }
 
 function onMenuDown() {
@@ -541,6 +544,6 @@ function offLineAlertDismissed() {
 }
 
 
-window.myScroll = {
+/*window.myScroll = {
 	refresh: function() {console.log('fake refresh myscroll')}
-};
+};*/

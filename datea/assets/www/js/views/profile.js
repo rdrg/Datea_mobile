@@ -12,5 +12,5 @@ var ProfileView = Backbone.View.extend({
     	}
     	this.$el.html(this.template(mdl));
         return this;
-    }
+    },
 });
