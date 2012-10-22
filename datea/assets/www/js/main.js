@@ -10,14 +10,14 @@ Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
 Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
-/*Backbone.View.prototype.scroll = function(){
+Backbone.View.prototype.scroll = function(){
     this.scroller = new iScroll('main',{
         hScroll : false,
         fixedScrollbar: false,
         hideScrollbar: true,
     });
 }
-*/
+
 var DateaRouter = Backbone.Router.extend({
      
 	routes: {
@@ -47,7 +47,7 @@ var DateaRouter = Backbone.Router.extend({
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
-        //this.currentView.scroll();
+        this.currentView.scroll();
 	    return view;
 	},
 	

@@ -25,14 +25,6 @@ var HistoryListView = Backbone.View.extend({
 			adjacent_pages: 2,
 		});*/
 	},
-	
-    postRender: function(){
-         this.scroller = new iScroll('main',{
-            hScroll : false,
-            fixedScrollbar: false,
-            hideScrollbar: true,
-        });
-    },
     
     // build filter options according to user
     build_filter_options: function () {
