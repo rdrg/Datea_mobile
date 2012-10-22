@@ -20,9 +20,11 @@ var DateaRouter = Backbone.Router.extend({
         "login": "login",
         "logout": "logout",
         "about": "about",
+        "search":"searchForm",
+        "search/:term/:cat/:order": "searchQuery",
         "user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
-        "actions": "myActions",
+        "actions": "actionList",
         "action/:actionid": "actionDetail",
         //"mapping/:mapid/reports":"mapItemList",
         "mapping/:mapid/report/create": "createReport",
@@ -85,12 +87,14 @@ var DateaRouter = Backbone.Router.extend({
             var userid = localSession.get('userid');
             
             //localUser.fetch({ data: { 'id': userid }});   
-        
+            
+            dateaApp.navigate("/actions", {trigger: true});
+            /*
             if (!this.actionCollection) {
                 this.actionCollection = new ActionCollection();
                 this.actionCollection.url = api_url + '/api/v1/action/';
             }
-
+        
             var self = this;
             //console.log("action url: " + this.actionCollection.url);
             this.actionCollection.fetch({
@@ -103,7 +107,7 @@ var DateaRouter = Backbone.Router.extend({
                     //load navigation
                 }
             });
-            
+            */
             //this.showView("#content", this.actionView);
         } else {
             if(!this.homeView) {
@@ -172,12 +176,28 @@ var DateaRouter = Backbone.Router.extend({
             }
         });
 	},
+    
+    actionList: function(){
+        if(!this.actionCollection){
+            this.actionCollection = new ActionCollection();
+        }
+    	if (!this.actionListView) {
+        	this.actionListView = new ActionsView({
+                        model: this.actionCollection,
+        		user_model: localUser,
+                        selected_mode : 'my_actions'                        
+    	 	});
+        }
+        
+    	this.showView('#content', this.actionListView);
+    	this.actionListView.fetch_models();
+    },
 
     actionDetail: function(actionid){
         if(!this.actionModel){
             this.actionModel = new Action();
         }
-        this.actionModel.url = api_url + "/api/v1/mapping_full/" + actionid+'/';
+        this.actionModel.url = api_url + "/api/v1/mapping_full/" + actionid + '/';
         var self = this;
         this.actionModel.fetch({
             success: function(){
@@ -316,8 +336,6 @@ var DateaRouter = Backbone.Router.extend({
     
     geoInput: function(mapid) {
     	
-    	//mapid = 16;
-    	
     	var do_fetch = true;
     	
     	if (!this.actionModel) {
@@ -352,8 +370,7 @@ var DateaRouter = Backbone.Router.extend({
 		}    	
     },
     
-    openHistory: function () {
-    	
+    openHistory: function () {    	
     	if (!this.historyListView) {
         	this.historyListView = new HistoryListView({
         		user_model: localUser,
@@ -361,8 +378,35 @@ var DateaRouter = Backbone.Router.extend({
         }
         
     	this.showView('#content', this.historyListView);
-    	this.historyListView.fetch_models();
-    
+    	this.historyListView.fetch_models(); 
+    },
+
+    searchForm: function(){
+        if(!this.searchFormView){
+            this.searchFormView = new SearchFormView();
+        }
+        this.showView("#content", this.searchFormView );
+    },
+
+    searchQuery : function(term, cat, order){
+         
+         if(!this.actionCollection){
+            this.actionCollection = new ActionCollection();
+        }
+    	if (!this.searchResultView) {
+        	this.searchResultView = new ActionsView({
+                        model: this.actionCollection,
+        		user_model: localUser,
+                        selected_mode : 'all_actions',
+                        search_term: term,
+                        category_filter: cat,
+                        order_by: order                    
+    	 	});
+        }
+        
+    	this.showView('#content', this.searchResultView);
+    	this.searchResultView.fetch_models();
+       
     }
 });
 
@@ -399,7 +443,8 @@ $(document).ready(function () {
                     'VoteWidgetView',
                     'CommentWidgetView',
                     'HistoryItemView',
-                    'HistoryListView'
+                    'HistoryListView',
+                    'SearchFormView'
                     ],
 	function () {
 	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
@@ -407,7 +452,7 @@ $(document).ready(function () {
 	        window.localSession = new localSession();
 	        window.localUser = new User();
 	
-	        if(localStorage.getItem('authdata') !== undefined) {
+	        if(window.localStorage.getItem('authdata') != null) {
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
                     //bootstrap user data
