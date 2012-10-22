@@ -112,7 +112,6 @@ var DateaRouter = Backbone.Router.extend({
             
             this.showView('#content', this.homeView);
         }
-        $("#map_overlay").hide("fast");
 	},
 	
 	about: function () {
