@@ -189,7 +189,7 @@ var DateaRouter = Backbone.Router.extend({
     	 	});
         }
         
-    	this.showView('#content', this.actionListView);
+    	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
     },
 
@@ -205,7 +205,7 @@ var DateaRouter = Backbone.Router.extend({
                 if(!this.actionView){
                     self.actionView = new ActionView({model: self.actionModel});
                 }
-                self.showView('#content', self.actionView);
+                self.showView('#main', self.actionView);
             }
         });
     },
@@ -225,7 +225,7 @@ var DateaRouter = Backbone.Router.extend({
         this.mapItems.fetch({
             data: {'id': mapid},
             success: function(){
-                self.showView('#content', self.mapItemListView());
+                self.showView('#main', self.mapItemListView());
             }
         });
     },
@@ -270,7 +270,7 @@ var DateaRouter = Backbone.Router.extend({
                 model: this.newMapItem,
                 mappingModel: this.actionModel
             }); 
-            this.showView('#content', this.newMapItemView); 
+            this.showView('#main', this.newMapItemView); 
 	    }
     },
        
@@ -297,7 +297,7 @@ var DateaRouter = Backbone.Router.extend({
     		var self = this;
     		this.actionModel.fetch({
     			success: function () {
-					self.showView('#content', self.mappingMapView);
+					self.showView('#main', self.mappingMapView);
 					self.mappingMapView.loadMap();
 					if (typeof(callback_func) != 'undefined') callback_func();
 				},
@@ -306,7 +306,7 @@ var DateaRouter = Backbone.Router.extend({
 				}
 			});
 		}else{
-			this.showView('#content', this.mappingMapView);
+			this.showView('#main', this.mappingMapView);
 			this.mappingMapView.loadMap();
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}

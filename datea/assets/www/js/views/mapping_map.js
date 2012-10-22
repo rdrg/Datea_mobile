@@ -16,7 +16,7 @@ var MappingMapView = Backbone.View.extend({
       this.eventAggregator.trigger("footer:hide");
     	this.map_items = new MapItemCollection(this.model.get('map_items'));
       this.$el.html(this.template());
-      //this.$el.fadeIn("fast");
+      this.$el.fadeIn("fast");
       return this;
     },
     
