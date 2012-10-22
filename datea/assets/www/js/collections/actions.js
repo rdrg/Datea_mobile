@@ -1,4 +1,4 @@
 var ActionCollection = Backbone.Collection.extend({
     model: Action,
-    url: '/api/v1/action/search'
+    url: api_url + '/api/v1/action/search/'
 });

@@ -17,7 +17,7 @@ var DateaRouter = Backbone.Router.extend({
         "about": "about",
         "user/:userid": "userLoadProfile",
         "user/edit/:userid": "userEditProfile",
-        "actions": "myActions",
+        "actions": "actionList",
         "action/:actionid": "actionDetail",
         //"mapping/:mapid/reports":"mapItemList",
         "mapping/:mapid/report/create": "createReport",
@@ -79,12 +79,14 @@ var DateaRouter = Backbone.Router.extend({
             var userid = localSession.get('userid');
             
             //localUser.fetch({ data: { 'id': userid }});   
-        
+            
+            dateaApp.navigate("/actions", {trigger: true});
+            /*
             if (!this.actionCollection) {
                 this.actionCollection = new ActionCollection();
                 this.actionCollection.url = api_url + '/api/v1/action/';
             }
-
+        
             var self = this;
             //console.log("action url: " + this.actionCollection.url);
             this.actionCollection.fetch({
@@ -97,7 +99,7 @@ var DateaRouter = Backbone.Router.extend({
                     //load navigation
                 }
             });
-            
+            */
             //this.showView("#content", this.actionView);
         } else {
             if(!this.homeView) {
@@ -186,6 +188,18 @@ var DateaRouter = Backbone.Router.extend({
             }
         });
 	},
+    
+    actionList: function(){
+
+    	if (!this.actionListView) {
+        	this.actionListView = new ActionsView({
+        		user_model: localUser
+    	 	});
+        }
+        
+    	this.showView('#content', this.actionListView);
+    	this.actionListView.fetch_models();
+    },
 
     actionDetail: function(actionid){
         if(!this.actionModel){
@@ -376,8 +390,7 @@ var DateaRouter = Backbone.Router.extend({
 		}    	
     },
     
-    openHistory: function () {
-    	
+    openHistory: function () {    	
     	if (!this.historyListView) {
         	this.historyListView = new HistoryListView({
         		user_model: localUser,
@@ -385,8 +398,7 @@ var DateaRouter = Backbone.Router.extend({
         }
         
     	this.showView('#content', this.historyListView);
-    	this.historyListView.fetch_models();
-    
+    	this.historyListView.fetch_models(); 
     }
 });
 
@@ -432,7 +444,7 @@ $(document).ready(function () {
 	        window.localSession = new localSession();
 	        window.localUser = new User();
 	
-	        if(localStorage.getItem('authdata') !== undefined) {
+	        if(window.localStorage.getItem('authdata') != null) {
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
                     //bootstrap user data
