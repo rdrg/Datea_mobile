@@ -12,9 +12,9 @@
 @import "map_item.less";
 @import "widgets.less";
 @import "history.less";
+@import "commentList.less";
 
 body{
-  background-image: url('../img/bg.png');
   color: @gray;
   padding: 0px;
   -webkit-user-select: none;
@@ -59,12 +59,16 @@ a:hover{
 
 #main{
   position: absolute;
-  z-index: 1;
   top: 54px;
   left: 0px;
-  bottom: 20px;
+  bottom: 0px;
   width: 100%;
   overflow: auto;
+  background-image: url('../img/bg.png');
+}
+
+#wrapper{
+  height: 100%;
 }
 
 .container{

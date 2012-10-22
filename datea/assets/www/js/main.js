@@ -10,6 +10,13 @@ Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
 Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
+Backbone.View.prototype.scroll = function(){
+    this.scroller = new iScroll('main',{
+        hScroll : false,
+        fixedScrollbar: false,
+        hideScrollbar: true,
+    });
+}
 
 var DateaRouter = Backbone.Router.extend({
      
@@ -35,11 +42,12 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	showView: function(selector, view) {
-            //console.log("view name: " + view.constructor.toString());
+        //console.log("view name: " + view.constructor.toString());
 	    if (this.currentView)
 	        this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
+        this.currentView.scroll();
 	    return view;
 	},
 	
@@ -50,10 +58,6 @@ var DateaRouter = Backbone.Router.extend({
             },
             complete: function(){
                 $('#spinner').fadeOut("fast");
-                
-                setTimeout(function () {
-                    myScroll.refresh();
-                }, 0);
             },
             crossDomain:true 
         });
@@ -114,17 +118,16 @@ var DateaRouter = Backbone.Router.extend({
                 this.homeView = new HomeView();
             }
             
-            this.showView('#content', this.homeView);
+            this.showView('#main', this.homeView);
         }
-        $("#map_overlay").hide("fast");
 	},
 	
 	about: function () {
 		if (!this.aboutView) {
         	    this.aboutView = new AboutView();
 		}
-		$('#content').html(this.aboutView.render().el);
-                    this.headerView.selectMenuItem('about-menu');
+		$('#main').html(this.aboutView.render().el);
+        this.headerView.selectMenuItem('about-menu');
 	},
 	
 	login: function () {
@@ -136,7 +139,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.loginView = new LoginView({ model: this.session });
 		}
 
-		this.showView('#content', this.loginView);
+		this.showView('#main', this.loginView);
 	},
 	
 	logout: function () {
@@ -156,12 +159,15 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
         localUser.fetch({ data: { 'id': userid }});
         this.profileView = new ProfileView({ model: localUser });
-        this.showView('#content', this.profileView);
+        this.showView('#main', this.profileView);
+        if (this.profileView.postRender){
+            this.profileView.postRender();
+        }
 	},
 	
 	userEditProfile: function (userid) {
 		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#content', this.profileEditView);
+        this.showView('#main', this.profileEditView);
 	},
 	
 	myActions: function () {
@@ -173,7 +179,7 @@ var DateaRouter = Backbone.Router.extend({
             success: function(collection, response){
                 //console.log("actions fetched");
                 self.actionsView = new ActionsView({model:self.actionCollection});
-                self.showView('#content', self.actionsView);
+                self.showView('#main', self.actionsView);
             }
         });
 	},
@@ -190,7 +196,7 @@ var DateaRouter = Backbone.Router.extend({
     	 	});
         }
         
-    	this.showView('#content', this.actionListView);
+    	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
     },
 
@@ -206,7 +212,7 @@ var DateaRouter = Backbone.Router.extend({
                 if(!this.actionView){
                     self.actionView = new ActionView({model: self.actionModel});
                 }
-                self.showView('#content', self.actionView);
+                self.showView('#main', self.actionView);
             }
         });
     },
@@ -226,7 +232,7 @@ var DateaRouter = Backbone.Router.extend({
         this.mapItems.fetch({
             data: {'id': mapid},
             success: function(){
-                self.showView('#content', self.mapItemListView());
+                self.showView('#main', self.mapItemListView());
             }
         });
     },
@@ -255,12 +261,7 @@ var DateaRouter = Backbone.Router.extend({
 	                    model: self.newMapItem,
 	                    mappingModel: self.actionModel
 	                }); 
-	                self.showView('#content', self.newMapItemView);   
-	                /*
-	                setTimeout(function(){
-	                    window.myScroll.refresh();
-	                }, 0);
-	                */
+	                self.showView('#main', self.newMapItemView);   
 	            }
 	        });
 	    }else{
@@ -271,7 +272,7 @@ var DateaRouter = Backbone.Router.extend({
                 model: this.newMapItem,
                 mappingModel: this.actionModel
             }); 
-            this.showView('#content', this.newMapItemView); 
+            this.showView('#main', this.newMapItemView); 
 	    }
     },
        
@@ -298,7 +299,7 @@ var DateaRouter = Backbone.Router.extend({
     		var self = this;
     		this.actionModel.fetch({
     			success: function () {
-					self.showView('#content', self.mappingMapView);
+					self.showView('#main', self.mappingMapView);
 					self.mappingMapView.loadMap();
 					if (typeof(callback_func) != 'undefined') callback_func();
 				},
@@ -307,7 +308,7 @@ var DateaRouter = Backbone.Router.extend({
 				}
 			});
 		}else{
-			this.showView('#content', this.mappingMapView);
+			this.showView('#main', this.mappingMapView);
 			this.mappingMapView.loadMap();
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}
@@ -358,7 +359,7 @@ var DateaRouter = Backbone.Router.extend({
     		var self = this;
     		this.actionModel.fetch({
     			success: function () {
-					self.showView('#content', self.locationInputView);
+					self.showView('#main', self.locationInputView);
 					self.locationInputView.loadMap();
 				},
 				error: function(error) {
@@ -366,7 +367,7 @@ var DateaRouter = Backbone.Router.extend({
 				}
 			});
 		}else{
-			this.showView('#content', this.locationInputView);
+			this.showView('#main', this.locationInputView);
 			this.locationInputView.loadMap();
 		}    	
     },
@@ -378,7 +379,7 @@ var DateaRouter = Backbone.Router.extend({
        	 	});
         }
         
-    	this.showView('#content', this.historyListView);
+    	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models(); 
     },
 
@@ -386,7 +387,7 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.searchFormView){
             this.searchFormView = new SearchFormView();
         }
-        this.showView("#content", this.searchFormView );
+        this.showView("#main", this.searchFormView );
     },
 
     searchQuery : function(term, cat, order){
@@ -405,7 +406,7 @@ var DateaRouter = Backbone.Router.extend({
     	 	});
         }
         
-    	this.showView('#content', this.searchResultView);
+    	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
        
     }
@@ -485,7 +486,7 @@ $(document).ready(function () {
 	        }
 	        window.dateaApp = new DateaRouter();           
 	        Backbone.history.start();
-    });
+    });  
 });
 
 
@@ -507,17 +508,6 @@ function onLoad() {
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
-
-    //scroll
-    function loaded() {
-        window.myScroll = new iScroll('main',{
-            hScroll : false,
-            fixedScrollbar: false,
-            hideScrollbar: true,
-        });
-    }
-    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
 }
 
 function onMenuDown() {
@@ -540,8 +530,3 @@ function offLineAlertDismissed() {
         navigator.device.exitApp();
     }
 }
-
-
-window.myScroll = {
-	refresh: function() {console.log('fake refresh myscroll')}
-};

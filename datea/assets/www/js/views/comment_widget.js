@@ -20,7 +20,15 @@ var CommentWidgetView = Backbone.View.extend({
 	
 	scroll_bottom: function (ev) {
 		ev.preventDefault();
-		console.log('gabriel: implement scrollto bottom here ');
+	  
+	  var container = $(document).find('#main'),
+	  		scrollTo = $(document).find('#comment-input');
+      
+      scrollTo.autosize();
+     
+      container.scrollTop(
+        scrollTo.offset().top - container.offset().top + container.scrollTop()
+      );
 	}
 	
 });
