@@ -11,7 +11,11 @@ Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
 Backbone.View.prototype.scroll = function(){
-    this.scroller = new iScroll('main');
+    this.scroller = new iScroll('main',{
+        hScroll : false,
+        fixedScrollbar: false,
+        hideScrollbar: true,
+    });
 }
 
 var DateaRouter = Backbone.Router.extend({
@@ -258,11 +262,6 @@ var DateaRouter = Backbone.Router.extend({
 	                    mappingModel: self.actionModel
 	                }); 
 	                self.showView('#main', self.newMapItemView);   
-	                /*
-	                setTimeout(function(){
-	                    window.myScroll.refresh();
-	                }, 0);
-	                */
 	            }
 	        });
 	    }else{
@@ -509,17 +508,6 @@ function onLoad() {
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
-
-    //scroll
-    /*function loaded() {
-        window.myScroll = new iScroll('main',{
-            hScroll : false,
-            fixedScrollbar: false,
-            hideScrollbar: true,
-        });
-    }
-    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);*/
 }
 
 function onMenuDown() {
@@ -542,8 +530,3 @@ function offLineAlertDismissed() {
         navigator.device.exitApp();
     }
 }
-
-
-/*window.myScroll = {
-	refresh: function() {console.log('fake refresh myscroll')}
-};*/
