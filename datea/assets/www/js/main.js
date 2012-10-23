@@ -126,8 +126,8 @@ var DateaRouter = Backbone.Router.extend({
                 this.homeView = new HomeView();
             }
             
-            this.showView('#main', this.homeView);
-        }
+                this.showView('#main', this.homeView);
+            }
 	},
 	
 	about: function () {
@@ -139,12 +139,14 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	login: function () {
+                /*
 		if (!this.session) {
 		    this.session = new Session();
 		}
-		
+		*/
 		if (!this.loginView) {
-			this.loginView = new LoginView({ model: this.session });
+		//	this.loginView = new LoginView({ model: this.session });
+                    this.loginView = new LoginView({model: localSession});
 		}
 
 		this.showView('#main', this.loginView);
@@ -196,6 +198,7 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
+        console.log("userid: " + localUser.get("id"));
     	if (!this.actionListView) {
         	this.actionListView = new ActionsView({
                         model: this.actionCollection,
@@ -470,27 +473,29 @@ $(document).ready(function () {
                     'SearchFormView'
                     ],
 	function () {
-	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
-	        
-	        window.localSession = new localSession();
-	        window.localUser = new User();
-	
-	        if(window.localStorage.getItem('authdata') != null) {
+	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";       
+	        window.localSession = new Session();
+	        //window.localUser = new User();
+                //
+                
+	        //if(localStorage.getItem('authdata') !== null) {
+ 	        if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
+                   console.log(localStorage.getItem('authdata'));
+        	    //window.localSession = new localSession();
+	            window.localUser = new User();
+                   
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
                     //bootstrap user data
+                    
                     if(localSession.get('logged')){
                         userid = localSession.get('userid');
                         console.log('token: ' + localSession.get('token'));
+                        console.log("fetching user data");
                         localUser.fetch({ 
-                            data: {
-                            	'username': localSession.get('username'),
-                            	'api_key': localSession.get('token'),
-                                'id': userid, 
-                                'user_full': 1 
-                            },
+                            data:{'id': userid},
                             success: function(mdl, res){
-                                //console.log("model: " + JSON.stringify(mdl.toJSON()));
+                                console.log("user model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
                                         window.myFollows = new FollowCollection(mdl.get('follows'));
                                         //console.log('follows: ' + JSON.stringify(myFollows));
@@ -498,15 +503,31 @@ $(document).ready(function () {
                                 if(mdl.get('votes') !== undefined){
                                     window.myVotes = new VoteCollection(mdl.get('votes'));
                                 }
+                                window.dateaApp = new DateaRouter();           
+	                        Backbone.history.start();
+
                             },
                             error: function(){
                                 console.log("some error fetching");
                             }
                         });        
                     }
+                    else{
+                        console.log("localstorage but not logged in");    
+	                window.dateaApp = new DateaRouter();           
+	                Backbone.history.start();
+                    }
 	        }
-	        window.dateaApp = new DateaRouter();           
-	        Backbone.history.start();
+                else{
+                    console.log("no data in localSotrage, storing persistent session data");    
+                    window.localStorage.setItem('authdata', JSON.stringify(localSession));
+	            window.dateaApp = new DateaRouter();           
+	            Backbone.history.start();
+                }
+                
+                 // window.dateaApp = new DateaRouter();           
+	           // Backbone.history.start();
+
     });  
 });
 

@@ -2,7 +2,7 @@ var Session = Backbone.Model.extend({
     urlRoot: "/api/v1/accounts/signin/",
     defaults: {
         logged: false,
-        apiKey: null,
+        token: null,
         username: null,
         userid: null
     }

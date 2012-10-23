@@ -8,10 +8,12 @@ window.LoginView = Backbone.View.extend({
 		this.render();
 	},
 	render: function () {
+            /*
 		if (localSession.get('logged')) {
 			var userid = localSession.get('userid');
 			dateaApp.navigate("user/" + userid, { trigger : true });
-		};
+		}
+                */
 		
 		this.$el.html(this.template);
 		return this;
@@ -27,7 +29,7 @@ window.LoginView = Backbone.View.extend({
             success: function(model, response) {
                 if(response.status == 200){
                     self.model.set({ username: usr });
-                    self.model.set({ apiKey: response.token });
+                    self.model.set({ token: response.token });
                     self.model.set({ userid: response.userid });
                     self.model.set({ logged: true });
                     
@@ -42,8 +44,9 @@ window.LoginView = Backbone.View.extend({
                         "logged": self.model.get("logged")
                     };
 
-                    localStorage.setItem("authdata", JSON.stringify(localdata));
-                    
+                    //localStorage.setItem("authdata", JSON.stringify(localdata));
+                    //localStorage.setItem("authdata", JSON.stringify(this.model));
+
                     Backbone.Tastypie = {
                         prependDomain: api_url,
                         doGetOnEmptyPostResponse: true,
@@ -54,17 +57,31 @@ window.LoginView = Backbone.View.extend({
                         }
                     };
                     
-                    dateaApp.navigate("user/" + userid, { trigger : true });
-                    //render loggedIn header
-                    this.headerView = new LoggedInHeaderView();
-                    $('#header').html(this.headerView.render().el);
-
+                    if(!window.localUser){
+                        window.localUser = new User();
+                    }
+                    localUser.fetch({
+                            data: {'id': localSession.get('userid')},
+                            success: function(){
+                 
+                               //dateaApp.navigate("user/" + userid, { trigger : true });
+                                dateaApp.navigate("/actions", {trigger: true});
+                                //render loggedIn header
+                                self.headerView = new LoggedInHeaderView();
+                                $('#header').html(self.headerView.render().el);
+                                   
+                            }
+                            
+                    });
+                
                 } else if(response.error) {
-                    $("#result").html(response.error);
+                    //$("#result").html(response.error);
+                    alert("Usuario o contrasena invalidos");
                 }
             },            
             error: function(response) {
-                $("#result").html("Ocurrio un error");
+                //$("#result").html("Ocurrio un error");
+                alert('Ocurrion un error, revisa tu conexion a internet');
             }
         });
         return;

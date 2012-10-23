@@ -77,7 +77,7 @@ var ActionsView = Backbone.View.extend({
 
             case 'my_actions':
                 this.params.following_user = this.user_model.get('id');
-                console.log("my actions selected");
+                console.log("my actions selected with user: " + this.params.following_user);
                 break;
 
     	    case 'own_actions':
