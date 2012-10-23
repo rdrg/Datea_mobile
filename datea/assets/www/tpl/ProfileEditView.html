@@ -4,15 +4,20 @@
         <h1>Editar perfil</h1>
         <input type="text" name="full_name" id="fullname_in" placeholder="Nombre completo" value="<%= profile.full_name %>"/>
         
-        <input type="email" name="email" id="email_in" placeholder="Email" value="<%= email %>">
-        
+        <!--<input type="email" name="email" id="email_in" placeholder="Email" value="<%= profile.email %>"> -->
+         <input type="email" name="email" id="email_in" placeholder="Email">
+       
         <input type="text" name="message" id="message_in" placeholder="Mensaje personal" value="<%= profile.message %>"/>
         
         <label for="image_input">Imágen de Perfil</label>
 
         <textarea name="file" id="image_data" />
+        <img src="<%= api_url%><%= profile.image%>" id="profile_image" class="left">
         <button type="file" name="image" id="image_input" class="btn datea_btn_gry">Imagen</button>
         <button type="submit" class="btn btn-primary datea_btn_yllw">Guardar</button>
       </form>
-    </div>    
+  </div> 
+  <div id="overlay">
+    
+  </div>  
 </div>

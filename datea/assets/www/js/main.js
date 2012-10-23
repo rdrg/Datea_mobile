@@ -10,6 +10,7 @@ Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
 Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
+
 Backbone.View.prototype.scroll = function(){
     this.scroller = new iScroll('main',{
         hScroll : false,
@@ -26,9 +27,10 @@ Backbone.View.prototype.scroll = function(){
     });
 };
 
+
 var DateaRouter = Backbone.Router.extend({
      
-	routes: {
+    routes: {
 	    "": "home",
         //temporary redirection to work on actions
         //"":"myActions",
@@ -99,34 +101,12 @@ var DateaRouter = Backbone.Router.extend({
         if (localSession.get('logged')) {
             var userid = localSession.get('userid');
             
-            //localUser.fetch({ data: { 'id': userid }});   
-            
             dateaApp.navigate("/actions", {trigger: true});
-            /*
-            if (!this.actionCollection) {
-                this.actionCollection = new ActionCollection();
-                this.actionCollection.url = api_url + '/api/v1/action/';
-            }
-        
-            var self = this;
-            //console.log("action url: " + this.actionCollection.url);
-            this.actionCollection.fetch({
-                success: function(collection, response){
-                    console.log("actions fetched");
-                    if(!self.actionsView){
-                        self.actionsView = new ActionsView({model:self.actionCollection});
-                    }
-                    self.showView('#content', self.actionsView);
-                    //load navigation
-                }
-            });
-            */
-            //this.showView("#content", this.actionView);
+
         } else {
             if(!this.homeView) {
                 this.homeView = new HomeView();
             }
-            
                 this.showView('#main', this.homeView);
             }
 	},
@@ -168,32 +148,34 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	userLoadProfile: function (userid) {
-        localUser.fetch({ data: { 'id': userid }});
-        this.profileView = new ProfileView({ model: localUser });
-        this.showView('#main', this.profileView);
-        if (this.profileView.postRender){
-            this.profileView.postRender();
-        }
+
+            localUser.fetch({ data: { 'id': userid }});
+            this.profileView = new ProfileView({ model: localUser });
+            this.showView('#main', this.profileView);
+            if (this.profileView.postRender){
+                this.profileView.postRender();
+            }
 	},
 	
 	userEditProfile: function (userid) {
-		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#main', this.profileEditView);
+
+	    this.profileEditView = new ProfileEditView({ model: localUser });
+            this.showView('#main', this.profileEditView);
 	},
 	
 	myActions: function () {
-        this.actionCollection = new ActionCollection();
-        this.actionCollection.url = api_url + '/api/v1/action/search/';
-        var self = this;
-        //console.log("action url: " + this.actionCollection.url);
-        this.actionCollection.fetch({
-            success: function(collection, response){
-                //console.log("actions fetched");
-                self.actionsView = new ActionsView({model:self.actionCollection});
-                self.showView('#main', self.actionsView);
-            }
-        });
-	},
+            this.actionCollection = new ActionCollection();
+            this.actionCollection.url = api_url + '/api/v1/action/search/';
+            var self = this;
+            //console.log("action url: " + this.actionCollection.url);
+            this.actionCollection.fetch({
+                success: function(collection, response){
+                    //console.log("actions fetched");
+                    self.actionsView = new ActionsView({model:self.actionCollection});
+                    self.showView('#main', self.actionsView);
+                    }
+                });
+	    },
     
     actionList: function(){
         if(!this.actionCollection){
@@ -437,7 +419,6 @@ var DateaRouter = Backbone.Router.extend({
     }
 });
 
-
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
@@ -463,6 +444,7 @@ $(document).ready(function () {
                     'MapItemDetailView',
                     'MapItemClusterView', 
                     'ImageOverlayView',
+                    'ProfileImageOverlayView',
                     'CommentView',
                     'CommentListView',
                     'MapItemResponseView',
@@ -496,7 +478,7 @@ $(document).ready(function () {
                         localUser.fetch({ 
                             data:{'id': userid},
                             success: function(mdl, res){
-                                console.log("user model: " + JSON.stringify(mdl.toJSON()));
+                                //console.log("user model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
                                         window.myFollows = new FollowCollection(mdl.get('follows'));
                                         //console.log('follows: ' + JSON.stringify(myFollows));
