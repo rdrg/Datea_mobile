@@ -7,10 +7,19 @@ var ProfileEditView = Backbone.View.extend({
       "click #image_input": "addImageOverlay",	
       "submit #user_edit_form": "transferImage"
     },
+
     render: function() {
     	console.log(this.model.toJSON());
         this.$el.html(this.template(this.model.toJSON()));
         return this;
+    },
+
+    addImageOverlay: function(event){
+        event.preventDefault();
+        this.imageOverlay = new ImageOverlayView({model: this.model});
+        $("#overlay").html(this.imageOverlay.render().el);
+        this.eventAggregator.trigger("footer:hide");
+        $("#overlay").show("fast");
     },
 
     updateUser: function(ev) {
