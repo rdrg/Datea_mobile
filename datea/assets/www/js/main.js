@@ -45,6 +45,7 @@ var DateaRouter = Backbone.Router.extend({
         "mapping/:mapid/report/create": "createReport",
         "mapping/:mapid/reports/map":"mappingMap",
         "mapping/:mapid/reports/:reportid":"mapItemDetail",
+        "mapeo/:mapid/dateos/:reportid":"mapItemDetail",
     	//"mapping/:mapid/reports/geoinput": "geoInput"
     	"history": "openHistory",
 	},
