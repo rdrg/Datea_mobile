@@ -345,7 +345,11 @@ iScroll.prototype = {
 
 		if (!that.enabled) return;
 
-		if (that.options.onBeforeScrollStart) that.options.onBeforeScrollStart.call(that, e);
+		if (that.options.onBeforeScrollStart) {
+                    var keepScrolling = that.options.onBeforeScrollStart.call(that, e);
+                    if(keepScrolling === false)
+                        return;
+                }
 
 		if (that.options.useTransition || that.options.zoom) that._transitionTime(0);
 

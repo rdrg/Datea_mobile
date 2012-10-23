@@ -18,8 +18,8 @@ var SearchFormView = Backbone.View.extend({
     render: function(){
         var context = { 'cat_list': this.model.toJSON()};
         this.$el.html(this.template(context));
-
-        return this;
+        var ret = false;
+        return this; 
     },
 
     set_search_term: function(){

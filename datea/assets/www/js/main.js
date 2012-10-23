@@ -15,8 +15,26 @@ Backbone.View.prototype.scroll = function(){
         hScroll : false,
         fixedScrollbar: false,
         hideScrollbar: true,
+        onBeforeScrollStart: function(event){
+            if($(event.target).is("select")){
+                return false;
+            }
+            else if($(event.target).is("input")){
+                return false;
+            }
+            if($(event.target).is("textarea")){
+                return false;
+            }
+            if($(event.target).is("a")){
+                return false;
+            }
+
+            else{
+                event.preventDefault();
+            }
+        }
     });
-}
+};
 
 var DateaRouter = Backbone.Router.extend({
      
