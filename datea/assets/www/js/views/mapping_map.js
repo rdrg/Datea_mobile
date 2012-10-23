@@ -58,7 +58,7 @@ var MappingMapView = Backbone.View.extend({
 			'defaultZoom': 12,
 		}
 		
-		if (typeof(initCenter) != 'undefined') {
+		if (typeof(deviceLocInfo) != 'undefined') {
 			mapOptions.defaultLon = deviceLocInfo.lng;
 			mapOptions.defaultLat =  deviceLocInfo.lat;
 			
@@ -71,7 +71,7 @@ var MappingMapView = Backbone.View.extend({
 		}
 		
 		this.map = new Datea.olwidget.Map("mapping-map", [this.itemLayer], mapOptions, this.show_cluster_content_callback, this);
-		//this.itemLayer.initCenter(); 
+		this.itemLayer.initCenter(); 
     },
     
     show_cluster_content_callback: function (itemCollection, self) {
