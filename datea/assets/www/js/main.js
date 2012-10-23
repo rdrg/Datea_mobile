@@ -479,8 +479,8 @@ $(document).ready(function () {
 	        //window.localUser = new User();
                 //
                 
-	        //if(localStorage.getItem('authdata') !== null) {
- 	        if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
+	        if(localStorage.getItem('authdata') !== null) {
+ 	        //if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
                    console.log(localStorage.getItem('authdata'));
         	    //window.localSession = new localSession();
 	            window.localUser = new User();

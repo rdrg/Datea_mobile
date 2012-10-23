@@ -28,6 +28,7 @@ window.LoginView = Backbone.View.extend({
         this.model.save({ username: usr, password: pss }, {
             success: function(model, response) {
                 if(response.status == 200){
+                    /*
                     self.model.set({ username: usr });
                     self.model.set({ token: response.token });
                     self.model.set({ userid: response.userid });
@@ -35,25 +36,26 @@ window.LoginView = Backbone.View.extend({
                     
                     var uname = self.model.get("username");
                     var userid = self.model.get("userid");
+                    */
                     console.log("submit login desde el cliente");
                     
                     var localdata = {
-                        "username": uname,
+                        "username": response.username,
                         "token": response.token,
-                        "userid": userid,
-                        "logged": self.model.get("logged")
+                        "userid": response.userid,
+                        "logged": true
                     };
-
+                    model.set(localdata);
                     //localStorage.setItem("authdata", JSON.stringify(localdata));
-                    //localStorage.setItem("authdata", JSON.stringify(this.model));
+                    localStorage.setItem("authdata", JSON.stringify(model));
 
                     Backbone.Tastypie = {
                         prependDomain: api_url,
                         doGetOnEmptyPostResponse: true,
                         doGetOnEmptyPutResponse:false,
                         apiKey : {
-                            username: uname,
-                            key: response.token
+                            username: model.get('username'),
+                            key: model.get('token')
                         }
                     };
                     
