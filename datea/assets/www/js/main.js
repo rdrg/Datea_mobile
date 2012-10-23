@@ -150,6 +150,7 @@ var DateaRouter = Backbone.Router.extend({
 	userLoadProfile: function (userid) {
 
             localUser.fetch({ data: { 'id': userid }});
+
             this.profileView = new ProfileView({ model: localUser });
             this.showView('#main', this.profileView);
             if (this.profileView.postRender){
@@ -159,8 +160,50 @@ var DateaRouter = Backbone.Router.extend({
 	
 	userEditProfile: function (userid) {
 
-	    this.profileEditView = new ProfileEditView({ model: localUser });
-            this.showView('#main', this.profileEditView);
+            var self = this;
+            
+            /*
+            if(!this.profile){
+                this.profile = new Profile();
+            }
+            */
+
+            if(!this.profileEditView){
+                this.profileEditView = new ProfileEditView({ model: localUser });
+            }
+            
+            console.log('username from edit profile: ' + localUser.get('username'));
+
+            localUser.fetch({
+                
+                data:{
+                    'userid': localSession.get('userid'),
+                    'username': localUser.get('username'),
+                    'user_full':1,
+                    'api_key': localSession.get('token')
+                    },
+                success: function(model, response){
+                    console.log("response: " + JSON.stringify(response));
+                    console.log('user model: ' +  JSON.stringify(model));
+                    self.showView('#main', self.profileEditView);
+                },
+                error:function(){
+                    alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+                }
+                
+            });
+
+            /*
+            this.profile.fetch({data:{
+                'userid': localSession.get('userid'),
+                'username': localUser.get('username'),
+                'user_full': 1,
+                'api_key': localSession.get('token')
+            }});
+            */
+	   
+            //this.profileEditView = new ProfileEditView({ model: this.profile });
+
 	},
 	
 	myActions: function () {
@@ -461,8 +504,8 @@ $(document).ready(function () {
 	        //window.localUser = new User();
                 //
                 
-	        if(localStorage.getItem('authdata') !== null) {
- 	        //if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
+	        //if(localStorage.getItem('authdata') !== null) {
+ 	        if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
                    console.log(localStorage.getItem('authdata'));
         	    //window.localSession = new localSession();
 	            window.localUser = new User();

@@ -234,6 +234,8 @@ var ProfileEditView = Backbone.View.extend({
     addImageOverlay:function(ev){
         ev.preventDefault();
         this.imageOverlay = new ProfileImageOverlayView();
-        this.$("#image_overlay").html(this.imageOverlay.render().el);
+        $("#overlay").html(this.imageOverlay.render().el);
+        this.eventAggregator.trigger("footer:hide");
+        $("#overlay").show("fast");
     }
 });
