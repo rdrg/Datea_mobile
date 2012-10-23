@@ -15,7 +15,6 @@ Backbone.View.prototype.scroll = function(){
         hScroll : false,
         fixedScrollbar: false,
         hideScrollbar: true,
-
         useTransform: false,
         onBeforeScrollStart: function (e) {
             var target = e.target;
@@ -25,7 +24,7 @@ Backbone.View.prototype.scroll = function(){
                 e.preventDefault();
         }
     });
-}
+};
 
 var DateaRouter = Backbone.Router.extend({
      
