@@ -14,7 +14,7 @@ Backbone.View.prototype.scroll = function(){
     this.scroller = new iScroll('main',{
         hScroll : false,
         fixedScrollbar: false,
-        hideScrollbar: true,
+        hideScrollbar: false,
         useTransform: false,
         onBeforeScrollStart: function (e) {
             var target = e.target;
