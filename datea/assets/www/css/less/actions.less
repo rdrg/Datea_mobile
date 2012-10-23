@@ -3,13 +3,12 @@
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 17px;
-  padding-bottom: 17px;
+  //padding-bottom: 17px;
 }
 
 #actions_welcome{
   margin-top: -10px;
   margin-left: -20px;
-  width: 326px;
   .gradient_gray;
   h1{
     color: @w;
@@ -20,12 +19,11 @@
   background: #ffffff; /* Old browsers */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(16%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 16%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
- 
-
   width: 247px;
   height: 105px;
   padding-left: 20px;
   padding-right: 25px;
+  border-radius: 0px 0px 10px 10px;
   span{
     .regular;
     .bold;
@@ -53,6 +51,7 @@
     }
     .datea_btn_yllw{
       font-weight: normal;
+      height: 55px;
     }
   }
   #actions_follow{
@@ -67,13 +66,18 @@
     .datea_btn_gry{
       font-weight: normal;
       background-color: @w;
+      height: 55px;
     }
   }
 }
 
+#action_list{
+  height: 100%;
+}
+
 .actions_action{
-  height: 63px;
-  margin-bottom: 10px;
+  height: 71px;
+  margin-bottom: 18px;
   padding-left: 20px;
   position: relative;
 
