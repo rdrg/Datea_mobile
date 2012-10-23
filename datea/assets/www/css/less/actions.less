@@ -75,6 +75,7 @@
   height: 63px;
   margin-bottom: 10px;
   padding-left: 20px;
+  position: relative;
 
   a{
     color: @gray;
@@ -98,6 +99,22 @@
     background-image: url('../img/flecha1.png');
     background-repeat: no-repeat;
     background-position: 97% 21px;
+    
+    .action_name {
+    	min-height: 45px;
+    }
+    .action_stats {
+    	font-size: 10px;
+    	color: #999;
+    	.sep:last-child { display:none}
+    }
+  }
+  .expired {
+  		position: absolute;
+  		bottom:-11px;
+  		right:10px;
+  		font-size:10px;
+  		color: #e35b59;
   }
 }
 

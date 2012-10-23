@@ -28,12 +28,22 @@
 
     <% _.each(actions, function(action, index) { %>
       <div class="actions_action">
-        <a href="#action/<%= action.id %>" class="action_detail">
+        <% if (!action.is_active) { %>
+    		<div class="expired">finalizada</div>
+    	<% } %>
+        <a href="#action/<%= action.id %>" class="action_detail clearfix">
           <div class="action_img">
             <img src="<%= api_url %><%= action.image %>"/>    
           </div>
           <div class="action_info">
-            <%= action.name %>
+            <div class="action_name"><%= action.name %></div>
+            <div class="action_stats clearfix">
+            	<% if (action.item_count > 0) { %>
+            		<%= action.item_count %> dateos <span class="sep">|</span>
+            	<% } if (action.user_count) { %>
+            		<%= action.user_count %> usuarios<span class="sep">|</span>
+            	<% } %>
+            </div>
           </div>
         </a>
       </div>
