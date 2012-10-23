@@ -25,12 +25,6 @@ var HistoryListView = Backbone.View.extend({
 			adjacent_pages: 2,
 		});*/
 	},
-	
-	render:function (ev) {
-    	this.$el.html( this.template());
-    	this.build_filter_options();
-        return this;
-    },
     
     // build filter options according to user
     build_filter_options: function () {

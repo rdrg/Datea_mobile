@@ -1,38 +1,29 @@
-<div>
-    <br>
-    <br>
-    <form>
-        <div>
-            Filtrar por t&eacute;rmino:
-        </div>
+<div id="wrapper">
+    <div id="search_form">
+        <h1>Buscar acciones</h1> 
+        <form>
+            <input type="text" id="search_term" placeholder="buscar frase"></input>
+            <h4>
+                Filtrar por Categor&iacute;a:
+            </h4>
 
-        <input type="text" id="search_term"></input>
-        <br>
+            <select id="category_filter" >
+                <% _.each(cat_list, function(cat){ %>
+                    <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
+                <% })%>
+            </select>
+            
+            <h4>
+                Ordenar por:
+            </h4>
 
-        <div>
-            Filtrar por Categor&iacute;a:
-        </div>
+            <select id="order_by"> 
+                <option value="featured" name="destacadas" selected="selected">Destacadas</option>
+                <option value="-" name="recientes">Recientes</option>
+                <option value="distance" name="cercanas">Cercanas</option>
+            </select>
 
-        <select id="category_filter" >
-            <% _.each(cat_list, function(cat){ %>
-                <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
-            <% })%>
-        </select>
-        <br>
-        <div>
-            Ordenar por:
-        </div>
-
-        <select id="order_by"> 
-            <option value="featured" name="destacadas" selected="selected">Destacadas</option>
-            <option value="-" name="recientes">Recientes</option>
-            <option value="distance" name="cercanas">Cercanas</option>
-        </select>
-
-        <br>
-        <br>
-        <br>
-
-        <a href="#" id="submit_search">Mostrar Resultados</a>
-    </form>
+            <a href="#" id="submit_search" class="btn datea_btn_yllw">Mostrar Resultados</a>
+        </form>
+    </div>
 </div>
