@@ -22,6 +22,7 @@ var ActionsView = Backbone.View.extend({
        */
 
         actions = {"actions": this.model.toJSON() };
+        console.log(actions);
         
         this.$el.html(this.template(actions));
         //this.build_filter_options();
