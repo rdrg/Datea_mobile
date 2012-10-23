@@ -14,7 +14,7 @@ Backbone.View.prototype.scroll = function(){
     this.scroller = new iScroll('main',{
         hScroll : false,
         fixedScrollbar: false,
-        hideScrollbar: true,
+        hideScrollbar: false,
         useTransform: false,
         onBeforeScrollStart: function (e) {
             var target = e.target;
@@ -45,6 +45,7 @@ var DateaRouter = Backbone.Router.extend({
         "mapping/:mapid/report/create": "createReport",
         "mapping/:mapid/reports/map":"mappingMap",
         "mapping/:mapid/reports/:reportid":"mapItemDetail",
+        "mapeo/:mapid/dateos/:reportid":"mapItemDetail",
     	//"mapping/:mapid/reports/geoinput": "geoInput"
     	"history": "openHistory",
 	},

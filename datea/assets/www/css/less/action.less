@@ -65,6 +65,31 @@
     background-image: url('../img/seguir_off.png');
     background-repeat: no-repeat;
   }
+  
+	  /* action-days-left,  */
+	.action-active {
+		float: right;
+		margin-top:5px;
+		font-size: 12px;
+		color: #999;
+		.icono {
+			display: inline-block;
+			min-height: 14px;
+			width: 15px;
+			margin-right:4px;
+		}
+		&.action-days-left, .action-last-day {
+			.icono {
+				background: url(../img/action_active.png) no-repeat 0px center;
+			}
+		}
+		&.action-expired {
+			color: #e35b59;
+			.icono {
+				background: url(../img/action_active.png) no-repeat -15px center;
+			}
+		}
+	}
 }
 
 #action_footer{
@@ -74,5 +99,4 @@
   #action_about{
     
   }
-
 }
