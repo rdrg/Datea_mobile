@@ -24,6 +24,7 @@ var CreateMapItemView = Backbone.View.extend({
 
     stepForward: function(){
         /*
+         * this is a foo change
         switch(this.step){
             case 1:
                 if(this.model)
