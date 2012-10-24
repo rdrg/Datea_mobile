@@ -3,9 +3,9 @@
 		<div class="item-pager">
 			<div class="prev">
 				<% if (page <= 0) { %>
-					<button class="btn back-to-map datea_btn_gry">regresar al mapa</button>
+					<button class="btn back-to-map datea_btn_gry">mapa</button>
 				<% } else { %>
-					<button class="btn prev-item datea_btn_gry">anterior</button>
+					<button class="btn prev-item datea_btn_gry"> < </button>
 				<% } %>
 			</div>
 			<% if (total_items > 1) { %>
@@ -13,9 +13,9 @@
 				
 				<div class="next">
 					<% if (page < total_items-1) { %>
-						<button class="btn next-item datea_btn_yllw">siguiente</button>
+						<button class="btn next-item datea_btn_yllw"> > </button>
 					<% }else{ %>
-						<button class="btn back-to-map datea_btn_yllw">regresar al mapa</button>
+						<button class="btn back-to-map datea_btn_yllw">mapa</button>
 					<% } %>
 				</div>
 			<% } %>
