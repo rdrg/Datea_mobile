@@ -52,18 +52,18 @@ var DateaRouter = Backbone.Router.extend({
     	"history": "openHistory",
 	},
 	
-	showView: function(selector, view) {
+    showView: function(selector, view) {
         //console.log("view name: " + view.constructor.toString());
-	    if (this.currentView)
-	        this.currentView.close();
+        if (this.currentView)
+	    this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
-        this.currentView.scroll();
+            this.currentView.scroll();
 	    return view;
 	},
 	
-	initialize: function () {
-	    $.ajaxSetup({ 
+    initialize: function () {
+        $.ajaxSetup({ 
             beforeSend: function(){
                 $('#spinner').fadeIn("fast");
             },
@@ -72,74 +72,66 @@ var DateaRouter = Backbone.Router.extend({
             },
             crossDomain:true 
         });
-	    $.support.cors = true;
+	$.support.cors = true;
+        var self = this;
 
-             /*
-	    this.bind('all', function(trigger, args){
-                var path = trigger.split(':');
-                console.log("route path: " + path[0]);
-            });	        
-            */
         if(localSession.get('logged')){
             this.headerView = new LoggedInHeaderView();
-		  $('#header').html(this.headerView.render().el);
-	    }else{
+            $('#header').html(this.headerView.render().el);
+        }else{
             this.headerView = new LoggedOutHeaderView();
             $('#header').html(this.headerView.render().el);
         }
+        
         //$('.header').html(this.headerView.render().el);
-        this.navBar = new NavBar({});
-        this.navBarView = new NavBarView({model: this.navBar});
-        $('#footer').html(this.navBarView.render().el);
-  
-	    //this.footerView = new FooterView();
-	    //$('.footer').html(this.footerView.render().el);
-	},
+        //this.navBar = new NavBar({});
+        //this.navBarView = new NavBarView({model: this.navBar});
+        //$('#footer').html(this.navBarView.render().el);
+        
+    },
 
-	home: function() {
-        //console.log("enter home"); 
+    home: function() {
+    //console.log("enter home"); 
         if (localSession.get('logged')) {
-            var userid = localSession.get('userid');
-            
+            //this.renderNavigation('general');
+            var userid = localSession.get('userid');            
             dateaApp.navigate("/actions", {trigger: true});
-
-        } else {
+        } 
+        else {
             if(!this.homeView) {
                 this.homeView = new HomeView();
             }
-                this.showView('#main', this.homeView);
-            }
-	},
+            this.showView('#main', this.homeView);
+            this.renderNavigation('loggedout');
+            
+        }
+    },
 	
-	about: function () {
-		if (!this.aboutView) {
-        	    this.aboutView = new AboutView();
-		}
-		$('#main').html(this.aboutView.render().el);
-        this.headerView.selectMenuItem('about-menu');
-	},
+    about: function () {
+        if (!this.aboutView) {
+            this.aboutView = new AboutView();
+	    }
+	    $('#main').html(this.aboutView.render().el);
+            this.headerView.selectMenuItem('about-menu');
+    },
 	
-	login: function () {
-                /*
-		if (!this.session) {
-		    this.session = new Session();
-		}
-		*/
-		if (!this.loginView) {
-		//	this.loginView = new LoginView({ model: this.session });
+    login: function () {
+        if (!this.loginView) {
+	//	this.loginView = new LoginView({ model: this.session });
                     this.loginView = new LoginView({model: localSession});
 		}
 
 		this.showView('#main', this.loginView);
+                this.renderNavigation('loggedout');
 	},
 	
 	logout: function () {
-		var logout_data = {
-		    "username": null,
-            "token" : null,
-            "userid": null,
-            "logged": false
-        };
+	    var logout_data = {
+	        "username": null,
+                "token" : null,
+                "userid": null,
+                "logged": false
+            };
 		
 	    localSession.set(logout_data);
 	    console.log(localSession.get('logged'));
@@ -156,7 +148,8 @@ var DateaRouter = Backbone.Router.extend({
             if (this.profileView.postRender){
                 this.profileView.postRender();
             }
-	},
+	this.renderNavigation('general');
+        },
 	
 	userEditProfile: function (userid) {
 
@@ -203,6 +196,7 @@ var DateaRouter = Backbone.Router.extend({
             */
 	   
             //this.profileEditView = new ProfileEditView({ model: this.profile });
+        this.renderNavigation('general');
 
 	},
 	
@@ -216,11 +210,15 @@ var DateaRouter = Backbone.Router.extend({
                     //console.log("actions fetched");
                     self.actionsView = new ActionsView({model:self.actionCollection});
                     self.showView('#main', self.actionsView);
+
+                    //self.renderNavigation('general');
                     }
                 });
 	    },
     
     actionList: function(){
+
+        this.renderNavigation('general');
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
@@ -235,6 +233,7 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
+        
     },
 
     actionDetail: function(actionid){
@@ -315,6 +314,7 @@ var DateaRouter = Backbone.Router.extend({
             }); 
             this.showView('#main', this.newMapItemView); 
 	    }
+    this.renderNavigation('dateo', mapid);
     },
        
 	mappingMap: function(mapid, callback_func) {
@@ -353,6 +353,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.mappingMapView.loadMap();
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}
+    this.renderNavigation('dateo', mapid);
     },
     
     mapItemDetail: function(mapping_id, item_id) {
@@ -375,6 +376,7 @@ var DateaRouter = Backbone.Router.extend({
     		}
     		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	});
+        this.renderNavigation('dateo', mapping_id);
     },
     
     geoInput: function(mapid) {
@@ -463,7 +465,40 @@ var DateaRouter = Backbone.Router.extend({
     	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
        
+    },
+
+    renderNavigation: function(mode, id){
+        console.log("nav bar id: " + id);
+        if(mode == 'general'){
+            if(!this.navBarView){
+                this.navBarView = new NavBarView();
+            }
+            $('#footer').html(this.navBarView.render().el);
+        }
+
+        else if(mode == 'dateo'){
+            if(!this.navBarDateoView){
+                this.navBarDateoView = new NavBarDateoView();
+                //if(typeof(id) !== "undefined"){
+                  //  this.navBarDateoView.options.id = id;
+                //}
+            }
+            $('#footer').html(this.navBarDateoView.render(id).el);
+        }
+        else if(mode == 'loggedout'){
+            /*
+             if(!this.navBarLoggedOutView){
+                this.navBarLoggedOutView = new NavBarLoggedOutView();
+                //if(typeof(id) !== "undefined"){
+                  //  this.navBarDateoView.options.id = id;
+                //}
+            }
+            */
+
+            $('#footer').empty();
+        }
     }
+    
 });
 
 $(document).ready(function () {
@@ -472,7 +507,8 @@ $(document).ready(function () {
                     'LoginView', 
                     'ProfileView',
                     'ProfileEditView',
-                    'NavBarView', 
+                    'NavBarView',
+                    'NavBarDateoView', 
                     'HomeView', 
                     'ActionsView',
                     'ActionView',

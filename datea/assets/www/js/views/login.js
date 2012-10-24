@@ -62,13 +62,11 @@ window.LoginView = Backbone.View.extend({
                             success: function(){
                  
                                //dateaApp.navigate("user/" + userid, { trigger : true });
-                                dateaApp.navigate("/actions", {trigger: true});
+                                dateaApp.navigate("/", {trigger: true});
                                 //render loggedIn header
                                 self.headerView = new LoggedInHeaderView();
-                                $('#header').html(self.headerView.render().el);
-                                   
+                                $('#header').html(self.headerView.render().el); 
                             }
-                            
                     });
                 
                 } else if(response.error) {
