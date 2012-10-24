@@ -569,6 +569,7 @@ $(document).ready(function () {
                             	'user_full': 1
                             },
                             success: function(mdl, res){
+                            	console.log(mdl);
                                 //console.log("user model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
                                         window.myFollows = new FollowCollection(mdl.get('follows'));

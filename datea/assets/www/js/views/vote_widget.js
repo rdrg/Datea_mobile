@@ -75,6 +75,7 @@ var VoteWidgetView = Backbone.View.extend({
 					localUser.attributes.votes.push(self.model.toJSON());
 					self.voted_model.set('vote_count', self.voted_model.get('vote_count') + 1);
 					self.render();
+					localUser.attributes.profile.vote_count = localUser.get('profile').vote_count + 1;
 				}
 			});
 		}
