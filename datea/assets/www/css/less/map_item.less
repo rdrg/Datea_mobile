@@ -6,14 +6,23 @@
   .round(10px);
 
   .item-pager{
+    height: 57px;
     margin-bottom: 20px;
     background: #ffffff; /* Old browsers */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(16%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 16%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+    .prev{
+      .left;
+    }
+    .next{
+      .rght;
+      margin-top: -37px;
+    }
     .prev, .next{
       padding: 10px;
       text-align: center;
       margin-bottom: -2px;
+      width: 68px;
       button{
         width: 100%;
       }
@@ -21,7 +30,9 @@
     .counter{
         font-weight: bold;
         text-align:center;
-        width: 100%;
+        width: 59px;
+        margin-left: 117px;
+        padding-top: 17px;
       }
   }
 
