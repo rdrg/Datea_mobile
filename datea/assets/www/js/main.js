@@ -102,7 +102,7 @@ var DateaRouter = Backbone.Router.extend({
                 this.homeView = new HomeView();
             }
             this.showView('#main', this.homeView);
-            this.renderHeader('first');
+            this.renderHeader('loggedout');
             this.renderNavigation('loggedout');
             
         }
