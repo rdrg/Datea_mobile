@@ -41,6 +41,7 @@ var CommentListView = Backbone.View.extend({
 			'success': function(model, response) {
 				self.add_comment(model);
 				self.$el.find('.submit-comment').removeAttr('disabled');
+				localUser.attributes.profile.comment_count = localUser.get('profile').comment_count + 1;
 			},
 			'error': function(error) {
 				// redirect to login
