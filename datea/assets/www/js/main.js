@@ -10,6 +10,7 @@ Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
 Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
+
 Backbone.View.prototype.scroll = function(){
     this.scroller = new iScroll('main',{
         hScroll : false,
@@ -26,9 +27,10 @@ Backbone.View.prototype.scroll = function(){
     });
 };
 
+
 var DateaRouter = Backbone.Router.extend({
      
-	routes: {
+    routes: {
 	    "": "home",
         //temporary redirection to work on actions
         //"":"myActions",
@@ -99,36 +101,14 @@ var DateaRouter = Backbone.Router.extend({
         if (localSession.get('logged')) {
             var userid = localSession.get('userid');
             
-            //localUser.fetch({ data: { 'id': userid }});   
-            
             dateaApp.navigate("/actions", {trigger: true});
-            /*
-            if (!this.actionCollection) {
-                this.actionCollection = new ActionCollection();
-                this.actionCollection.url = api_url + '/api/v1/action/';
-            }
-        
-            var self = this;
-            //console.log("action url: " + this.actionCollection.url);
-            this.actionCollection.fetch({
-                success: function(collection, response){
-                    console.log("actions fetched");
-                    if(!self.actionsView){
-                        self.actionsView = new ActionsView({model:self.actionCollection});
-                    }
-                    self.showView('#content', self.actionsView);
-                    //load navigation
-                }
-            });
-            */
-            //this.showView("#content", this.actionView);
+
         } else {
             if(!this.homeView) {
                 this.homeView = new HomeView();
             }
-            
-            this.showView('#main', this.homeView);
-        }
+                this.showView('#main', this.homeView);
+            }
 	},
 	
 	about: function () {
@@ -140,12 +120,14 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	login: function () {
+                /*
 		if (!this.session) {
 		    this.session = new Session();
 		}
-		
+		*/
 		if (!this.loginView) {
-			this.loginView = new LoginView({ model: this.session });
+		//	this.loginView = new LoginView({ model: this.session });
+                    this.loginView = new LoginView({model: localSession});
 		}
 
 		this.showView('#main', this.loginView);
@@ -166,37 +148,83 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	userLoadProfile: function (userid) {
-        localUser.fetch({ data: { 'id': userid }});
-        this.profileView = new ProfileView({ model: localUser });
-        this.showView('#main', this.profileView);
-        if (this.profileView.postRender){
-            this.profileView.postRender();
-        }
+
+            localUser.fetch({ data: { 'id': userid }});
+
+            this.profileView = new ProfileView({ model: localUser });
+            this.showView('#main', this.profileView);
+            if (this.profileView.postRender){
+                this.profileView.postRender();
+            }
 	},
 	
 	userEditProfile: function (userid) {
-		this.profileEditView = new ProfileEditView({ model: localUser });
-        this.showView('#main', this.profileEditView);
+
+            var self = this;
+            
+            /*
+            if(!this.profile){
+                this.profile = new Profile();
+            }
+            */
+
+            if(!this.profileEditView){
+                this.profileEditView = new ProfileEditView({ model: localUser });
+            }
+            
+            console.log('username from edit profile: ' + localUser.get('username'));
+
+            localUser.fetch({
+                
+                data:{
+                    'userid': localSession.get('userid'),
+                    'username': localUser.get('username'),
+                    'user_full':1,
+                    'api_key': localSession.get('token')
+                    },
+                success: function(model, response){
+                    console.log("response: " + JSON.stringify(response));
+                    console.log('user model: ' +  JSON.stringify(model));
+                    self.showView('#main', self.profileEditView);
+                },
+                error:function(){
+                    alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+                }
+                
+            });
+
+            /*
+            this.profile.fetch({data:{
+                'userid': localSession.get('userid'),
+                'username': localUser.get('username'),
+                'user_full': 1,
+                'api_key': localSession.get('token')
+            }});
+            */
+	   
+            //this.profileEditView = new ProfileEditView({ model: this.profile });
+
 	},
 	
 	myActions: function () {
-        this.actionCollection = new ActionCollection();
-        this.actionCollection.url = api_url + '/api/v1/action/search/';
-        var self = this;
-        //console.log("action url: " + this.actionCollection.url);
-        this.actionCollection.fetch({
-            success: function(collection, response){
-                //console.log("actions fetched");
-                self.actionsView = new ActionsView({model:self.actionCollection});
-                self.showView('#main', self.actionsView);
-            }
-        });
-	},
+            this.actionCollection = new ActionCollection();
+            this.actionCollection.url = api_url + '/api/v1/action/search/';
+            var self = this;
+            //console.log("action url: " + this.actionCollection.url);
+            this.actionCollection.fetch({
+                success: function(collection, response){
+                    //console.log("actions fetched");
+                    self.actionsView = new ActionsView({model:self.actionCollection});
+                    self.showView('#main', self.actionsView);
+                    }
+                });
+	    },
     
     actionList: function(){
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
+        console.log("userid: " + localUser.get("id"));
     	if (!this.actionListView) {
         	this.actionListView = new ActionsView({
                         model: this.actionCollection,
@@ -210,6 +238,7 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     actionDetail: function(actionid){
+        console.log("enter actions");
         if(!this.actionModel){
             this.actionModel = new Action();
         }
@@ -222,6 +251,9 @@ var DateaRouter = Backbone.Router.extend({
                     self.actionView = new ActionView({model: self.actionModel});
                 }
                 self.showView('#main', self.actionView);
+            },
+            error: function(error){
+                console.log("error fetching actions: " + JSON.stringify(error));
             }
         });
     },
@@ -434,7 +466,6 @@ var DateaRouter = Backbone.Router.extend({
     }
 });
 
-
 $(document).ready(function () {
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
@@ -450,8 +481,8 @@ $(document).ready(function () {
                     'LoggedOutHeaderView', 
                     'MapItemListView',
                     'CreateMapItemView',
-                    'CreateMapItemOneTwo',
-                    //'CreateMapItemOne',
+                    //'CreateMapItemOneTwo',
+                    'CreateMapItemOne',
                     'CreateMapItemTwo',
                     'CreateMapItemThree',
                     'CreateMapItemFour',
@@ -460,6 +491,7 @@ $(document).ready(function () {
                     'MapItemDetailView',
                     'MapItemClusterView', 
                     'ImageOverlayView',
+                    'ProfileImageOverlayView',
                     'CommentView',
                     'CommentListView',
                     'MapItemResponseView',
@@ -471,27 +503,29 @@ $(document).ready(function () {
                     'SearchFormView'
                     ],
 	function () {
-	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";
-	        
-	        window.localSession = new localSession();
-	        window.localUser = new User();
-	
-	        if(window.localStorage.getItem('authdata') != null) {
+	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";       
+	        window.localSession = new Session();
+	        //window.localUser = new User();
+                //
+                
+	        //if(localStorage.getItem('authdata') !== null) {
+ 	        if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
+                   console.log(localStorage.getItem('authdata'));
+        	    //window.localSession = new localSession();
+	            window.localUser = new User();
+                   
 	            var authdata = JSON.parse(localStorage.getItem('authdata'));
 	            localSession.set(authdata);
                     //bootstrap user data
+                    
                     if(localSession.get('logged')){
                         userid = localSession.get('userid');
                         console.log('token: ' + localSession.get('token'));
+                        console.log("fetching user data");
                         localUser.fetch({ 
-                            data: {
-                            	'username': localSession.get('username'),
-                            	'api_key': localSession.get('token'),
-                                'id': userid, 
-                                'user_full': 1 
-                            },
+                            data:{'id': userid},
                             success: function(mdl, res){
-                                //console.log("model: " + JSON.stringify(mdl.toJSON()));
+                                //console.log("user model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
                                         window.myFollows = new FollowCollection(mdl.get('follows'));
                                         //console.log('follows: ' + JSON.stringify(myFollows));
@@ -499,15 +533,31 @@ $(document).ready(function () {
                                 if(mdl.get('votes') !== undefined){
                                     window.myVotes = new VoteCollection(mdl.get('votes'));
                                 }
+                                window.dateaApp = new DateaRouter();           
+	                        Backbone.history.start();
+
                             },
                             error: function(){
                                 console.log("some error fetching");
                             }
                         });        
                     }
+                    else{
+                        console.log("localstorage but not logged in");    
+	                window.dateaApp = new DateaRouter();           
+	                Backbone.history.start();
+                    }
 	        }
-	        window.dateaApp = new DateaRouter();           
-	        Backbone.history.start();
+                else{
+                    console.log("no data in localSotrage, storing persistent session data");    
+                    window.localStorage.setItem('authdata', JSON.stringify(localSession));
+	            window.dateaApp = new DateaRouter();           
+	            Backbone.history.start();
+                }
+                
+                 // window.dateaApp = new DateaRouter();           
+	           // Backbone.history.start();
+
     });  
 });
 

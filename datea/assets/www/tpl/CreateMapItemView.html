@@ -15,15 +15,15 @@
               <a id="next_button">siguiente</a>
             </div>   
           </div>
+        </div>    
           <div id="title">
-            <strong>Paso 3: </strong> <span>Ubica el problema en el mapa:</span>  
+            <strong>Paso 2: </strong> <span>Ubica el problema en el mapa:</span>  
           </div>
         </div> 
-    <% } else if (step === 3){%>
+    <% } else if (step === 1){%>
             <div id="create_title_4">
                 <span>Crear Reporte </span>
             </div>
-    <% } else { %>
         <div id="create_mapitem_header">
           <div id="create_container">
             <div id="bck_btn">
@@ -38,7 +38,37 @@
               <a id="next_button">siguiente</a>
             </div>   
           </div>
+      </div>
+    <% } else if (step === 3){ %>
+        <div id="create_mapitem_header">
+          <div id="create_container">
+            <div id="bck_btn">
+              <a  id="back_button">regresar</a>
+            </div>  
+          
+            <div id="create_title">
+                <span>Crear Reporte </span>
+            </div>
+
+            <div id="nxt_btn">
+              <a id="next_button">Enviar</a>
+            </div>   
+          </div>
         </div>
+    <% } else if (step === 4){ %>
+        <div id="create_mapitem_header">
+          <div id="create_container">
+            <div id="bck_btn">
+              <a  id="back_button">regresar</a>
+            </div>  
+          
+            <div id="create_title">
+                <span> Reporte Creado </span>
+            </div>
+
+          </div>
+        </div>
+
     <% }%>
     
 

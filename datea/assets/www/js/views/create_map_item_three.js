@@ -6,12 +6,14 @@ var CreateMapItemThree = Backbone.View.extend({
         });
         */
          console.log("this is step: " + this.options.step);
-         this.context = this.model.toJSON;
+         this.context = this.model.toJSON();
+         console.log("dateo model: " + JSON.stringify(this.context));
          this.context.step = this.options.step;
+         _.bindAll(this);
     },
 
     render: function(){
-        this.$el.html(this.template());
+        this.$el.html(this.template(this.context));
         return this;
     }
 });

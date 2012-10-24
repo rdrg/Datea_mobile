@@ -1,10 +1,18 @@
 //This is the Backbone controller that manages the Nav Bar
+
+
 var NavBarView = Backbone.View.extend({
+/*
     initialize:function(options){
-        Backbone.history.on('route',function(source, path){
-            this.render(path);
+
+
+        Backbone.history.on('route',function(){
+            //this.render(path);
+            console.log(Backbone.history.getFragment());
+            //console.log("source: " + source);
         }, this);
     },
+    */
     //This is a collection of possible routes and their accompanying
     //user-friendly titles
     /*

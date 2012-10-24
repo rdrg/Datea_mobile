@@ -3,7 +3,7 @@ var ProfileEditView = Backbone.View.extend({
         _.bindAll(this, "win");
     },
     events: {
-      //"click #image_input": "browseImage",
+      //"click #image_input": "browseImage",  
       "click #image_input": "addImageOverlay",	
       "submit #user_edit_form": "transferImage"
     },
@@ -136,6 +136,7 @@ var ProfileEditView = Backbone.View.extend({
  
     browseImage: function(event){
         event.preventDefault();
+        var self = this;
         if (!this.image_browser_opened) {
         	this.image_browser_opened = true;
 	        navigator.camera.getPicture(
@@ -143,6 +144,7 @@ var ProfileEditView = Backbone.View.extend({
 	                //alert(imageURI);
 	                this.image_browser_opened = false;
 	                $("#image_data").val(imageURI);
+                        $("#profile_image").attr("src", imageURI);
 	            },
 	            function(message){
 	            	this.image_browser_opened = false;
@@ -227,6 +229,13 @@ var ProfileEditView = Backbone.View.extend({
         //} else {
           //  console.log("no auth data, not sending");
         //}
-    }
+    },
 
+    addImageOverlay:function(ev){
+        ev.preventDefault();
+        this.imageOverlay = new ProfileImageOverlayView();
+        $("#overlay").html(this.imageOverlay.render().el);
+        this.eventAggregator.trigger("footer:hide");
+        $("#overlay").show("fast");
+    }
 });
