@@ -1,3 +1,16 @@
 <div>
-    
+Confirma tu dateo:
+</div>
+
+<div>
+    Categoria: <%= category_name %>   
+</div>
+<div id="#description">
+   Descripcion:  <%= content %>
+</div>
+
+<div id="image_container">
+    <% _.each(images, function(img){%>
+    <img src="<%= img %>"/>
+    <% });%>
 </div>

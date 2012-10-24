@@ -25,13 +25,13 @@ var CreateMapItemView = Backbone.View.extend({
 
         if(this.step == 1){
             console.log("perform actions for step 1");
-            this.stepOneTwoView = new CreateMapItemOneTwo({
+            this.stepOneView = new CreateMapItemOne({
                 model: this.model,
                 mappingModel: this.options.mappingModel, 
                 step : this.step
             });
             console.log("mapping url: " + this.model.get('action'));
-            this.$("#create_mapitem_content").html(this.stepOneTwoView.render().el); 
+            this.$("#create_mapitem_content").html(this.stepOneView.render().el); 
             this.step = 2;
         /*
         }else if(this.step == 2){
@@ -62,6 +62,16 @@ var CreateMapItemView = Backbone.View.extend({
 
             this.step = 3;
         }else if(this.step == 3){
+            this.step = 4;
+            this.stepThreeView = new CreateMapItemThree({
+                model: this.model,
+                mappingModel: this.options.mappingModel,
+                step: this.step
+            });
+
+            $("#create_mapitem_content").html(this.stepThreeView.render().el);
+            //this.transferImage();
+        }else if(this.step == 4){
             this.transferImage();
         }
     },

@@ -16,7 +16,7 @@
             </div>   
           </div>
         </div>    
-    <% } else { %>
+    <% } else if (step === 1){ %>
         <div id="create_mapitem_header">
           <div id="create_container">
             <div id="bck_btn">
@@ -31,7 +31,37 @@
               <a id="next_button">siguiente</a>
             </div>   
           </div>
+      </div>
+    <% } else if (step === 3){ %>
+        <div id="create_mapitem_header">
+          <div id="create_container">
+            <div id="bck_btn">
+              <a  id="back_button">regresar</a>
+            </div>  
+          
+            <div id="create_title">
+                <span>Crear Reporte </span>
+            </div>
+
+            <div id="nxt_btn">
+              <a id="next_button">Enviar</a>
+            </div>   
+          </div>
         </div>
+    <% } else if (step === 4){ %>
+        <div id="create_mapitem_header">
+          <div id="create_container">
+            <div id="bck_btn">
+              <a  id="back_button">regresar</a>
+            </div>  
+          
+            <div id="create_title">
+                <span> Reporte Creado </span>
+            </div>
+
+          </div>
+        </div>
+
     <% }%>
     
 

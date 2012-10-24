@@ -238,6 +238,7 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     actionDetail: function(actionid){
+        console.log("enter actions");
         if(!this.actionModel){
             this.actionModel = new Action();
         }
@@ -250,6 +251,9 @@ var DateaRouter = Backbone.Router.extend({
                     self.actionView = new ActionView({model: self.actionModel});
                 }
                 self.showView('#main', self.actionView);
+            },
+            error: function(error){
+                console.log("error fetching actions: " + JSON.stringify(error));
             }
         });
     },
@@ -477,8 +481,8 @@ $(document).ready(function () {
                     'LoggedOutHeaderView', 
                     'MapItemListView',
                     'CreateMapItemView',
-                    'CreateMapItemOneTwo',
-                    //'CreateMapItemOne',
+                    //'CreateMapItemOneTwo',
+                    'CreateMapItemOne',
                     'CreateMapItemTwo',
                     'CreateMapItemThree',
                     'CreateMapItemFour',
