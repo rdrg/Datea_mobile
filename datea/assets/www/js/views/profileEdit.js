@@ -9,7 +9,6 @@ var ProfileEditView = Backbone.View.extend({
     },
 
     render: function() {
-    	console.log(this.model.toJSON());
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     },
@@ -123,8 +122,10 @@ var ProfileEditView = Backbone.View.extend({
 	        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 		}else{
 			var self = this;
-			this.model.save({}, {
-	            success: function() {
+			this.model.save({
+				'api_key': localSession.get('token'),
+			}, {
+	            success: function(model) {
 	                dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
 	            },
 	         	error: function(error) {
@@ -167,7 +168,10 @@ var ProfileEditView = Backbone.View.extend({
         var im = jres.resource;
         
         var self = this;
-   		this.model.save({image: im}, {
+   		this.model.save({
+   			image: im,
+   			'api_key': localSession.get('token'),
+   		}, {
             success: function(model) {
                 dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
             },

@@ -148,62 +148,18 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	userLoadProfile: function (userid) {
-
-            localUser.fetch({ data: { 'id': userid }});
-
-            this.profileView = new ProfileView({ model: localUser });
-            this.showView('#main', this.profileView);
-            if (this.profileView.postRender){
-                this.profileView.postRender();
-            }
+        this.profileView = new ProfileView({ model: localUser });
+        this.showView('#main', this.profileView);
+        if (this.profileView.postRender){
+            this.profileView.postRender();
+        }
 	},
 	
 	userEditProfile: function (userid) {
-
-            var self = this;
-            
-            /*
-            if(!this.profile){
-                this.profile = new Profile();
-            }
-            */
-
             if(!this.profileEditView){
                 this.profileEditView = new ProfileEditView({ model: localUser });
             }
-            
-            console.log('username from edit profile: ' + localUser.get('username'));
-
-            localUser.fetch({
-                
-                data:{
-                    'userid': localSession.get('userid'),
-                    'username': localUser.get('username'),
-                    'user_full':1,
-                    'api_key': localSession.get('token')
-                    },
-                success: function(model, response){
-                    console.log("response: " + JSON.stringify(response));
-                    console.log('user model: ' +  JSON.stringify(model));
-                    self.showView('#main', self.profileEditView);
-                },
-                error:function(){
-                    alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
-                }
-                
-            });
-
-            /*
-            this.profile.fetch({data:{
-                'userid': localSession.get('userid'),
-                'username': localUser.get('username'),
-                'user_full': 1,
-                'api_key': localSession.get('token')
-            }});
-            */
-	   
-            //this.profileEditView = new ProfileEditView({ model: this.profile });
-
+            this.showView('#main', this.profileEditView);
 	},
 	
 	myActions: function () {
@@ -523,7 +479,12 @@ $(document).ready(function () {
                         console.log('token: ' + localSession.get('token'));
                         console.log("fetching user data");
                         localUser.fetch({ 
-                            data:{'id': userid},
+                            data:{
+                            	'id': userid,
+                            	'api_key': localSession.get('token'),
+                            	'username': localSession.get('username'),
+                            	'user_full': 1
+                            },
                             success: function(mdl, res){
                                 //console.log("user model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
