@@ -486,7 +486,7 @@ var DateaRouter = Backbone.Router.extend({
                 //}
             }
             var id = localUser.get('id');
-            console.log("header id: " + id);
+            //console.log("header id: " + id);
             $('#header').empty();
             $('#header').html(this.actionHeaderView.render(id).el);
         }
@@ -497,8 +497,12 @@ var DateaRouter = Backbone.Router.extend({
             $('#header').empty();
             $('#header').html(this.loggedOutHeaderView.render().el);
         }
-       else if(mode == 'first'){
+        else if(mode == 'first'){
+            if(!this.firstHeaderView){
+                this.firstHeaderView = new FirstHeaderView();
+            }
             $('#header').empty();
+            $('#header').html(this.firstHeaderView.render().el);
         }
     }   
 });
@@ -517,7 +521,8 @@ $(document).ready(function () {
                     'FooterView', 
                     'LoggedInHeaderView', 
                     'LoggedOutHeaderView',
-                    'ActionHeaderView', 
+                    'ActionHeaderView',
+                    'FirstHeaderView', 
                     'MapItemListView',
                     'CreateMapItemView',
                     //'CreateMapItemOneTwo',
@@ -599,9 +604,6 @@ $(document).ready(function () {
 	            window.dateaApp = new DateaRouter();           
 	            Backbone.history.start();
                 }
-                
-                 // window.dateaApp = new DateaRouter();           
-	           // Backbone.history.start();
 
     });  
 });
@@ -609,17 +611,6 @@ $(document).ready(function () {
 
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
-
-
-    // Initializing BackStack.StackNavigator for the #container div
-    /*
-    window.stackNavigator = new BackStack.StackNavigator({
-        el: '#main'
-    });
-    */
-    
-    // Pushing FirstView on to the stack
-    //window.stackNavigator.pushView(ActionsView);*/
 }
 
 function onDeviceReady() {

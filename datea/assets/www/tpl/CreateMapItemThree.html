@@ -10,7 +10,8 @@ Confirma tu dateo:
 </div>
 
 <div id="image_container">
+    <% if (typeof(images) !== "undefined"){ %>
     <% _.each(images, function(img){%>
     <img src="<%= img %>"/>
-    <% });%>
+    <% });}%>
 </div>

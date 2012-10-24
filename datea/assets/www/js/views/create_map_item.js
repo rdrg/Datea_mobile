@@ -10,8 +10,7 @@ var CreateMapItemView = Backbone.View.extend({
     },
     events: {
         "click #next_button": "stepForward",
-        "click #back_button": "stepBackward"
-       
+        "click #back_button": "stepBackward"       
     },
 
     render: function(){
@@ -23,13 +22,30 @@ var CreateMapItemView = Backbone.View.extend({
     },
 
     stepForward: function(){
-        /*
-         * this is a foo change
-        switch(this.step){
-            case 1:
-                if(this.model)
+        
+        //this is a foo change
+        if(this.step == 1){
+            /*
+            this.selectCategory();
+            this.setDescription();
+            if(!this.model.get('category') || !this.model.get('content')){
+                alert("Se requiere seleccionar una categoria y escribir una descripcion");
+                return;
+            }
+            */
+            var tmp_cat_id =  $('[name="category"]:checked', this.$el).val();
+            var tmp_desc = $('textarea').val();
+            
+            if(!tmp_cat_id || !tmp_desc){
+                alert("Se requiere seleccionar una categoria y escribir una descripcion");
+                return;
+            }else{
+                this.selectCategory();
+                this.setDescription(); 
+            }
+
         }
-        */
+
         if(this.step < 4){
             this.step = this.step + 1;
             this.render();
@@ -219,5 +235,29 @@ var CreateMapItemView = Backbone.View.extend({
                     alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
                 }
             });          
-        }
+        },
+
+         selectCategory: function(){
+            //console.log("category clicked");
+            var cat_id = $('[name="category"]:checked', this.$el).val();
+            var cat = null;
+            var categories = this.options.mappingModel.get('item_categories');
+            cat = _.find(categories, function(c){return c.id == cat_id;});
+            this.model.set({
+                category: cat,
+                category_id: cat.id,
+                category_name: cat.name,
+                color: cat.color
+            },{silent: true});
+            console.log("cat val: " + cat);
+        },
+
+         setDescription: function(){
+            console.log("description changed: " + $('textarea').val());
+
+            this.model.set({
+                content: $('textarea').val() 
+            });
+         }
+       
 });
