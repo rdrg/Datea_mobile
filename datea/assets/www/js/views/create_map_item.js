@@ -9,7 +9,9 @@ var CreateMapItemView = Backbone.View.extend({
 
     },
     events: {
-        "click #next_button": "render"
+        "click #next_button": "stepForward",
+        "click #back_button": "stepBackward"
+       
     },
 
     render: function(){
@@ -18,6 +20,30 @@ var CreateMapItemView = Backbone.View.extend({
         this.$el.html(this.template(context));
         this.nextView();
         return this;
+    },
+
+    stepForward: function(){
+        /*
+        switch(this.step){
+            case 1:
+                if(this.model)
+        }
+        */
+        if(this.step < 4){
+            this.step = this.step + 1;
+            this.render();
+        }else{
+            this.step = this.step;
+        }
+    },
+
+    stepBackward: function(){
+        if(this.step > 0 ){
+            this.step = this.step - 1;
+            this.render();
+        }else{
+            this.step = 1;
+        }
     },
 
     nextView: function(){
@@ -32,7 +58,7 @@ var CreateMapItemView = Backbone.View.extend({
             });
             console.log("mapping url: " + this.model.get('action'));
             this.$("#create_mapitem_content").html(this.stepOneView.render().el); 
-            this.step = 2;
+            //this.step = 2;
         /*
         }else if(this.step == 2){
             console.log("perform actions for step 2");
@@ -60,9 +86,9 @@ var CreateMapItemView = Backbone.View.extend({
 
             this.eventAggregator.trigger("footer:hide");
 
-            this.step = 3;
+            //this.step = 3;
         }else if(this.step == 3){
-            this.step = 4;
+            //this.step = 4;
             this.stepThreeView = new CreateMapItemThree({
                 model: this.model,
                 mappingModel: this.options.mappingModel,
