@@ -6,7 +6,7 @@
     <% if(has_categories){ 
     _.each(categories, function(cat){ %>
       <div class="step1_category">
-        <label class="radio">
+        <label class="">
           <input type="radio" name="category" value="<%= cat.id %>" class="step1_radio">
           <div class="step1_cat_color" style="background-color: <%= cat.color%>;"></div>
           <div class="step1_cat_name"><%= cat.name %></div>  
