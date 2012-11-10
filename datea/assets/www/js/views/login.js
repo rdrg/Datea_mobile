@@ -60,12 +60,7 @@ window.LoginView = Backbone.View.extend({
                     localUser.fetch({
                             data: {'id': localSession.get('userid')},
                             success: function(){
-                 
-                               //dateaApp.navigate("user/" + userid, { trigger : true });
                                 dateaApp.navigate("/", {trigger: true});
-                                //render loggedIn header
-                                self.headerView = new LoggedInHeaderView();
-                                $('#header').html(self.headerView.render().el); 
                             }
                     });
                 

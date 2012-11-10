@@ -179,8 +179,6 @@ var DateaRouter = Backbone.Router.extend({
     
     actionList: function(){
 
-        this.renderNavigation('general');
-        this.renderHeader('actions');
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
@@ -195,7 +193,9 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
-        
+        this.renderHeader('actions');
+        this.renderNavigation('general');
+       
     },
 
     actionDetail: function(actionid){
@@ -414,7 +414,7 @@ var DateaRouter = Backbone.Router.extend({
         this.renderHeader('actions');
     },
 
-    searchQuery : function(term, cat, order){
+    searchQuery : function(term, cat, order, mode){
          
         var self = this; 
         if(!this.actionCollection){
@@ -438,7 +438,7 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     renderNavigation: function(mode, id){
-        console.log("nav bar id: " + id);
+        //console.log("nav bar id: " + id);
         if(mode == 'general'){
             if(!this.navBarView){
                 this.navBarView = new NavBarView();
@@ -449,60 +449,48 @@ var DateaRouter = Backbone.Router.extend({
         else if(mode == 'dateo'){
             if(!this.navBarDateoView){
                 this.navBarDateoView = new NavBarDateoView();
-                //if(typeof(id) !== "undefined"){
-                  //  this.navBarDateoView.options.id = id;
-                //}
             }
             $('#footer').html(this.navBarDateoView.render(id).el);
         }
         else if(mode == 'loggedout'){
-            /*
-             if(!this.navBarLoggedOutView){
-                this.navBarLoggedOutView = new NavBarLoggedOutView();
-                //if(typeof(id) !== "undefined"){
-                  //  this.navBarDateoView.options.id = id;
-                //}
-            }
-            */
-
             $('#footer').empty();
         }
     },
  
     renderHeader: function(mode){
+
         if(mode == 'general'){
-            if(!this.loggedInHeader){
-                this.loggedInHeader = new LoggedInHeaderView();
-            }
+            //if(!this.headerView){
+                this.headerView = new LoggedInHeaderView();
+            //}
             $('#header').empty();
             $('#header').html(this.loggedInHeader.render().el);
         }
 
         else if(mode == 'actions'){
-            if(!this.actionHeaderView){
-                this.actionHeaderView = new ActionHeaderView();
-                //if(typeof(id) !== "undefined"){
-                  //  this.navBarDateoView.options.id = id;
-                //}
-            }
-            var id = localUser.get('id');
+            console.log("ACTION HEADER RENDERING NOW");
+            //if(!this.headerView){
+                //console.log("")
+                this.headerView = new ActionHeaderView();
+            ///}
+            //var id = localUser.get('id');
             //console.log("header id: " + id);
             $('#header').empty();
-            $('#header').html(this.actionHeaderView.render(id).el);
+            $('#header').html(this.headerView.render().el);
         }
          else if(mode == 'loggedout'){
-            if(!this.loggedOutHeaderView){
-                this.loggedOutHeaderView = new LoggedOutHeaderView();
-            }
+            //if(!this.headereaderView){
+                this.headerView = new LoggedOutHeaderView();
+            //}
             $('#header').empty();
-            $('#header').html(this.loggedOutHeaderView.render().el);
+            $('#header').html(this.headerView.render().el);
         }
         else if(mode == 'first'){
-            if(!this.firstHeaderView){
-                this.firstHeaderView = new FirstHeaderView();
-            }
+            //if(!this.headerView){
+                this.headerView = new FirstHeaderView();
+            //}
             $('#header').empty();
-            $('#header').html(this.firstHeaderView.render().el);
+            $('#header').html(this.headerView.render().el);
         }
     }   
 });

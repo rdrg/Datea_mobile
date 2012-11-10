@@ -5,10 +5,14 @@ var ActionsView = Backbone.View.extend({
         this.model.bind("reset", this.reset_even, this);
         //console.log("selected mode: " + this.options.selected_mode);
         this.selected_mode = this.options.selected_mode;
-        this.items_per_page = 10;
+        this.items_per_page = 2;
         this.page = 0;
         _.bindAll(this); 
         //console.log("initialize actions");
+    },
+
+    events: {
+        'click .load-more-results': 'loadMoreResults'
     },
 
     render: function () {
@@ -82,7 +86,8 @@ var ActionsView = Backbone.View.extend({
                 break;
    
             case 'all_actions':
-                //console.log("all actions selected");
+                console.log("all actions selected");
+                //this.params.all_actions = 1;
                 break;                
         }
 
@@ -90,7 +95,21 @@ var ActionsView = Backbone.View.extend({
         this.model.fetch({
             data: this.params,
             success: function(){
-                //console.log("models fetched");
+                console.log("models fetched at actions //////////////////////");
+                   	
+    	        var add_pager = false;
+    	        if (self.model.meta.total_count > self.model.meta.limit + self.model.meta.offset) {
+       		    add_pager = true; 
+                   console.log("lets add a pager"); 
+    	        }
+        
+                var $pager_button = self.$el.find('.item-pager');
+		if (add_pager) {
+			$pager_button.removeClass('hide');
+		}else{
+			$pager_button.addClass('hide');
+		}
+
                 self.render();
             }
         });
@@ -106,5 +125,13 @@ var ActionsView = Backbone.View.extend({
         alert("location not available");
         //falling back to created
         this.params.order_by = 'created';
+    },
+
+    loadMoreResults: function(ev) {
+    	ev.preventDefault();
+    	this.page++;
+    	this.fetch_models();
+		//$(document).scrollTop(0);
     }
+
 });
