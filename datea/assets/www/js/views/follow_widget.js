@@ -5,6 +5,8 @@ var FollowWidgetBaseView = Backbone.View.extend({
 	
 	className: 'follow-widget',
 	
+	is_active: true,
+	
 	initialize: function () {
 		
 		var follow_key = this.options.object_type+'.'+this.options.object_id;
@@ -71,6 +73,12 @@ var FollowWidgetBaseView = Backbone.View.extend({
 	follow: function(ev) {
 		ev.preventDefault();
 		
+		if (this.is_active == true) {
+			this.is_active = false;
+		}else{
+			return;
+		}
+		
 		if (this.options.read_only) return;
 		
 		this.$el.addClass('loading');
@@ -85,9 +93,11 @@ var FollowWidgetBaseView = Backbone.View.extend({
 				success: function (model, response) {
 					self.render();
 					self.$el.removeClass('loading');
+					this.is_active = true;
 				},
 				error: function(error) {
-					console.log('error');
+					onOffline();
+					this.is_active = true;
 				}
 			});
 			//localUser.attributes.follows.push(this.model.toJSON());

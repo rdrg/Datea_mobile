@@ -72,7 +72,7 @@ var DateaRouter = Backbone.Router.extend({
             },
             crossDomain:true 
         });
-	$.support.cors = true;
+		$.support.cors = true;
         var self = this;
         /*
         if(localSession.get('logged')){
@@ -620,9 +620,11 @@ function onOffline(){
 }
 
 function offLineAlertDismissed() {
-    if (navigator.app && navigator.app.exitApp) {
+	// he quitado esto, porque no creo que deberia salirse de la app, sino simplemente avisar.
+    /*if (navigator.app && navigator.app.exitApp) {
         navigator.app.exitApp();
     } else if (navigator.device && navigator.device.exitApp) {
         navigator.device.exitApp();
-    }
+    }*/
 }
+

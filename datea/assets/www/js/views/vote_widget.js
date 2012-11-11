@@ -14,6 +14,8 @@ var VoteWidgetView = Backbone.View.extend({
 	
 	className: 'vote-widget',
 	
+	is_active: true,
+	
 	initialize: function () {
 		this.voted_model = this.options.voted_model;
 		//this.model.bind('sync', this.sync, this);
@@ -62,6 +64,13 @@ var VoteWidgetView = Backbone.View.extend({
 	
 	vote: function(ev) {
 		ev.preventDefault();
+		
+		if (this.is_active == true) {
+			this.is_active = false;
+		}else{
+			return;
+		}
+		
 		// for the moment, votes cannot be deleted
 		if (this.options.read_only) return;
 		 
@@ -76,6 +85,11 @@ var VoteWidgetView = Backbone.View.extend({
 					self.voted_model.set('vote_count', self.voted_model.get('vote_count') + 1);
 					self.render();
 					localUser.attributes.profile.vote_count = localUser.get('profile').vote_count + 1;
+					this.is_active = true;
+				},
+				error: function (error) {
+					onOffline();
+					this.is_active = true;
 				}
 			});
 		}
