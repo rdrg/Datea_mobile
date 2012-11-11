@@ -134,33 +134,6 @@ var ProfileEditView = Backbone.View.extend({
 	        });
 		}
     },
- 
-    browseImage: function(event){
-        event.preventDefault();
-        var self = this;
-        if (!this.image_browser_opened) {
-        	this.image_browser_opened = true;
-	        navigator.camera.getPicture(
-	            function(imageURI){
-	                //alert(imageURI);
-	                this.image_browser_opened = false;
-	                $("#image_data").val(imageURI);
-                        $("#profile_image").attr("src", imageURI);
-	            },
-	            function(message){
-	            	this.image_browser_opened = false;
-	                alert(message);
-	            },
-	            {
-	                quality: 50,
-	                destinationType: navigator.camera.DestinationType.FILE_URI,
-	                //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-	                //destinationType: navigator.camera.DestinationType.DATA_URL,
-	                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
-	            }
-	        );
-	    }
-    },
 
     win: function(r){
 		
@@ -212,7 +185,6 @@ var ProfileEditView = Backbone.View.extend({
             object_field: 'image',
             thumb_preset: 'profile_image_large',
             file: image_data 
-            //file: image_data
         };
 
        // if(window.localUser.logged) {
@@ -240,6 +212,6 @@ var ProfileEditView = Backbone.View.extend({
         this.imageOverlay = new ProfileImageOverlayView();
         $("#overlay").html(this.imageOverlay.render().el);
         this.eventAggregator.trigger("footer:hide");
-        $("#overlay").show("fast");
+        $("#overlay").slidedown("fast");
     }
 });

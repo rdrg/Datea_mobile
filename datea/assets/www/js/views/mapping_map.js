@@ -86,7 +86,7 @@ var MappingMapView = Backbone.View.extend({
     	ev.preventDefault();
     	this.item_cluster_view.close();
     	this.$el.find('.cluster-content-view').fadeOut("fast");
-      $('#mapping-map-view').fadeIn('fast');
+        $('#mapping-map-view').fadeIn('fast');
     },
     
     zoom_to_item: function(arg) {
