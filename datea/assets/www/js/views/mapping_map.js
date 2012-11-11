@@ -13,7 +13,7 @@ var MappingMapView = Backbone.View.extend({
 	},
     
     render: function(){
-      this.eventAggregator.trigger("footer:hide");
+      //this.eventAggregator.trigger("footer:hide");
     	this.map_items = new MapItemCollection(this.model.get('map_items'));
       this.$el.html(this.template());
       this.$el.fadeIn("fast");
