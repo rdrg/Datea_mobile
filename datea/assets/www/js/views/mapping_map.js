@@ -11,10 +11,12 @@ var MappingMapView = Backbone.View.extend({
 		'click .back-to-map': 'back_to_map',
 		'click .zoom-to-item': 'zoom_to_item'
 	},
+	
+	events_active: true,
     
     render: function(){
       //this.eventAggregator.trigger("footer:hide");
-    	this.map_items = new MapItemCollection(this.model.get('map_items'));
+      this.map_items = new MapItemCollection(this.model.get('map_items'));
       this.$el.html(this.template());
       this.$el.fadeIn("fast");
       return this;
@@ -75,18 +77,25 @@ var MappingMapView = Backbone.View.extend({
     },
     
     show_cluster_content_callback: function (itemCollection, self) {
-      $('#mapping-map-view').fadeOut('fast');
+    	if (!self.check_events_active()) return;
+		$('#mapping-map-view').fadeOut('fast');
     	self.item_cluster_view = new MapItemClusterView({collection: itemCollection});
     	var $content = self.$el.find('.cluster-content-view');
     	$content.html(self.item_cluster_view.render().el);
-    	$content.show();
+    	$content.show('normal', function(){
+    		self.events_active = true;
+    	});
     },
     
     back_to_map: function (ev) {
     	ev.preventDefault();
+    	if (!this.check_events_active()) return;
     	this.item_cluster_view.close();
-    	this.$el.find('.cluster-content-view').fadeOut("fast");
-        $('#mapping-map-view').fadeIn('fast');
+    	this.$el.find('.cluster-content-view').fadeOut("normal");
+    	var self = this;
+        $('#mapping-map-view').fadeIn('fast', function(){
+        	self.events_active = true;
+        });
     },
     
     zoom_to_item: function(arg) {
@@ -102,8 +111,10 @@ var MappingMapView = Backbone.View.extend({
 			var bone_id = this.map_items.url+id+'/';
 	    	var mdl = this.map_items.get(bone_id)
 		}
-      $('#mapping-map-view').fadeIn('fast');
-      var pos = mdl.get('position').coordinates;
+		if (!this.check_events_active()) return;
+		
+		$('#mapping-map-view').fadeIn('fast');
+		var pos = mdl.get('position').coordinates;
     	var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
     	this.itemLayer.initCenter(locInfo);
     	this.item_cluster_view.close();
@@ -112,14 +123,19 @@ var MappingMapView = Backbone.View.extend({
     
     show_current_location: function (ev) {
     	ev.preventDefault();
+    	
+    	if (!this.check_events_active()) return;
+    	
     	var self = this;
     	navigator.geolocation.getCurrentPosition(
     		function (position) {
     			var zoom = locAccuracy2Zoom(position.coords.accuracy);
     			var LocInfo = {lat: position.coords.latitude, lng: position.coords.longitude, zoom: zoom};
     			self.itemLayer.initCenter(LocInfo);
+    			self.events_active = true;
     		},
     		function (error) {
+    			self.events_active = true;
     			console.log(error);
     		},
     		{
@@ -128,6 +144,17 @@ var MappingMapView = Backbone.View.extend({
 				enableHighAccuracy: true,
 			}
     	);
-    }
+    },
     
+    check_events_active: function () {
+    	if (this.item_cluster_view) {
+    		if (!this.item_cluster_view.events_active) return false;
+    	}
+    	if (this.events_active) {
+    		this.events_active = false;
+    		return true;
+    	} else {
+    		return false;
+    	} 
+    }
 });

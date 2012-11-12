@@ -81,6 +81,7 @@ var VoteWidgetView = Backbone.View.extend({
 			this.model.save({},{
 				success: function (model, response) {
 					self.$el.removeClass('loading');
+					if (!localUser.attributes.votes) localUser.set('votes', []);
 					localUser.attributes.votes.push(self.model.toJSON());
 					self.voted_model.set('vote_count', self.voted_model.get('vote_count') + 1);
 					self.render();

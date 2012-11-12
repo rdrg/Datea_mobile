@@ -91,32 +91,44 @@ var FollowWidgetBaseView = Backbone.View.extend({
 			var self = this;
 			this.model.save({}, {
 				success: function (model, response) {
+					self.followed_model.set('follow_count', self.followed_model.get('follow_count') + 1, set_options);
 					self.render();
 					self.$el.removeClass('loading');
-					this.is_active = true;
+					self.is_active = true;
+					if (!localUser.attributes.follows) localUser.set('follows', []);
+					localUser.attributes.follows.push(self.model.toJSON());
 				},
 				error: function(error) {
 					onOffline();
-					this.is_active = true;
+					self.is_active = true;
 				}
 			});
-			//localUser.attributes.follows.push(this.model.toJSON());
-			this.followed_model.set('follow_count', this.followed_model.get('follow_count') + 1, set_options);
 			
 		}else {
-			var id = this.model.get('id');
-			localUser.set('follows', _.reject(localUser.get('follows'), function (item){
-				if (item.id == id) return true;
-			}));
-			this.model.destroy();
-			this.model = new Follow({
-				object_type: this.model.get('object_type'),
-				object_id: this.model.get('object_id'),
-				follow_key: this.model.get('follow_key'),
+			
+			var self = this;
+			this.model.destroy({
+				success: function( mdl, resp) {
+					var id = self.model.get('id');
+					localUser.set('follows', _.reject(localUser.get('follows'), function (item){
+						if (item.id == id) return true;
+					}));
+					self.model = new Follow({
+						object_type: self.model.get('object_type'),
+						object_id: self.model.get('object_id'),
+						follow_key: self.model.get('follow_key'),
+					});
+					self.followed_model.set('follow_count', self.followed_model.get('follow_count') - 1, set_options);
+					self.render();
+					self.$el.removeClass('loading');
+					self.is_active = true;
+				},
+				error: function (err) {
+					onOffline();
+					self.is_active = true;
+				}
 			});
-			this.followed_model.set('follow_count', this.followed_model.get('follow_count') - 1, set_options);
-			this.render();
-			this.$el.removeClass('loading');
+			
 		}
 	},
 	
