@@ -9,6 +9,8 @@ var ProfileImageOverlayView = Backbone.View.extend({
         "click #album_image" : "browseImage",
         "click #cancel" : "cancel"
     },
+    
+    is_active: false,
 
     render: function(){
         this.$el.html(this.template());
@@ -16,19 +18,17 @@ var ProfileImageOverlayView = Backbone.View.extend({
     },
 
     captureImage: function(event){
+    	event.preventDefault();
+    	
+    	if (this.is_active) this.is_active = false;
+    	else return;
+    	
         this.hideOverlay();
         var self = this;
         event.preventDefault();
         navigator.camera.getPicture(
             function(imageURI){
-                //var images = [];
-                //images.push(imageURI);
-                //$("#image_data").val(imageURI);
-                //self.model.set({
-                  //  images: images
-                //});
-               // self.imageURI = imageURI;
-               $("#profile_image").attr('src', imageURI);
+               self.options.image_callback(imageURI);
             },
             function(message){
                 alert(message);
@@ -45,6 +45,11 @@ var ProfileImageOverlayView = Backbone.View.extend({
      },
 
      browseImage: function(event){
+     	event.preventDefault();
+    	
+    	if (this.is_active) this.is_active = false;
+    	else return;
+     	
         this.hideOverlay();
         var self = this;
         event.preventDefault();
@@ -56,7 +61,7 @@ var ProfileImageOverlayView = Backbone.View.extend({
                 //self.model.set({
                   //  images: images
                 //});
-                $("#profile_image").attr('src', imageURI);
+                self.options.image_callback(imageURI);
               // self.imageURI = imageURI;
             },
             function(message){
@@ -72,7 +77,9 @@ var ProfileImageOverlayView = Backbone.View.extend({
         );
      },
      cancel:function(){
-        console.log("canceling");
+        event.preventDefault();
+    	if (this.is_active) this.is_active = false;
+    	else return;
         this.hideOverlay();
     },
 

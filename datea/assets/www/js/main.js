@@ -148,16 +148,14 @@ var DateaRouter = Backbone.Router.extend({
             this.profileView.postRender();
         }
         this.renderNavigation('general');
-        this.renderHeader('loggedout');
-        },
+        this.renderHeader('general');
+    },
 	
 	userEditProfile: function (userid) {
-        if(!this.profileEditView){
-            this.profileEditView = new ProfileEditView({ model: localUser });
-        }
+        this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#main', this.profileEditView);
     	this.renderNavigation('general');
-        this.renderHeader('loggedout');
+        this.renderHeader('general');
 
 	},
 	

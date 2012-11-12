@@ -77,7 +77,6 @@ var MappingMapView = Backbone.View.extend({
     },
     
     show_cluster_content_callback: function (itemCollection, self) {
-    	console.log("show cluster!!");
     	if (!self.check_events_active()) return;
 		//$('#mapping-map-view').fadeOut('fast');
     	self.item_cluster_view = new MapItemClusterView({collection: itemCollection});
