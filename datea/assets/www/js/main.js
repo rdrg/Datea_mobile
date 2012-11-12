@@ -195,6 +195,7 @@ var DateaRouter = Backbone.Router.extend({
     	this.actionListView.fetch_models();
         this.renderHeader('actions');
         this.renderNavigation('general');
+        $('#footer').find('')
        
     },
 
