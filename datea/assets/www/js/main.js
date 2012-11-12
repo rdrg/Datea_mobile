@@ -464,7 +464,7 @@ var DateaRouter = Backbone.Router.extend({
                 this.headerView = new LoggedInHeaderView();
             //}
             $('#header').empty();
-            $('#header').html(this.loggedInHeader.render().el);
+            $('#header').html(this.headerView.render().el);
         }
 
         else if(mode == 'actions'){
