@@ -29,6 +29,6 @@ window.utils = {
 	},
 	
 	get_base_web_url: function() {
-		return 'http:www.datea.pe';
+		return 'http://www.datea.pe';
 	}	
 }

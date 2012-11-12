@@ -5,6 +5,8 @@ var CommentListView = Backbone.View.extend({
       'focus #comment-input': 'typing',
     },
     
+    is_active: true,
+    
     render: function(){
 
         this.$el.html(this.template());
@@ -24,6 +26,13 @@ var CommentListView = Backbone.View.extend({
     
     submit_comment: function (ev) {
     	ev.preventDefault();
+    	
+    	if (this.is_active == true) {
+    		this.is_active = false;
+    	}else{
+    		return;
+    	}
+    	
     	var comment = this.$el.find('textarea').val();
 		if (jQuery.trim(comment) == '') return;
 		
@@ -42,10 +51,12 @@ var CommentListView = Backbone.View.extend({
 				self.add_comment(model);
 				self.$el.find('.submit-comment').removeAttr('disabled');
 				localUser.attributes.profile.comment_count = localUser.get('profile').comment_count + 1;
+				this.is_active = true;
 			},
 			'error': function(error) {
 				// redirect to login
-				console.log(error);
+				onOffline();
+				this.is_active = true;
 			}
 		});
     },

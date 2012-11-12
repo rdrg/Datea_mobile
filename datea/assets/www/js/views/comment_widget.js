@@ -6,6 +6,7 @@ var CommentWidgetView = Backbone.View.extend({
 		'click': 'scroll_bottom',
 	},
 	
+	
 	initialize: function() {
 		this.model.bind('change', this.render, this);
 		if (this.options.add_class) this.$el.addClass(this.options.add_class);
@@ -22,7 +23,7 @@ var CommentWidgetView = Backbone.View.extend({
 		ev.preventDefault();
 	  
 	  var container = $(document).find('#main'),
-	  		scrollTo = $(document).find('#comment-input');
+	  	scrollTo = $(document).find('#comment-input');
       
       scrollTo.autosize();
      

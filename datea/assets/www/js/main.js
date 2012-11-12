@@ -72,7 +72,7 @@ var DateaRouter = Backbone.Router.extend({
             },
             crossDomain:true 
         });
-	$.support.cors = true;
+		$.support.cors = true;
         var self = this;
         /*
         if(localSession.get('logged')){
@@ -148,16 +148,14 @@ var DateaRouter = Backbone.Router.extend({
             this.profileView.postRender();
         }
         this.renderNavigation('general');
-        this.renderHeader('loggedout');
-        },
+        this.renderHeader('general');
+    },
 	
 	userEditProfile: function (userid) {
-        if(!this.profileEditView){
-            this.profileEditView = new ProfileEditView({ model: localUser });
-        }
+        this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#main', this.profileEditView);
     	this.renderNavigation('general');
-        this.renderHeader('loggedout');
+        this.renderHeader('general');
 
 	},
 	
@@ -465,7 +463,7 @@ var DateaRouter = Backbone.Router.extend({
                 this.headerView = new LoggedInHeaderView();
             //}
             $('#header').empty();
-            $('#header').html(this.loggedInHeader.render().el);
+            $('#header').html(this.headerView.render().el);
         }
 
         else if(mode == 'actions'){
@@ -621,9 +619,11 @@ function onOffline(){
 }
 
 function offLineAlertDismissed() {
-    if (navigator.app && navigator.app.exitApp) {
+	// he quitado esto, porque no creo que deberia salirse de la app, sino simplemente avisar.
+    /*if (navigator.app && navigator.app.exitApp) {
         navigator.app.exitApp();
     } else if (navigator.device && navigator.device.exitApp) {
         navigator.device.exitApp();
-    }
+    }*/
 }
+

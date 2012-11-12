@@ -20,10 +20,19 @@
         navegar dateos
       </a>
 	  
-	  <div class="clearfix">
+	  <div class="clearfix btns-secondary">
 		  <% if (  typeof(active_message) != "undefined"  ) { %><%= active_message %><% } %>
 	
+		  <div class="action_stats clearfix">
+	          <% if (item_count > 0) { %>
+	            <div><%= item_count %> dateos</div>
+	          <% } if (user_count) { %>
+	            <div><%= user_count %> usuarios</div>
+	          <% } %>
+	     </div>
+	
 	      <div class="follow-button"></div>
+	      
    	  </div>
     </div>
 
