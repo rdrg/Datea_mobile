@@ -103,8 +103,7 @@ var DateaRouter = Backbone.Router.extend({
             }
             this.showView('#main', this.homeView);
             this.renderHeader('loggedout');
-            this.renderNavigation('loggedout');
-            
+            this.renderNavigation('loggedout'); 
         }
     },
 	
@@ -192,9 +191,9 @@ var DateaRouter = Backbone.Router.extend({
     	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
         this.renderHeader('actions');
-        this.renderNavigation('general');
-        $('#footer').find('')
-       
+        this.renderNavigation('general', 'ftr_actions');
+        //$('#ftr_actions').addClass('menu_on');    
+        
     },
 
     actionDetail: function(actionid){
@@ -432,24 +431,53 @@ var DateaRouter = Backbone.Router.extend({
         }
     	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
-       this.renderNavigation('general');
-       this.renderHeader('actions');
+       this.renderNavigation('general', 'actions');
+       this.renderHeader('actions', 'ftr_actions');
     },
 
-    renderNavigation: function(mode, id){
+    renderNavigation: function(mode, highlight, action_id){
         //console.log("nav bar id: " + id);
         if(mode == 'general'){
             if(!this.navBarView){
                 this.navBarView = new NavBarView();
             }
             $('#footer').html(this.navBarView.render().el);
+            if(highlight !== undefined){
+                $("#footer>div").each(function(d){
+                    if(d.attr("id") == highlight){
+                        d.addClass('menu_on');
+                    }else{
+                        d.removeClass('menu_on');
+                    }
+                });   
+            }else{
+                 $("#footer>div").each(function(d){
+                    d.removeClass('menu_on');
+                });   
+
+            }
+            //$('#ftr_actions').addClass('menu_on');
         }
 
         else if(mode == 'dateo'){
             if(!this.navBarDateoView){
                 this.navBarDateoView = new NavBarDateoView();
             }
-            $('#footer').html(this.navBarDateoView.render(id).el);
+            $('#footer').html(this.navBarDateoView.render(action_id).el);
+            
+            if(highlight !== undefined){
+                $("#footer>div").each(function(d){
+                    if(d.attr("id") == highlight){
+                        d.addClass('menu_on');
+                    }else{
+                        d.removeClass('menu_on');
+                    }
+                });
+            }else{
+                 $("#footer>div").each(function(d){
+                    d.removeClass('menu_on');
+                });   
+
         }
         else if(mode == 'loggedout'){
             $('#footer').empty();
@@ -459,35 +487,25 @@ var DateaRouter = Backbone.Router.extend({
     renderHeader: function(mode){
 
         if(mode == 'general'){
-            //if(!this.headerView){
-                this.headerView = new LoggedInHeaderView();
-            //}
+            this.headerView = new LoggedInHeaderView();
             $('#header').empty();
             $('#header').html(this.headerView.render().el);
         }
 
         else if(mode == 'actions'){
-            console.log("ACTION HEADER RENDERING NOW");
-            //if(!this.headerView){
-                //console.log("")
-                this.headerView = new ActionHeaderView();
-            ///}
-            //var id = localUser.get('id');
-            //console.log("header id: " + id);
+            this.headerView = new ActionHeaderView();
             $('#header').empty();
             $('#header').html(this.headerView.render().el);
         }
+
          else if(mode == 'loggedout'){
-            //if(!this.headereaderView){
-                this.headerView = new LoggedOutHeaderView();
-            //}
+            this.headerView = new LoggedOutHeaderView();
             $('#header').empty();
             $('#header').html(this.headerView.render().el);
         }
+
         else if(mode == 'first'){
-            //if(!this.headerView){
-                this.headerView = new FirstHeaderView();
-            //}
+            this.headerView = new FirstHeaderView();
             $('#header').empty();
             $('#header').html(this.headerView.render().el);
         }
