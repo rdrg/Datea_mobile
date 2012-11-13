@@ -74,20 +74,6 @@ var DateaRouter = Backbone.Router.extend({
         });
 		$.support.cors = true;
         var self = this;
-        /*
-        if(localSession.get('logged')){
-            this.headerView = new LoggedInHeaderView();
-            $('#header').html(this.headerView.render().el);
-        }else{
-            this.headerView = new LoggedOutHeaderView();
-            $('#header').html(this.headerView.render().el);
-        }
-        */
-        //$('.header').html(this.headerView.render().el);
-        //this.navBar = new NavBar({});
-        //this.navBarView = new NavBarView({model: this.navBar});
-        //$('#footer').html(this.navBarView.render().el);
-        
     },
 
     home: function() {
@@ -190,7 +176,7 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
-        this.renderHeader('actions');
+        this.renderHeader('actions', 'my_actions');
         this.renderNavigation('general', 'ftr_actions');
         //$('#ftr_actions').addClass('menu_on');    
         
@@ -387,8 +373,8 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models();
-       this.renderNavigation('general');
-      this.renderHeader('loggedout'); 
+        this.renderNavigation('general');
+        this.renderHeader('general'); 
     },
 
     searchForm: function(){
@@ -409,7 +395,7 @@ var DateaRouter = Backbone.Router.extend({
             }
         })
         this.renderNavigation('general');
-        this.renderHeader('actions');
+        this.renderHeader('actions', 'nav_srch');
     },
 
     searchQuery : function(term, cat, order, mode){
@@ -431,84 +417,87 @@ var DateaRouter = Backbone.Router.extend({
         }
     	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
-       this.renderNavigation('general', 'actions');
-       this.renderHeader('actions', 'ftr_actions');
+       this.renderNavigation('general', 'ftr_actions');
+       this.renderHeader('actions', 'nav_srch');
     },
 
     renderNavigation: function(mode, highlight, action_id){
         //console.log("nav bar id: " + id);
-        if(mode == 'general'){
-            if(!this.navBarView){
+        switch(mode){
+            case 'general':
                 this.navBarView = new NavBarView();
-            }
-            $('#footer').html(this.navBarView.render().el);
-            if(highlight !== undefined){
-                $("#footer>div").each(function(d){
-                    if(d.attr("id") == highlight){
-                        d.addClass('menu_on');
-                    }else{
-                        d.removeClass('menu_on');
-                    }
-                });   
-            }else{
-                 $("#footer>div").each(function(d){
-                    d.removeClass('menu_on');
-                });   
-
-            }
-            //$('#ftr_actions').addClass('menu_on');
+                break;
+            case 'dateo':
+                this.navBarView = new navBarDateoView();
+                break;
+            case 'loggedout':
+                $('#footer').empty();
+                break;
+            default:
+                this.navBarView = new NavBarView();
+                break;
         }
+        $('#footer').html(this.navBarView.render().el);
 
-        else if(mode == 'dateo'){
-            if(!this.navBarDateoView){
-                this.navBarDateoView = new NavBarDateoView();
-            }
-            $('#footer').html(this.navBarDateoView.render(action_id).el);
-            
-            if(highlight !== undefined){
-                $("#footer>div").each(function(d){
-                    if(d.attr("id") == highlight){
-                        d.addClass('menu_on');
-                    }else{
-                        d.removeClass('menu_on');
-                    }
-                });
-            }else{
-                 $("#footer>div").each(function(d){
-                    d.removeClass('menu_on');
-                });   
-
-        }
-        else if(mode == 'loggedout'){
-            $('#footer').empty();
+        if(highlight !== undefined){
+            //console.log("highlight: " + highlight);
+            $("#footer div").each(function(index, elem){
+               // console.log("attribute: " + this.id);
+                if(this.id == highlight){
+                    //console.log("MATCH ID WITH PARAMETER");
+                   $(this).addClass('menu_on');
+                }else{
+                    //console.log("REMOVE CLASS MENU ON");
+                    $(this).removeClass('menu_on');
+                }
+            });   
+        }else{
+             $("#footer div").each(function(index, elem){
+                $(this).removeClass('menu_on');
+            });   
         }
     },
  
-    renderHeader: function(mode){
+    renderHeader: function(mode, highlight){ 
+        switch(mode){
+            case 'general':
+                this.headerView = new LoggedInHeaderView();
+                break;
+            case 'actions':
+                this.headerView = new ActionHeaderView();
+                break;
+            case 'loggedout':
+                this.headerView = new LoggedOutHeaderView();
+                break;
+            case 'first':
+                this.headerView = new FirstHeaderView();
+                break;
+            default:
+                this.headerView = new LoggedInHeaderView();
+        }
+        
+        $('#header').html(this.headerView.render().el);
 
-        if(mode == 'general'){
-            this.headerView = new LoggedInHeaderView();
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
+
+        if(highlight !== undefined){
+            console.log("highlight: " + highlight);
+            $("#header li").each(function(index, elem){
+                console.log("attribute: " + this.id);
+                if(this.id == highlight){
+                    console.log("MATCH ID WITH PARAMETER");
+                   $(this).addClass('header_on');
+                }else{
+                    console.log("REMOVE CLASS HEADER ON");
+                    $(this).removeClass('header_on');
+                }
+            });   
+        }else{
+             $("#header li").each(function(index, elem){
+                $(this).removeClass('header_on');
+            });   
+
         }
 
-        else if(mode == 'actions'){
-            this.headerView = new ActionHeaderView();
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
-        }
-
-         else if(mode == 'loggedout'){
-            this.headerView = new LoggedOutHeaderView();
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
-        }
-
-        else if(mode == 'first'){
-            this.headerView = new FirstHeaderView();
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
-        }
     }   
 });
 
