@@ -394,7 +394,6 @@ var DateaRouter = Backbone.Router.extend({
         }
         this.categoryCollection.fetch({
             success: function(){
-               console.log("categories fetched"); 
                 self.showView("#main", self.searchFormView );
             }
         })
@@ -426,7 +425,6 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     renderNavigation: function(mode, highlight, action_id){
-        //console.log("nav bar id: " + id);
         switch(mode){
             case 'general':
                 this.navBarView = new NavBarView();
@@ -444,14 +442,10 @@ var DateaRouter = Backbone.Router.extend({
         $('#footer').html(this.navBarView.render().el);
 
         if(highlight !== undefined){
-            //console.log("highlight: " + highlight);
             $("#footer div").each(function(index, elem){
-               // console.log("attribute: " + this.id);
                 if(this.id == highlight){
-                    //console.log("MATCH ID WITH PARAMETER");
                    $(this).addClass('menu_on');
                 }else{
-                    //console.log("REMOVE CLASS MENU ON");
                     $(this).removeClass('menu_on');
                 }
             });   
@@ -484,14 +478,11 @@ var DateaRouter = Backbone.Router.extend({
 
 
         if(highlight !== undefined){
-            console.log("highlight: " + highlight);
             $("#header li").each(function(index, elem){
-                console.log("attribute: " + this.id);
+                //console.log("attribute: " + this.id);
                 if(this.id == highlight){
-                    console.log("MATCH ID WITH PARAMETER");
                    $(this).addClass('header_on');
                 }else{
-                    console.log("REMOVE CLASS HEADER ON");
                     $(this).removeClass('header_on');
                 }
             });   

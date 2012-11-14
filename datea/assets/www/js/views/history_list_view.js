@@ -91,7 +91,7 @@ var HistoryListView = Backbone.View.extend({
     			params.sender_type = 'vote';
     			break;
     	}
-    	console.log(params);
+    	console.log("history params: " + JSON.stringify(params));
     	this.model.fetch({ data: params });
     },
     
