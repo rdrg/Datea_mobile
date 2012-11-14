@@ -622,7 +622,7 @@ function onMenuDown() {
 }
 
 function onOffline(close){
-    navigator.notification.alert(
+    alert(
         'Datea necesita estar conectado a Internet',
         function() 
         {

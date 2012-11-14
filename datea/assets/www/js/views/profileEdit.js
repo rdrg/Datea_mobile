@@ -49,7 +49,7 @@ var ProfileEditView = Backbone.View.extend({
 	
 	        //options.fileKey = "file";
 	        options.mimeType = "image/jpeg";
-	        options.fileName = this.new_image_uri.substr(image_uri.lastIndexOf('/')+1);
+	        options.fileName = this.new_image_uri.substr(this.new_image_uri.lastIndexOf('/')+1);
 	        options.fileKey = 'image';
 	        options.chunkedMode = false;
 	        
@@ -72,7 +72,7 @@ var ProfileEditView = Backbone.View.extend({
 	        //var im = $("#image_path").text();
 	        //console.log("image: " + image_uri);    
 	                        
-	        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
+	        transfer.upload(this.new_image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 		}else{
 			var self = this;
 			this.model.save({
