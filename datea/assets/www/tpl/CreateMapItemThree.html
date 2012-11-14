@@ -1,17 +1,24 @@
-<div>
-Confirma tu dateo:
-</div>
-
-<div>
-    Categoria: <%= category_name %>   
-</div>
-<div id="#description">
-   Descripcion:  <%= content %>
-</div>
-
-<div id="image_container">
-    <% if (typeof(images) !== "undefined"){ %>
-    <% _.each(images, function(img){%>
-    <img src="<%= img %>"/>
-    <% });}%>
+<div class="create-mapitem-confirm">
+	<p class="subtitle">
+	<strong>Confirma tu dateo:</strong>
+	</p>
+	
+	<div>
+	    <span class="label" style="background-color: <%= category.color %>"><%= category_name %></span>   
+	</div>
+	<div class="description">
+	   <p>
+	   <%= content %>
+	   </p>
+	</div>
+	
+	<p id="image_container">
+	    <% if (typeof(images) !== "undefined"){ %>
+	    <% _.each(images, function(img){%>
+	    <img src="<%= img %>"/>
+	    <% });}%>
+	</p>
+	
+	<p class="send-button"><button class="btn datea_btn_yllw" style="display: block" id="next_button">Enviar</button></p>
+	
 </div>

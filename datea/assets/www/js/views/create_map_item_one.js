@@ -3,10 +3,10 @@ var CreateMapItemOne = Backbone.View.extend({
     initialize: function(){
         //var self = this;
         var acc = this.model.get('action');
-        console.log("item action: " + JSON.stringify(acc));
+        //console.log("item action: " + JSON.stringify(acc));
         var cats = [];
         _.each(this.options.mappingModel.get('item_categories'), function(cat){
-            console.log("category: " + JSON.stringify(cat));
+            //console.log("category: " + JSON.stringify(cat));
             cats.push(cat);
         });
 
@@ -14,9 +14,12 @@ var CreateMapItemOne = Backbone.View.extend({
         this.context.has_categories = true;
         this.context.categories = cats;
         this.context.step = this.options.step;
+        this.context.description = this.context.content; 
         _.bindAll(this);
         //console.log("this is step: " + this.context.step);
     },
+    
+    events_active: true,
 
     events: {
         "click #image_input": "addImageOverlay",
@@ -31,7 +34,7 @@ var CreateMapItemOne = Backbone.View.extend({
     },
 
     selectCategory: function(){
-        console.log("category clicked");
+        //console.log("category clicked");
         var cat_id = $('[name="category"]:checked', this.$el).val();
         var cat = null;
         var categories = this.options.mappingModel.get('item_categories');
@@ -42,7 +45,7 @@ var CreateMapItemOne = Backbone.View.extend({
             category_name: cat.name,
             color: cat.color
         },{silent: true});
-        console.log("cat val: " + cat);
+        //console.log("cat val: " + cat);
     },
 
      setDescription: function(){
@@ -55,10 +58,17 @@ var CreateMapItemOne = Backbone.View.extend({
 
     addImageOverlay: function(event){
         event.preventDefault();
-        this.imageOverlay = new ImageOverlayView({model: this.model});
+        var self = this;
+        this.imageOverlay = new SelectImageOverlayView({
+        	image_callback: function(imageURI) {
+        		self.model.set({ images: [imageURI] });
+        	}
+        });
         $("#overlay").html(this.imageOverlay.render().el);
         this.eventAggregator.trigger("footer:hide");
-        $("#overlay").show("fast");
+        $("#overlay").slideDown("normal", function(){
+        	self.imageOverlay.is_active = true;
+        });
     },
 
     typing: function(event){

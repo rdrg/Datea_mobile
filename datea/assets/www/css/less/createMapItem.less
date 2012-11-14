@@ -4,6 +4,10 @@
   -webkit-box-shadow: none;
   padding-right: 0px;
   padding-left: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 0;
 }
 
 #create_mapitem_header{
@@ -22,42 +26,13 @@
   right: 0px;
   background-color: @w;
   height: 53px;
-  padding: 10px 10px 10px 26px;
-  width: 286px;
+  padding: 10px 10px 10px 10px;
   #title{
     margin-top: 12px;
     margin-left: 10px;
+    text-align: center;
   }
 }
-
-#bck_btn_2{
-  padding-left: 13px;
-  width: 66px;
-  height: 25px;
-  padding-top: 3px;
-  .left;
-  background-image: url('../img/back.png');
-  background-repeat: no-repeat;
-  &:hover{
-    cursor: pointer;
-    background-image: url('../img/back_hover.png');
-  }
-}
-
-#nxt_btn_2{
-  padding-left: 6px;
-  width: 80px;
-  height: 25px;
-  padding-top: 3px;
-  .left;
-  background-image: url('../img/next.png');
-  background-repeat: no-repeat;
-  &:hover{
-    cursor: pointer;
-    background-image: url('../img/next_hover.png');
-  }
-}
-
 
 #create_container{
   height: 18px;
@@ -66,9 +41,9 @@
 }
 
 #create_title{
-  .left;
   padding-left: 3px;
   padding-right: 3px;
+  text-align: center;
   span{
     color: @gray-dark;
     font-weight: bold;
@@ -90,29 +65,39 @@
 }
 #bck_btn{
   width: 80px;
-  height: 25px;
-  padding-top: 3px;
   .left;
-  background-image: url('../img/back.png');
-  background-repeat: no-repeat;
-  &:hover{
+  a {
+    padding: 0 0 0 13px;
+    display: block;
+    width: 67px;
+    height: 25px;
+    padding-top: 3px;
+    background-image: url('../img/back.png');
+    background-repeat: no-repeat;
     cursor: pointer;
-    background-image: url('../img/back_hover.png');
-  }
-}
-#nxt_btn{
-  width: 80px;
-  height: 25px;
-  padding-top: 3px;
-  .left;
-  background-image: url('../img/next.png');
-  background-repeat: no-repeat;
-  &:hover{
-    cursor: pointer;
-    background-image: url('../img/next_hover.png');
+    &:active{
+      background-image: url('../img/back_hover.png');
+    }
   }
 }
 
+#nxt_btn{
+  width: 80px;
+  .rght;
+  a {
+    height: 25px;
+    padding-top: 3px;
+    text-align: center;
+    width: 80px;
+    display: block;
+    background-image: url('../img/next.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+    &:active{
+      background-image: url('../img/next_hover.png');
+    }
+  }
+}
 
 .step_title{
   margin-top: 20px;
@@ -138,7 +123,7 @@
 }
 .step1_cat_info{
   .left;
-  width: 87%;
+  //width: 87%;
   margin-left: 5px; 
 }
 
@@ -201,6 +186,19 @@
   top: 50px;
   left: 0px;
   height: 90%
+}
+
+.create-mapitem-confirm {
+  .subtitle { margin-top: 15px;}
+  .description {margin-top: 5px;}
+  p.send-button {
+    text-align: center;
+    button { 
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      }
+  }
 }
 
 //step4

@@ -1,75 +1,70 @@
 <div id="wrapper">
   <div id="createReport_container">
-    <% if (step === 2){ %>
-        <div id="create_mapitem_header_2">
+    
+    <% if (step === 1){%>
+        <div id="create_mapitem_header">
           <div id="create_container">
-            <div id="bck_btn_2">
-              <a  id="back_button">regresar</a>
-            </div>  
+          	
+            <div id="bck_btn">&nbsp;</div>  
+
+			<div id="nxt_btn">
+              <a id="next_button">siguiente</a>
+            </div> 
           
             <div id="create_title">
                 <span>Crear Reporte </span>
             </div>
-
-            <div id="nxt_btn_2">
+  
+          </div>
+      </div>
+      
+    <% } else if (step === 2){ %>
+        <div id="create_mapitem_header_2">
+          <div id="create_container">
+            <div id="bck_btn">
+              <a  id="back_button">regresar</a>
+            </div>  
+          
+            <div id="nxt_btn">
               <a id="next_button">siguiente</a>
-            </div>   
+            </div> 
+          
+            <div id="create_title">
+                <span>Crear Reporte </span>
+            </div>
+              
           </div>
           <div id="title">
             <strong>Paso 2: </strong> <span>Ubica el problema en el mapa:</span>  
           </div>
         </div>    
-          
-        </div> 
-    <% } else if (step === 1){%>
-        <div id="create_mapitem_header">
-          <div id="create_container">
-            <div id="bck_btn">
-              <a  id="back_button">regresar</a>
-            </div>  
-          
-            <div id="create_title">
-                <span>Crear Reporte </span>
-            </div>
-
-            <div id="nxt_btn">
-              <a id="next_button">siguiente</a>
-            </div>   
-          </div>
-      </div>
+      
     <% } else if (step === 3){ %>
         <div id="create_mapitem_header">
           <div id="create_container">
             <div id="bck_btn">
               <a  id="back_button">regresar</a>
-            </div>  
+            </div>
+            
+            <div id="nxt_btn">&nbsp;</div>
           
             <div id="create_title">
-                <span>Crear Reporte </span>
+                <span>Crear Reporte</span>
             </div>
-
-            <div id="nxt_btn">
-              <a id="next_button">Enviar</a>
-            </div>   
+               
           </div>
         </div>
     <% } else if (step === 4){ %>
         <div id="create_mapitem_header">
-          <div id="create_container">
-            <div id="bck_btn">
-              <a  id="back_button">regresar</a>
-            </div>  
+          <div id="create_container"> 
           
             <div id="create_title">
                 <span> Reporte Creado </span>
             </div>
-
           </div>
         </div>
-
     <% }%>
     
-
     <div id="create_mapitem_content">
         
     </div>
