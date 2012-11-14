@@ -165,7 +165,7 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
-        console.log("userid: " + localUser.get("id"));
+        //console.log("userid: " + localUser.get("id"));
     	if (!this.actionListView) {
         	this.actionListView = new ActionsView({
                         model: this.actionCollection,
