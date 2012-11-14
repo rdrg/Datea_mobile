@@ -1,4 +1,4 @@
-var ProfileImageOverlayView = Backbone.View.extend({
+var SelectImageOverlayView = Backbone.View.extend({
 
     initialize: function(){
         _.bindAll(this);
@@ -76,14 +76,14 @@ var ProfileImageOverlayView = Backbone.View.extend({
             }
         );
      },
-     cancel:function(){
-        event.preventDefault();
+     cancel:function(ev){
+        ev.preventDefault();
     	if (this.is_active) this.is_active = false;
     	else return;
         this.hideOverlay();
     },
 
     hideOverlay: function(){
-        $("#overlay").hide("fast");
+        $("#overlay").slideUp("fast");
     }
 });

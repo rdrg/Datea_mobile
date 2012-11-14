@@ -12,11 +12,14 @@ Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
 });
 
 Backbone.View.prototype.scroll = function(){
+	
+	this.$el.addClass('scroll-container');
     this.scroller = new iScroll('main',{
         hScroll : false,
         fixedScrollbar: false,
         hideScrollbar: false,
         useTransform: false,
+        zoom: false, 
         onBeforeScrollStart: function (e) {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
@@ -25,6 +28,7 @@ Backbone.View.prototype.scroll = function(){
                 e.preventDefault();
         }
     });
+    $('.scroll-container').css({height: cont_h, width: $(window).width() + "px"});
 };
 
 
@@ -58,7 +62,7 @@ var DateaRouter = Backbone.Router.extend({
 	    this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
-            this.currentView.scroll();
+        this.currentView.scroll();
 	    return view;
 	},
 	
@@ -145,20 +149,20 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	myActions: function () {
-            this.actionCollection = new ActionCollection();
-            this.actionCollection.url = api_url + '/api/v1/action/search/';
-            var self = this;
-            //console.log("action url: " + this.actionCollection.url);
-            this.actionCollection.fetch({
-                success: function(collection, response){
-                    //console.log("actions fetched");
-                    self.actionsView = new ActionsView({model:self.actionCollection});
-                    self.showView('#main', self.actionsView);
+        this.actionCollection = new ActionCollection();
+        this.actionCollection.url = api_url + '/api/v1/action/search/';
+        var self = this;
+        //console.log("action url: " + this.actionCollection.url);
+        this.actionCollection.fetch({
+            success: function(collection, response){
+                //console.log("actions fetched");
+                self.actionsView = new ActionsView({model:self.actionCollection});
+                self.showView('#main', self.actionsView);
 
-                    //self.renderNavigation('general');
-                    }
-                });
-	    },
+                //self.renderNavigation('general');
+                }
+            });
+    },
     
     actionList: function(){
 
@@ -260,8 +264,8 @@ var DateaRouter = Backbone.Router.extend({
             }); 
             this.showView('#main', this.newMapItemView); 
 	    }
-    this.renderNavigation('dateo', mapid);
-    this.renderHeader('loggedout');
+   		this.renderNavigation('dateo', mapid);
+    	this.renderHeader('general');
     },
        
 	mappingMap: function(mapid, callback_func) {
@@ -502,6 +506,11 @@ var DateaRouter = Backbone.Router.extend({
 });
 
 $(document).ready(function () {
+	
+	cont_h = ($(window).height() - 48)+"px";
+	$('#main').css('height', cont_h);
+	
+	
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
                     'LoginView', 
@@ -529,7 +538,7 @@ $(document).ready(function () {
                     'MapItemDetailView',
                     'MapItemClusterView', 
                     'ImageOverlayView',
-                    'ProfileImageOverlayView',
+                    'SelectImageOverlayView',
                     'CommentView',
                     'CommentListView',
                     'MapItemResponseView',
@@ -558,8 +567,8 @@ $(document).ready(function () {
                     
                     if(localSession.get('logged')){
                         userid = localSession.get('userid');
-                        console.log('token: ' + localSession.get('token'));
-                        console.log("fetching user data");
+                        //console.log('token: ' + localSession.get('token'));
+                        //console.log("fetching user data");
                         localUser.fetch({ 
                             data:{
                             	'id': userid,
@@ -568,7 +577,7 @@ $(document).ready(function () {
                             	'user_full': 1
                             },
                             success: function(mdl, res){
-                            	console.log(mdl);
+                            	//console.log(mdl);
                                 //console.log("user model: " + JSON.stringify(mdl.toJSON()));
                                 if(mdl.get('follows') !== undefined ){
                                         window.myFollows = new FollowCollection(mdl.get('follows'));
@@ -583,21 +592,21 @@ $(document).ready(function () {
                             },
                             error: function(){
                                 console.log("some error fetching");
+                                onOffline(true);
                             }
                         });        
                     }
                     else{
                         console.log("localstorage but not logged in");    
-	                window.dateaApp = new DateaRouter();           
-	                Backbone.history.start();
+	                	window.dateaApp = new DateaRouter();           
+	                	Backbone.history.start();
                     }
-	        }
-                else{
-                    console.log("no data in localSotrage, storing persistent session data");    
-                    window.localStorage.setItem('authdata', JSON.stringify(localSession));
-	            window.dateaApp = new DateaRouter();           
-	            Backbone.history.start();
-                }
+	        }else{
+                console.log("no data in localSotrage, storing persistent session data");    
+                window.localStorage.setItem('authdata', JSON.stringify(localSession));
+            	window.dateaApp = new DateaRouter();           
+           		Backbone.history.start();
+            }
 
     });  
 });
@@ -616,10 +625,19 @@ function onMenuDown() {
 	$('#footer').toggle();
 }
 
-function onOffline(){
+function onOffline(close){
     navigator.notification.alert(
         'Datea necesita estar conectado a Internet',
-        offLineAlertDismissed,
+        function() 
+        {
+        	if (typeof(close) != 'undefined' && close == true) {
+        		if (navigator.app && navigator.app.exitApp) {
+			        navigator.app.exitApp();
+			    } else if (navigator.device && navigator.device.exitApp) {
+			        navigator.device.exitApp();
+			    }
+        	}
+        },
         'Sin Conexion',
         'ok'
     );
@@ -627,10 +645,5 @@ function onOffline(){
 
 function offLineAlertDismissed() {
 	// he quitado esto, porque no creo que deberia salirse de la app, sino simplemente avisar.
-    /*if (navigator.app && navigator.app.exitApp) {
-        navigator.app.exitApp();
-    } else if (navigator.device && navigator.device.exitApp) {
-        navigator.device.exitApp();
-    }*/
 }
 

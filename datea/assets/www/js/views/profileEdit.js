@@ -112,7 +112,7 @@ var ProfileEditView = Backbone.View.extend({
     addImageOverlay:function(ev){
         ev.preventDefault();
         var self = this;
-        this.imageOverlay = new ProfileImageOverlayView({
+        this.imageOverlay = new SelectImageOverlayView({
         	image_callback: function (imageURI){
         		$("#profile_image").attr('src', imageURI);
         		self.new_image_uri = imageURI;
@@ -120,7 +120,7 @@ var ProfileEditView = Backbone.View.extend({
         });
         $("#overlay").html(this.imageOverlay.render().el);
         this.eventAggregator.trigger("footer:hide");
-        $("#overlay").slideDown("slow", function(){
+        $("#overlay").slideDown("normal", function(){
         	self.imageOverlay.is_active = true;
         });
     }

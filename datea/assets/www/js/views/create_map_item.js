@@ -10,18 +10,27 @@ var CreateMapItemView = Backbone.View.extend({
     },
     events: {
         "click #next_button": "stepForward",
-        "click #back_button": "stepBackward"       
+        "click #back_button": "stepBackward",     
     },
+
+    events_active: true,
 
     render: function(){
         var context = {};
         context.step = this.step;
         this.$el.html(this.template(context));
         this.nextView();
+        var self = this;
+    	setTimeout(function(){
+    		self.events_active = true;
+    	}, 300);
         return this;
     },
 
-    stepForward: function(){
+    stepForward: function(ev){
+    	ev.preventDefault();
+    	if (this.events_active) this.events_active = false;
+    	else return;
         
         //this is a foo change
         if(this.step == 1){
@@ -55,6 +64,10 @@ var CreateMapItemView = Backbone.View.extend({
     },
 
     stepBackward: function(){
+    	
+    	if (this.events_active) this.events_active = false;
+    	else return;
+    	
         if(this.step > 0 ){
             this.step = this.step - 1;
             this.render();
@@ -64,17 +77,17 @@ var CreateMapItemView = Backbone.View.extend({
     },
 
     nextView: function(){
-        console.log("next view");
+        //console.log("next view");
 
         if(this.step == 1){
-            console.log("perform actions for step 1");
+            //console.log("perform actions for step 1");
             this.stepOneView = new CreateMapItemOne({
                 model: this.model,
                 mappingModel: this.options.mappingModel, 
                 step : this.step
             });
-            console.log("mapping url: " + this.model.get('action'));
-            this.$("#create_mapitem_content").html(this.stepOneView.render().el); 
+            //console.log("mapping url: " + this.model.get('action'));
+            this.$el.find("#create_mapitem_content").html(this.stepOneView.render().el); 
             //this.step = 2;
         /*
         }else if(this.step == 2){
@@ -88,17 +101,18 @@ var CreateMapItemView = Backbone.View.extend({
             this.step = 3;
         */
         }else if(this.step == 2){
-            console.log("perform actions for step 3");
+            //console.log("perform actions for step 3");
             
             this.locationView = new LocationInputView({
                 model: this.model,
                 mapModel: this.options.mappingModel,
                 step: this.step,
-                modelField: 'position'
+                modelField: 'position',
+                mapCenter: this.options.mappingModel.get('center'),
+                mapBoundary: this.options.mappingModel.get('boundary')
             });
-
             //$("#main").html(this.locationView.render().el);
-            this.$("#create_mapitem_content").html(this.locationView.render().el); 
+            this.$el.find("#create_mapitem_content").html(this.locationView.render().el); 
             this.locationView.loadMap();
 
             this.eventAggregator.trigger("footer:hide");
@@ -112,7 +126,7 @@ var CreateMapItemView = Backbone.View.extend({
                 step: this.step
             });
 
-            $("#create_mapitem_content").html(this.stepThreeView.render().el);
+            this.$el.find("#create_mapitem_content").html(this.stepThreeView.render().el);
             //this.transferImage();
         }else if(this.step == 4){
             this.transferImage();
@@ -231,7 +245,8 @@ var CreateMapItemView = Backbone.View.extend({
                     });
                     self.$("#create_mapitem_content").html(self.stepFourView.render().el);
                 },
-                error: function(){
+                error: function(error){
+                	console.log(JSON.stringify(error));
                     alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
                 }
             });          

@@ -95,7 +95,7 @@ var ActionsView = Backbone.View.extend({
         this.model.fetch({
             data: this.params,
             success: function(){
-                console.log("models fetched at actions //////////////////////");
+                //console.log("models fetched at actions //////////////////////");
                    	
     	        var add_pager = false;
     	        if (self.model.meta.total_count > self.model.meta.limit + self.model.meta.offset) {
