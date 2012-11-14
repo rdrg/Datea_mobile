@@ -9,6 +9,11 @@ var ProfileEditView = Backbone.View.extend({
     events: {
       "click #image_input": "addImageOverlay",	
       "submit #user_edit_form": "updateUser",
+      "load #profile_image": "image_load",
+    },
+    
+    image_load: function() {
+    	alert("image load");
     },
 
     render: function() {
@@ -116,6 +121,10 @@ var ProfileEditView = Backbone.View.extend({
         	image_callback: function (imageURI){
         		$("#profile_image").attr('src', imageURI);
         		self.new_image_uri = imageURI;
+        		setTimeout(function(){
+        			self.scroller.refresh();
+        		}, 300);
+        		
         	}
         });
         $("#overlay").html(this.imageOverlay.render().el);
