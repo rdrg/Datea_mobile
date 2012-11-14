@@ -28,7 +28,10 @@ Backbone.View.prototype.scroll = function(){
                 e.preventDefault();
         }
     });
-    $('.scroll-container').css({height: cont_h, width: $(window).width() + "px"});
+    $s_container = $('.scroll-container');
+    var h = cont_h - parseInt($s_container.css('margin-top').replace('px','')) - parseInt($s_container.css('margin-bottom').replace('px','')) - parseInt($s_container.css('padding-top').replace('px','')) - parseInt($s_container.css('padding-bottom').replace('px',''));
+    var w = cont_w - parseInt($s_container.css('margin-left').replace('px','')) - parseInt($s_container.css('margin-right').replace('px','')) - parseInt($s_container.css('padding-left').replace('px','')) - parseInt($s_container.css('padding-right').replace('px',''));
+    $('.scroll-container').css({height: h + "px", width: w + "px"});
 };
 
 
@@ -392,7 +395,7 @@ var DateaRouter = Backbone.Router.extend({
     	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models();
        this.renderNavigation('general');
-      this.renderHeader('loggedout'); 
+      this.renderHeader('general'); 
     },
 
     searchForm: function(){
@@ -500,6 +503,7 @@ var DateaRouter = Backbone.Router.extend({
 $(document).ready(function () {
 	
 	cont_h = ($(window).height() - 48)+"px";
+	cont_w = $(window).width();
 	$('#main').css('height', cont_h);
 	
 	
