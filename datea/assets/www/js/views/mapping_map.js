@@ -90,6 +90,7 @@ var MappingMapView = Backbone.View.extend({
     	$content.html(self.item_cluster_view.render().el);
     	$content.fadeIn('normal', function(){
     		self.events_active = true;
+    		//self.item_cluster_view.scroll('cluster-content-view');
     	});
     },
     
@@ -105,6 +106,7 @@ var MappingMapView = Backbone.View.extend({
         $('#mapping-map-view').fadeIn('fast', function(){
         	self.events_active = true;
         });*/
+        //this.map.updateSize();
     },
     
     zoom_to_item: function(arg) {

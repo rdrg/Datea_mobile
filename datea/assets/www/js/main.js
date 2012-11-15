@@ -11,16 +11,20 @@ Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
     $("#footer").fadeOut("fast");
 });
 
-Backbone.View.prototype.scroll = function(){
+Backbone.View.prototype.scroll = function(elem){
 	
 	this.$el.addClass('scroll-container');
 	
-    this.scroller = new iScroll('main',{
+	if (typeof(elem) == 'undefined') elem = 'main';
+	
+    this.scroller = new iScroll( elem,{
         hScroll : false,
         fixedScrollbar: false,
         hideScrollbar: false,
         useTransform: false,
-        zoom: false, 
+        zoom: false,
+        checkDOMChanges: false,
+        bounce: false,
         onBeforeScrollStart: function (e) {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
@@ -63,11 +67,14 @@ var DateaRouter = Backbone.Router.extend({
 	    this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
+	    /* TURN ISCROLL OFF FOR THE MOMENT: does not work!!!
         if (!this.currentView.manual_scroll) {
         	this.currentView.scroll();
+        	//this.currentView.$el.css('overflow', 'auto');
         }else{
-        	alert("no scroll");
+        	this.currentView.$el.css('overflow', 'hidden');
         }
+        */
 	    return view;
 	},
 	
