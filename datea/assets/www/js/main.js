@@ -93,20 +93,6 @@ var DateaRouter = Backbone.Router.extend({
         });
 		$.support.cors = true;
         var self = this;
-        /*
-        if(localSession.get('logged')){
-            this.headerView = new LoggedInHeaderView();
-            $('#header').html(this.headerView.render().el);
-        }else{
-            this.headerView = new LoggedOutHeaderView();
-            $('#header').html(this.headerView.render().el);
-        }
-        */
-        //$('.header').html(this.headerView.render().el);
-        //this.navBar = new NavBar({});
-        //this.navBarView = new NavBarView({model: this.navBar});
-        //$('#footer').html(this.navBarView.render().el);
-        
     },
 
     home: function() {
@@ -122,8 +108,7 @@ var DateaRouter = Backbone.Router.extend({
             }
             this.showView('#main', this.homeView);
             this.renderHeader('loggedout');
-            this.renderNavigation('loggedout');
-            
+            this.renderNavigation('loggedout'); 
         }
     },
 	
@@ -199,7 +184,7 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
-        console.log("userid: " + localUser.get("id"));
+        //console.log("userid: " + localUser.get("id"));
     	if (!this.actionListView) {
         	this.actionListView = new ActionsView({
                         model: this.actionCollection,
@@ -210,9 +195,10 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.actionListView);
     	this.actionListView.fetch_models();
-        this.renderHeader('actions');
-        this.renderNavigation('general');
-       
+        this.renderHeader('actions', 'my_actions');
+        this.renderNavigation('general', 'ftr_actions');
+        //$('#ftr_actions').addClass('menu_on');    
+        
     },
 
     actionDetail: function(actionid){
@@ -406,8 +392,9 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models();
-       this.renderNavigation('general');
-      this.renderHeader('general'); 
+        this.renderNavigation('general');
+        this.renderHeader('general'); 
+
     },
 
     searchForm: function(){
@@ -423,12 +410,11 @@ var DateaRouter = Backbone.Router.extend({
         }
         this.categoryCollection.fetch({
             success: function(){
-               console.log("categories fetched"); 
                 self.showView("#main", self.searchFormView );
             }
         })
         this.renderNavigation('general');
-        this.renderHeader('actions');
+        this.renderHeader('actions', 'nav_srch');
     },
 
     searchQuery : function(term, cat, order, mode){
@@ -450,65 +436,79 @@ var DateaRouter = Backbone.Router.extend({
         }
     	this.showView('#main', this.searchResultView);
     	this.searchResultView.fetch_models();
-       this.renderNavigation('general');
-       this.renderHeader('actions');
+       this.renderNavigation('general', 'ftr_actions');
+       this.renderHeader('actions', 'nav_srch');
     },
 
-    renderNavigation: function(mode, id){
-        //console.log("nav bar id: " + id);
-        if(mode == 'general'){
-            if(!this.navBarView){
+    renderNavigation: function(mode, highlight, action_id){
+        switch(mode){
+            case 'general':
                 this.navBarView = new NavBarView();
-            }
-            $('#footer').html(this.navBarView.render().el);
+                break;
+            case 'dateo':
+                this.navBarView = new navBarDateoView();
+                break;
+            case 'loggedout':
+                $('#footer').empty();
+                break;
+            default:
+                this.navBarView = new NavBarView();
+                break;
         }
+        $('#footer').html(this.navBarView.render().el);
 
-        else if(mode == 'dateo'){
-            if(!this.navBarDateoView){
-                this.navBarDateoView = new NavBarDateoView();
-            }
-            $('#footer').html(this.navBarDateoView.render(id).el);
-        }
-        else if(mode == 'loggedout'){
-            $('#footer').empty();
+        if(highlight !== undefined){
+            $("#footer div").each(function(index, elem){
+                if(this.id == highlight){
+                   $(this).addClass('menu_on');
+                }else{
+                    $(this).removeClass('menu_on');
+                }
+            });   
+        }else{
+             $("#footer div").each(function(index, elem){
+                $(this).removeClass('menu_on');
+            });   
         }
     },
  
-    renderHeader: function(mode){
-
-        if(mode == 'general'){
-            //if(!this.headerView){
+    renderHeader: function(mode, highlight){ 
+        switch(mode){
+            case 'general':
                 this.headerView = new LoggedInHeaderView();
-            //}
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
+                break;
+            case 'actions':
+                this.headerView = new ActionHeaderView();
+                break;
+            case 'loggedout':
+                this.headerView = new LoggedOutHeaderView();
+                break;
+            case 'first':
+                this.headerView = new FirstHeaderView();
+                break;
+            default:
+                this.headerView = new LoggedInHeaderView();
+        }
+        
+        $('#header').html(this.headerView.render().el);
+
+
+        if(highlight !== undefined){
+            $("#header li").each(function(index, elem){
+                //console.log("attribute: " + this.id);
+                if(this.id == highlight){
+                   $(this).addClass('header_on');
+                }else{
+                    $(this).removeClass('header_on');
+                }
+            });   
+        }else{
+             $("#header li").each(function(index, elem){
+                $(this).removeClass('header_on');
+            });   
+
         }
 
-        else if(mode == 'actions'){
-            console.log("ACTION HEADER RENDERING NOW");
-            //if(!this.headerView){
-                //console.log("")
-                this.headerView = new ActionHeaderView();
-            ///}
-            //var id = localUser.get('id');
-            //console.log("header id: " + id);
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
-        }
-         else if(mode == 'loggedout'){
-            //if(!this.headereaderView){
-                this.headerView = new LoggedOutHeaderView();
-            //}
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
-        }
-        else if(mode == 'first'){
-            //if(!this.headerView){
-                this.headerView = new FirstHeaderView();
-            //}
-            $('#header').empty();
-            $('#header').html(this.headerView.render().el);
-        }
     }   
 });
 

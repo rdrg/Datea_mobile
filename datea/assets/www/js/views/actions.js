@@ -8,7 +8,6 @@ var ActionsView = Backbone.View.extend({
         this.items_per_page = 2;
         this.page = 0;
         _.bindAll(this); 
-        //console.log("initialize actions");
     },
 
     events: {
@@ -18,26 +17,13 @@ var ActionsView = Backbone.View.extend({
     render: function () {
 
         actions = {"actions": this.model.toJSON() };
-        //console.log(actions);
+        console.log("render actions");
         
         this.$el.html(this.template(actions));
         //this.build_filter_options();
         return this;
         
     },
-    /*
-     build_filter_options: function () {
-    	
-    	this.filter_options = [
-    		{value: 'combined', name: 'vista combinada'},
-    		{value: 'my_actions', name: 'iniciativas seguidas'},
-    		{value: 'own_actions', name: 'mis iniciativas'},
-    		{value: 'all_actions', name: 'todas las iniciativas'},
-		];    		
-                
-
-    },
-*/
     fetch_models: function(){
         
         this.params = {
@@ -47,17 +33,17 @@ var ActionsView = Backbone.View.extend({
         };
 
          if(this.options.search_term !== undefined && this.options.search_term !== '-'){
-            //console.log("search term: " + this.options.search_term); 
+            console.log("search term: " + this.options.search_term); 
             this.params.q = this.options.search_term;  
         }
 
         if(this.options.category_filter !== undefined && this.options.category_filter !== '-'){
-            //console.log("catefgory filter: " + this.options.category_filter);
+            console.log("catefgory filter: " + this.options.category_filter);
             this.params.category_id = this.options.category_filter;
         }
 
         if(this.options.order_by !== undefined && this.options.order_by !== '-'){
-            //console.log("order by: " + this.options.category_filter);
+            console.log("order by: " + this.options.category_filter);
             if(this.options.order_by == "distance"){
                 navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
             }
@@ -69,12 +55,12 @@ var ActionsView = Backbone.View.extend({
                 && this.params.limit + this.params.offset >= this.model.meta.total_count){
                     return;
                 }
-        
+       console.log("selected mode: " + this.selected_mode); 
         switch(this.selected_mode){
 
             case 'my_actions':
                 this.params.following_user = this.user_model.get('id');
-                //console.log("my actions selected with user: " + this.params.following_user);
+                console.log("my actions selected with user: " + this.params.following_user);
                 break;
 
     	    case 'own_actions':
@@ -90,13 +76,13 @@ var ActionsView = Backbone.View.extend({
                 //this.params.all_actions = 1;
                 break;                
         }
-
+        console.log("action params: " + JSON.stringify(this.params)); 
         var self = this;
         this.model.fetch({
-            data: this.params,
-            success: function(){
-                console.log("models fetched at actions //////////////////////");
-                   	
+            data: self.params,
+            success: function(mdl, response){
+                console.log("action models search: " + JSON.stringify(mdl));
+                                
     	        var add_pager = false;
     	        if (self.model.meta.total_count > self.model.meta.limit + self.model.meta.offset) {
        		    add_pager = true; 
