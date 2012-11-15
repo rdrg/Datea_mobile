@@ -14,7 +14,8 @@ var CreateMapItemOne = Backbone.View.extend({
         this.context.has_categories = cats.length > 0;
         this.context.categories = cats;
         this.context.step = this.options.step;
-        this.context.description = this.context.content; 
+        this.context.description = this.context.content;
+        if (this.options.parent_view.imageURI) this.context.imageURI = this.options.parent_view.imageURI;
         _.bindAll(this);
         //console.log("this is step: " + this.context.step);
     },
@@ -66,6 +67,7 @@ var CreateMapItemOne = Backbone.View.extend({
         this.imageOverlay = new SelectImageOverlayView({
         	image_callback: function(imageURI) {
         		self.options.parent_view.imageURI = imageURI;
+        		$('#dateo-img-preview', self.$el).attr('src', imageURI);
         	}
         });
         $("#overlay").html(this.imageOverlay.render().el);
