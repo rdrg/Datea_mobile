@@ -119,12 +119,15 @@ var ProfileEditView = Backbone.View.extend({
         var self = this;
         this.imageOverlay = new SelectImageOverlayView({
         	image_callback: function (imageURI){
-        		$("#profile_image").attr('src', imageURI);
+        		$("#profile_imßage").attr('src', imageURI);
         		self.new_image_uri = imageURI;
+        		
+        		/*
         		setTimeout(function(){
         			self.scroller.refresh();
+        			console.lgo("scroller refresh");
         		}, 300);
-        		
+        		*/
         	}
         });
         $("#overlay").html(this.imageOverlay.render().el);
