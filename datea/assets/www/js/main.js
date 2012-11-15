@@ -44,8 +44,6 @@ var DateaRouter = Backbone.Router.extend({
      
     routes: {
 	    "": "home",
-        //temporary redirection to work on actions
-        //"":"myActions",
         "login": "login",
         "logout": "logout",
         "about": "about",
@@ -55,7 +53,6 @@ var DateaRouter = Backbone.Router.extend({
         "user/edit/:userid": "userEditProfile",
         "actions": "actionList",
         "action/:actionid": "actionDetail",
-        //"mapping/:mapid/reports":"mapItemList",
         "mapping/:mapid/report/create": "createReport",
         "mapping/:mapid/reports/map":"mappingMap",
         "mapping/:mapid/reports/:reportid":"mapItemDetail",
@@ -162,23 +159,7 @@ var DateaRouter = Backbone.Router.extend({
         this.renderHeader('general');
 
 	},
-	
-	myActions: function () {
-        this.actionCollection = new ActionCollection();
-        this.actionCollection.url = api_url + '/api/v1/action/search/';
-        var self = this;
-        //console.log("action url: " + this.actionCollection.url);
-        this.actionCollection.fetch({
-            success: function(collection, response){
-                //console.log("actions fetched");
-                self.actionsView = new ActionsView({model:self.actionCollection});
-                self.showView('#main', self.actionsView);
-
-                //self.renderNavigation('general');
-                }
-            });
-    },
-    
+	    
     actionList: function(){
 
         if(!this.actionCollection){
@@ -240,6 +221,8 @@ var DateaRouter = Backbone.Router.extend({
                 self.showView('#main', self.mapItemListView());
             }
         });
+        this.renderHeader('general');
+        this.renderNavigation('dateo', 'none', mapid);
     },
          
 	createReport: function(mapid) {
@@ -319,7 +302,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.mappingMapView.loadMap();
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}
-    this.renderNavigation('dateo', mapid);
+    this.renderNavigation('dateo', 'none', mapid);
     this.renderHeader('general');
     },
     
@@ -343,7 +326,7 @@ var DateaRouter = Backbone.Router.extend({
     		}
     		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	});
-        this.renderNavigation('dateo', mapping_id);
+        this.renderNavigation('dateo', 'none', mapping_id);
         this.renderHeader('general');
     },
     
@@ -444,18 +427,24 @@ var DateaRouter = Backbone.Router.extend({
         switch(mode){
             case 'general':
                 this.navBarView = new NavBarView();
+                $('#footer').html(this.navBarView.render().el);
                 break;
             case 'dateo':
-                this.navBarView = new navBarDateoView();
+                this.navBarView = new NavBarDateoView();
+                $('#footer').html(this.navBarView.render(action_id).el);
                 break;
             case 'loggedout':
+ 
                 $('#footer').empty();
+                this.navBarView = new NavBarLoggedOutView();
+                $('#footer').html(this.navBarView.render().el);
                 break;
             default:
                 this.navBarView = new NavBarView();
+            	$('#footer').html(this.navBarView.render().el);
                 break;
         }
-        $('#footer').html(this.navBarView.render().el);
+        
 
         if(highlight !== undefined){
             $("#footer div").each(function(index, elem){
@@ -476,22 +465,30 @@ var DateaRouter = Backbone.Router.extend({
         switch(mode){
             case 'general':
                 this.headerView = new LoggedInHeaderView();
+                $('#header').html(this.headerView.render().el);
+
                 break;
             case 'actions':
                 this.headerView = new ActionHeaderView();
+                $('#header').html(this.headerView.render().el);
+
                 break;
             case 'loggedout':
                 this.headerView = new LoggedOutHeaderView();
+                $('#header').html(this.headerView.render().el);
+
                 break;
             case 'first':
                 this.headerView = new FirstHeaderView();
+                $('#header').html(this.headerView.render().el);
+
                 break;
             default:
                 this.headerView = new LoggedInHeaderView();
+            	$('#header').html(this.headerView.render().el);
+
         }
         
-        $('#header').html(this.headerView.render().el);
-
 
         if(highlight !== undefined){
             $("#header li").each(function(index, elem){
