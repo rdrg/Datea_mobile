@@ -3,9 +3,12 @@
 	<strong>Confirma tu dateo:</strong>
 	</p>
 	
+	<% if (typeof(category) != 'undefined') { %>
 	<div>
 	    <span class="label" style="background-color: <%= category.color %>"><%= category_name %></span>   
 	</div>
+	<% } %>
+	
 	<div class="description">
 	   <p>
 	   <%= content %>

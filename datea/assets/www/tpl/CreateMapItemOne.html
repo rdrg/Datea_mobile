@@ -1,6 +1,6 @@
 <div class="step_title">
   <strong>Paso 1: </strong> 
-  <% if (has_categories) { %><span>Elige la categor&iacute;a apropiada:</span>
+  <% if (has_categories) { %><span>1111Elige la categor&iacute;a apropiada:</span>
   <% } else { %><span>Agrega una descripci&oacute;n e imagen (opcional): </span> <% } %>
 </div>
 
@@ -8,9 +8,9 @@
     <% if(has_categories){ 
     _.each(categories, function(cat){ %>
       <div class="step1_category control-group">
-        <label class="radio">
-          <input type="radio" name="category" value="<%= cat.id %>" class="step1_radio" <% if (typeof(category_id) != 'undefined' && category_id == cat.id) { %>checked="checked"<% } %> /> 
-          <div class="step1_cat_color" style="background-color: <%= cat.color%>;"></div>
+        <label class="radio <% if (typeof(category_id) != 'undefined' && category_id == cat.id) { %>active<% } %>">
+          <input class="radio-category" type="radio" name="category" value="<%= cat.id %>" class="step1_radio" <% if (typeof(category_id) != 'undefined' && category_id == cat.id) { %>checked="checked"<% } %> /> 
+          <div class="step1_cat_color" style="background-color: <%= cat.color%>;">&nbsp;</div>
           <div class="step1_cat_name"><%= cat.name %></div>  
         </label>
       </div>
@@ -32,7 +32,7 @@
 	   </div>
    <% } %>
    
-    <textarea name='desc' id='description' placeholder+"descripción"><% if (description) { %><%= description %><% } %></textarea>
+    <textarea name='desc' id='description' placeholder="aqui la descripción"><% if (description) { %><%= description %><% } %></textarea>
     <a name="file" id="image_input" class="btn datea_btn_yllw" >imagen</a>
 
 </form>

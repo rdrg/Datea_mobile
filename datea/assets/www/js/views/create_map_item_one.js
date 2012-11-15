@@ -11,7 +11,7 @@ var CreateMapItemOne = Backbone.View.extend({
         });
 
         this.context = this.model.toJSON();
-        this.context.has_categories = true;
+        this.context.has_categories = cats.length > 0;
         this.context.categories = cats;
         this.context.step = this.options.step;
         this.context.description = this.context.content; 
@@ -35,7 +35,11 @@ var CreateMapItemOne = Backbone.View.extend({
 
     selectCategory: function(){
         //console.log("category clicked");
-        var cat_id = $('[name="category"]:checked', this.$el).val();
+        $('label.radio', this.$el).removeClass('active');
+        var $radio = $('[name="category"]:checked', this.$el);
+        var cat_id = $radio.val();
+        $radio.closest('label.radio').addClass('active');
+        
         var cat = null;
         var categories = this.options.mappingModel.get('item_categories');
         cat = _.find(categories, function(c){return c.id == cat_id;});
