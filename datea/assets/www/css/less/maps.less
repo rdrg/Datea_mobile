@@ -2,16 +2,17 @@
 	position: absolute;
 	left: 0;	
 	right: 0;
+	top: 0;
 	z-index: 0;
 	height: 100%;
-	
-	.map-controls {
-		position: absolute;
-		top: 25px;
-		right: 5px;
-		z-index: 1000;
-	}	
+  .map-controls {
+      position: absolute;
+      top: 15px;
+      right: 5px;
+      z-index: 1000;
+  } 
 }
+
 
 .map-canvas {
 	position: absolute;
@@ -30,7 +31,7 @@
 	}
 	.olControlZoomIn, .olControlZoomOut {
 		background-color: #999;
-		&:hover {
+		&:active {
 			background-color: #666;
 		}
 	}

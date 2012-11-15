@@ -9,6 +9,11 @@ var ProfileEditView = Backbone.View.extend({
     events: {
       "click #image_input": "addImageOverlay",	
       "submit #user_edit_form": "updateUser",
+      "load #profile_image": "image_load",
+    },
+    
+    image_load: function() {
+    	alert("image load");
     },
 
     render: function() {
@@ -44,7 +49,7 @@ var ProfileEditView = Backbone.View.extend({
 	
 	        //options.fileKey = "file";
 	        options.mimeType = "image/jpeg";
-	        options.fileName = this.new_image_uri.substr(image_uri.lastIndexOf('/')+1);
+	        options.fileName = this.new_image_uri.substr(this.new_image_uri.lastIndexOf('/')+1);
 	        options.fileKey = 'image';
 	        options.chunkedMode = false;
 	        
@@ -67,7 +72,7 @@ var ProfileEditView = Backbone.View.extend({
 	        //var im = $("#image_path").text();
 	        //console.log("image: " + image_uri);    
 	                        
-	        transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
+	        transfer.upload(this.new_image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 		}else{
 			var self = this;
 			this.model.save({
@@ -116,6 +121,10 @@ var ProfileEditView = Backbone.View.extend({
         	image_callback: function (imageURI){
         		$("#profile_image").attr('src', imageURI);
         		self.new_image_uri = imageURI;
+        		setTimeout(function(){
+        			self.scroller.refresh();
+        		}, 300);
+        		
         	}
         });
         $("#overlay").html(this.imageOverlay.render().el);

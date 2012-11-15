@@ -14,6 +14,7 @@ Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
 Backbone.View.prototype.scroll = function(){
 	
 	this.$el.addClass('scroll-container');
+	
     this.scroller = new iScroll('main',{
         hScroll : false,
         fixedScrollbar: false,
@@ -28,7 +29,10 @@ Backbone.View.prototype.scroll = function(){
                 e.preventDefault();
         }
     });
-    $('.scroll-container').css({height: cont_h, width: $(window).width() + "px"});
+    $s_container = this.$el;
+    var h = main_h - parseInt($s_container.css('margin-top').replace('px','')) - parseInt($s_container.css('margin-bottom').replace('px','')) - parseInt($s_container.css('padding-top').replace('px','')) - parseInt($s_container.css('padding-bottom').replace('px',''));
+    var w = main_w - parseInt($s_container.css('margin-left').replace('px','')) - parseInt($s_container.css('margin-right').replace('px','')) - parseInt($s_container.css('padding-left').replace('px','')) - parseInt($s_container.css('padding-right').replace('px',''));
+    $s_container.css({height: h + "px", width: w + "px"});
 };
 
 
@@ -62,7 +66,11 @@ var DateaRouter = Backbone.Router.extend({
 	    this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
-        this.currentView.scroll();
+        if (!this.currentView.manual_scroll) {
+        	this.currentView.scroll();
+        }else{
+        	alert("no scroll");
+        }
 	    return view;
 	},
 	
@@ -379,6 +387,7 @@ var DateaRouter = Backbone.Router.extend({
     	this.historyListView.fetch_models();
         this.renderNavigation('general');
         this.renderHeader('general'); 
+
     },
 
     searchForm: function(){
@@ -498,8 +507,9 @@ var DateaRouter = Backbone.Router.extend({
 
 $(document).ready(function () {
 	
-	cont_h = ($(window).height() - 48)+"px";
-	$('#main').css('height', cont_h);
+	main_h = ($(window).height() - 48);
+	main_w = $(window).width();
+	$('#main').css('height', main_h);
 	
 	
     utils.loadTpl(['HeaderView', 
@@ -617,7 +627,7 @@ function onMenuDown() {
 }
 
 function onOffline(close){
-    navigator.notification.alert(
+    alert(
         'Datea necesita estar conectado a Internet',
         function() 
         {

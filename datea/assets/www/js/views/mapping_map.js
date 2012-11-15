@@ -6,11 +6,17 @@
  */
 var MappingMapView = Backbone.View.extend({
     
+    initialize: function() {
+    	this.$el.css({height: main_h+"px", overflow: "hidden"});
+    },
+    
     events: {
 		'click .show-current-location': 'show_current_location',
 		'click .back-to-map': 'back_to_map',
 		'click .zoom-to-item': 'zoom_to_item'
 	},
+	
+	manual_scroll: true,
 	
 	events_active: true,
     
@@ -79,7 +85,7 @@ var MappingMapView = Backbone.View.extend({
     show_cluster_content_callback: function (itemCollection, self) {
     	if (!self.check_events_active()) return;
 		//$('#mapping-map-view').fadeOut('fast');
-    	self.item_cluster_view = new MapItemClusterView({collection: itemCollection});
+    	self.item_cluster_view = new MapItemClusterView({collection: itemCollection, parent_view: self});
     	var $content = self.$el.find('.cluster-content-view');
     	$content.html(self.item_cluster_view.render().el);
     	$content.fadeIn('normal', function(){

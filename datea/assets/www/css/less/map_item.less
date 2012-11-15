@@ -1,11 +1,14 @@
 .cluster-content-view {
-  z-index: 1004;
-  background-color: white;
-  width: 300px;
-  margin: 10px 10px 20px 10px;
+  z-index: 99;
+  //width: 300px;
+  position: relative;
+  margin: 0;
+  overflow: auto;
   .round(10px);
 
   .item-pager{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     height: 57px;
     margin-bottom: 20px;
     background: #ffffff; /* Old browsers */
@@ -86,13 +89,23 @@
       padding-left: 10px;
     }
   }
+  #wrapper {
+    .round(10px);
+    .map-item-cluster {
+      .round(10px);
+      margin: 12px;
+      background-color: white;
+      padding-bottom: 10px;
+      box-shadow: 1px 1px 8px 3px #aaa;
+    }
+  }
 }
 .comment-form{
   padding-left: 10px;
   padding-right: 10px;
   #comment-input{
     -webkit-box-sizing: border-box;
-    width: 100%;
+    width: 99%;
     height: 63px;
     margin-bottom: 20px;
   }
