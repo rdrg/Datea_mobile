@@ -41,13 +41,10 @@ var SearchFormView = Backbone.View.extend({
         event.preventDefault();
         if($('#search_term').val() !== ''){
         	this.search_term = $('#search_term').val();
-        	//console.log("search term : " + this.search_term);
         }
         
-        //this.selected_category = $('#category_filter').options[elt.selectedIndex].text;
         this.category = $('#category_filter option:selected').val();
         this.order =  $('#order_by option:selected').val();
-        //console.log("selected category: " + selected_category);
         console.log("submit search: " + this.search_term + "," +  this.category + "," + this.order_by );
         
         dateaApp.navigate("/search/" + this.search_term + "/" + this.category + "/" + this.order ,
