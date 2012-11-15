@@ -13,10 +13,9 @@
 	</div>
 	
 	<p id="image_container">
-	    <% if (typeof(images) !== "undefined"){ %>
-	    <% _.each(images, function(img){%>
-	    <img src="<%= img %>"/>
-	    <% });}%>
+	    <% if (typeof(imageURI) !== "undefined"){ %>
+	    	<img src="<%= imageURI %>" alt="" />
+	    <% } %>
 	</p>
 	
 	<p class="send-button"><button class="btn datea_btn_yllw" style="display: block" id="next_button">Enviar</button></p>

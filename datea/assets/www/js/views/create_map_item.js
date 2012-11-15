@@ -54,13 +54,13 @@ var CreateMapItemView = Backbone.View.extend({
             }
 
         }
-
-        if(this.step < 4){
-            this.step = this.step + 1;
-            this.render();
-        }else{
-            this.step = this.step;
-        }
+		
+		this.step = this.step + 1;
+		if (this.step < 4) {
+			this.render();
+		}else{
+			this.nextView();
+		}
     },
 
     stepBackward: function(){
@@ -84,7 +84,8 @@ var CreateMapItemView = Backbone.View.extend({
             this.stepOneView = new CreateMapItemOne({
                 model: this.model,
                 mappingModel: this.options.mappingModel, 
-                step : this.step
+                step : this.step,
+                parent_view: this,
             });
             //console.log("mapping url: " + this.model.get('action'));
             this.$el.find("#create_mapitem_content").html(this.stepOneView.render().el); 
@@ -123,29 +124,29 @@ var CreateMapItemView = Backbone.View.extend({
             this.stepThreeView = new CreateMapItemThree({
                 model: this.model,
                 mappingModel: this.options.mappingModel,
-                step: this.step
+                step: this.step,
+                parent_view: this,
             });
 
             this.$el.find("#create_mapitem_content").html(this.stepThreeView.render().el);
             //this.transferImage();
         }else if(this.step == 4){
+      		this.$el.find("#create_mapitem_content").html('');
             this.transferImage();
         }
     },
 
      transferImage: function(){
             //event.preventDefault();
-            console.log("sending image");
+
             var self = this;
-            
-            if(this.model.get('images') !== undefined){            
+            $('#spinner').fadeIn("fast");
+            if(this.imageURI !== undefined){            
                 var transfer = new FileTransfer();
                 var options = new FileUploadOptions();
-                var images = this.model.get('images');
-                var image_uri = images[0];
                 //options.fileKey = "file";
                 options.mimeType = "image/jpeg";
-                options.fileName = image_uri.substr(image_uri.lastIndexOf('/')+1);
+                options.fileName = this.imageURI.substr(this.imageURI.lastIndexOf('/')+1);
                 options.fileKey = 'image';
                 options.chunkedMode = false;
                 options.user = localUser;
@@ -154,14 +155,13 @@ var CreateMapItemView = Backbone.View.extend({
 
                 //params.object_field = 'image';
                 params.thumb_preset = 'profile_image_large';
-                console.log("user: " + localSession.get('username') + "key: " + localSession.get('token'));
+                //console.log("user: " + localSession.get('username') + "key: " + localSession.get('token'));
                 params.headers = { 
                     'Authorization': 'ApiKey '+ localSession.get('username') + ':' + localSession.get('token'), 
                     'enctype': 'multipart/form-data'
                 };
-                options.params = params;
-                console.log("image: " + image_uri);    
-                transfer.upload(image_uri, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
+                options.params = params;  
+                transfer.upload(this.imageURI, encodeURI(api_url + "/image/api_save/"), self.win, self.fail, options);
 
             }else{
                this.saveMapItem();
@@ -190,14 +190,13 @@ var CreateMapItemView = Backbone.View.extend({
 
         win: function(r){
 
-            console.log("Code = " + r.responseCode);
-            console.log("Response= " + r.response);
-            console.log("Sent = " + r.bytesSent);
+            //console.log("Code = " + r.responseCode);
+            //console.log("Response= " + r.response);
+            //console.log("Sent = " + r.bytesSent);
             var jres = JSON.parse(r.response);
-            console.log("response: " + JSON.stringify(jres.resource));
+            //console.log("response: " + JSON.stringify(jres.resource));
             var im = jres.resource;
-            var self = this;
-            this.model.set({image: im});
+            this.model.set({images: [im]});
             this.saveMapItem();
         },
 
@@ -205,6 +204,7 @@ var CreateMapItemView = Backbone.View.extend({
             console.log("error Code = " + error.code);
             console.log("upload error source: " + error.source);
             console.log("upload error target: " + error.target);
+            onOffline();
         },
 
         saveMapItem: function(){
@@ -216,9 +216,10 @@ var CreateMapItemView = Backbone.View.extend({
             this.options.mappingModel.set({
                 map_tems: mapItems,
                 item_count: count
-            }); 
+            });
             this.model.save({}, {
                 success: function(){
+                	console.log('map item after save: '+JSON.stringify(self.model.toJSON()));
                 	 /*
                      self.options.mappingModel.save({
                         success: function(){
@@ -239,6 +240,11 @@ var CreateMapItemView = Backbone.View.extend({
                     self.options.mappingModel.set({
                     	item_count: self.options.mappingModel.get('item_count') + 1
                     });
+                    
+                    var context = {step: 4};
+        			self.$el.html(self.template(context));
+        			self.events_active = true;
+                    
                     self.stepFourView = new CreateMapItemFour({
                         model : self.model,
                         mappingModel : self.options.mappingModel
@@ -246,7 +252,7 @@ var CreateMapItemView = Backbone.View.extend({
                     self.$("#create_mapitem_content").html(self.stepFourView.render().el);
                 },
                 error: function(error){
-                	console.log(JSON.stringify(error));
+                	//console.log(JSON.stringify(error));
                     alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
                 }
             });          

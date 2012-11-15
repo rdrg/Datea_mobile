@@ -61,7 +61,7 @@ var CreateMapItemOne = Backbone.View.extend({
         var self = this;
         this.imageOverlay = new SelectImageOverlayView({
         	image_callback: function(imageURI) {
-        		self.model.set({ images: [imageURI] });
+        		self.options.parent_view.imageURI = imageURI;
         	}
         });
         $("#overlay").html(this.imageOverlay.render().el);
