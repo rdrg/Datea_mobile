@@ -8,7 +8,7 @@
             </h4>
 
             <select id="category_filter" >
-                    <option value="all" name="all">--todas--</option>
+                    <option value="-" name="all">--todas--</option>
                 <% _.each(cat_list, function(cat){ %>
                     <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
                 <% })%>
@@ -20,7 +20,7 @@
 
             <select id="order_by"> 
                 <option value="featured" name="destacadas" selected="selected">Destacadas</option>
-                <option value="-" name="recientes">Recientes</option>
+                <option value="created" name="recientes">Recientes</option>
                 <option value="distance" name="cercanas">Cercanas</option>
             </select>
 

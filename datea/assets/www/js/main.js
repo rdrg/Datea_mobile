@@ -175,7 +175,7 @@ var DateaRouter = Backbone.Router.extend({
         }
         
     	this.showView('#main', this.actionListView);
-    	this.actionListView.fetch_models();
+    	this.actionListView.search_models();
         this.renderHeader('actions', 'my_actions');
         this.renderNavigation('general', 'ftr_actions');
         //$('#ftr_actions').addClass('menu_on');    
@@ -418,7 +418,7 @@ var DateaRouter = Backbone.Router.extend({
     	 	});
         }
     	this.showView('#main', this.searchResultView);
-    	this.searchResultView.fetch_models();
+    	this.searchResultView.search_models();
        this.renderNavigation('general', 'ftr_actions');
        this.renderHeader('actions', 'nav_srch');
     },
