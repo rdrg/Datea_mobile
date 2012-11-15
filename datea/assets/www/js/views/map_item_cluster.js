@@ -42,9 +42,10 @@ var MapItemClusterView = Backbone.View.extend({
 		}else{
 			return;
 		}
-		
+		console.log('before: '+this.$el.find('.current-item-content').height());
 		this.page++;
 		this.render();
+		console.log('after: '+this.$el.find('.current-item-content').height());
 		//this.scroller.refresh();
 	},
 	

@@ -1,6 +1,9 @@
 
 var MapItemDetailView = Backbone.View.extend({
 	
+	className: 'map-item-view',
+	
+	
 	render: function() {
 		
 		var context = this.model.toJSON();
