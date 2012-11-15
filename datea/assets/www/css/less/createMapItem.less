@@ -112,33 +112,50 @@
 // setp 1
 .step1_category{
   min-height: 24px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
+  vertical-align: middle;
   label{
+    .round(5px);
     font-size: 14px;
+    line-height: 36px;
+    height: 36px;
+    display: block;
+    margin-bottom: 0px;
+    &.active {
+      background-color: #cecece;
+    }
+  }
+  .radio-category {
+    font-size: 40px;
+    color: black;
+    .left;
+    display: block;
+    margin-top: 12px;
+    margin-left: -8px !important;
+  }
+  
+  .step1_cat_color{
+    .left;
+    width: 20px;
+    height: 20px;
+    margin-top: 8px;
+    border: none;
+    margin-left: 2px;
+    .round(5px);
   }
 }
 
-.step1_radio{
-  .left;
-}
 .step1_cat_info{
   .left;
   //width: 87%;
   margin-left: 5px; 
 }
 
-.step1_cat_color{
-  .left;
-  width: 20px;
-  height: 20px;
-  border: none;
-  .round(5px);
-}
+
 
 .step1_cat_name{
   .left;
   .black;
-  width: 85%;
   margin-left: 5px;
 }
 
@@ -187,7 +204,7 @@
   z-index: 90;
   top: 50px;
   left: 0px;
-  height: 90%
+  height: 90%;
 }
 
 .create-mapitem-confirm {
@@ -195,6 +212,7 @@
   .description {margin-top: 5px;}
   p.send-button {
     text-align: center;
+    margin-top: 25px;
     button { 
       width: 100%;
       margin-left: auto;
@@ -218,4 +236,8 @@
   padding-bottom: 8px;
   height: 22px;
   margin-bottom: 20px;
+}
+
+.map-item-success-buttons, .map-tem-success-title {
+  text-align: center;
 }

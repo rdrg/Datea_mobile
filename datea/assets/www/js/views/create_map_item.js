@@ -6,6 +6,8 @@ var CreateMapItemView = Backbone.View.extend({
         
         this.step = 1;    
         _.bindAll(this);
+        var cats = this.options.mappingModel.get('item_categories');
+        this.has_categories = cats.length > 0;
 
     },
     events: {
@@ -32,30 +34,26 @@ var CreateMapItemView = Backbone.View.extend({
     	if (this.events_active) this.events_active = false;
     	else return;
         
-        //this is a foo change
         if(this.step == 1){
-            /*
-            this.selectCategory();
-            this.setDescription();
-            if(!this.model.get('category') || !this.model.get('content')){
-                alert("Se requiere seleccionar una categoria y escribir una descripcion");
-                return;
-            }
-            */
-            var tmp_cat_id =  $('[name="category"]:checked', this.$el).val();
-            var tmp_desc = $('textarea').val();
-            
-            if(!tmp_cat_id || !tmp_desc){
-                alert("Se requiere seleccionar una categoria y escribir una descripcion");
-                return;
-            }else{
+            if (this.has_categories) {
+           		var tmp_cat_id =  $('[name="category"]:checked', this.$el).val();
+           		var tmp_desc = $('textarea').val();
+           		if(!tmp_cat_id || !tmp_desc){
+           			alert("Los campos de categoria y descripción son obligatorios.");
+                	return;
+                }
                 this.selectCategory();
-                this.setDescription(); 
-            }
-
+           	}else{
+           		var tmp_desc = $('textarea').val();
+           		if(!tmp_desc){
+           			alert("El campo de descripción es obligatorio.");
+                	return;
+                }
+           	}
+            this.setDescription(); 
         }
 		
-		this.step = this.step + 1;
+		this.step++;
 		if (this.step < 4) {
 			this.render();
 		}else{
@@ -202,9 +200,11 @@ var CreateMapItemView = Backbone.View.extend({
 
         fail: function(error){
             console.log("error Code = " + error.code);
-            console.log("upload error source: " + error.source);
+            console.log("upload error source: "+ error.source);
             console.log("upload error target: " + error.target);
-            onOffline();
+            alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+            this.step = 3;
+            this.render();
         },
 
         saveMapItem: function(){
@@ -254,6 +254,8 @@ var CreateMapItemView = Backbone.View.extend({
                 error: function(error){
                 	//console.log(JSON.stringify(error));
                     alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+		            this.step = 3;
+		            this.render();
                 }
             });          
         },

@@ -9,15 +9,17 @@
 				<% } %>
 			</div>
 			<% if (total_items > 1) { %>
-				<div class="counter"><%= page+1 %> de <%= total_items %></div>
 				
 				<div class="next">
 					<% if (page < total_items-1) { %>
-						<button class="btn next-item datea_btn_yllw"> > </button>
+						<button class="btn next-item datea_btn_gry"> > </button>
 					<% }else{ %>
-						<button class="btn back-to-map datea_btn_yllw">mapa</button>
+						<button class="btn back-to-map datea_btn_gry">mapa</button>
 					<% } %>
 				</div>
+				
+				<div class="counter"><%= page+1 %> de <%= total_items %></div>
+				
 			<% } %>
 		</div>
 		<div class="current-item-content"></div>
