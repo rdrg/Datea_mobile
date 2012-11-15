@@ -40,6 +40,7 @@ var CreateMapItemView = Backbone.View.extend({
            		var tmp_desc = $('textarea').val();
            		if(!tmp_cat_id || !tmp_desc){
            			alert("Los campos de categoria y descripción son obligatorios.");
+           			this.events_active = true;
                 	return;
                 }
                 this.selectCategory();
@@ -47,6 +48,7 @@ var CreateMapItemView = Backbone.View.extend({
            		var tmp_desc = $('textarea').val();
            		if(!tmp_desc){
            			alert("El campo de descripción es obligatorio.");
+           			this.events_active = true;
                 	return;
                 }
            	}
