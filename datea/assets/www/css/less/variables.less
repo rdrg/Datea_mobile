@@ -161,3 +161,102 @@
           box-shadow: @shadow;
 }
 
+
+.btn-arrow {
+  position: relative;
+  display: inline-block;
+  padding: 0px 7px;
+  height: 30px;
+  line-height: 30px;
+ 
+  font-weight: normal;
+  
+  background-color: #e2e2dd;
+  color: black;
+  cursor: pointer;
+  
+  &.btn-uppercase {
+    text-transform: uppercase;
+  }
+  
+  .pointer {
+    position: absolute;
+    top: 0px;
+    width: 15px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+  }
+ 
+  // Active state
+  &.active,&:active {
+      background-color: @datea;
+      background-image: none;
+      outline: 0;
+  }
+}
+
+.btn-arrow-right {
+    .btn-arrow;
+    margin-right: 15px;
+    .pointer {
+        right: -15px;
+        background: url(../img/boton_flecha_large_derecha.png) no-repeat -8px -7px;
+    }
+    &.active, &:active {
+      .pointer {
+         background: url(../img/boton_flecha_large_derecha.png) no-repeat -31px -7px;
+      }
+    }
+}
+
+.btn-arrow-left {
+    .btn-arrow;
+    margin-left: 14px;
+    .pointer {
+        left: -14px;
+        background: url(../img/boton_flecha_large_izquierda.png) no-repeat -69px center;
+    }
+    &.active, &:active {
+      .pointer {
+         background: url(../img/boton_flecha_large_izquierda.png) no-repeat -46px center;
+      }
+    }
+}
+
+
+.img-input-container {
+  .round(10px);
+  background: #e2e2dd url(../img/camera-icon.png) no-repeat center 40%;
+  position: relative;
+  display: block;
+  min-height: 130px;
+  height: auto;
+  z-index: 1;
+  
+  .img-preview {
+    position: relative;
+    padding:10px;
+    z-index: 3;
+    height: auto;
+    img {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+  }
+  .help-text {
+    z-index: 1;
+    position: absolute;
+    bottom: 20%;
+    text-align: center;
+    left: 10px;
+    right: 10px;
+    color: #999;
+  }
+  .has-image {
+    &.help-text {display: none;}
+  }
+  
+}
+

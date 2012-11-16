@@ -14,7 +14,7 @@
   height: 34px;
   border-bottom: 1px solid @gray-bg;
   text-align: center;
-  padding-top: 10px;
+  padding-top: 5px;
   padding-left: 3px;
   padding-right: 3px;
 }
@@ -44,6 +44,7 @@
   padding-left: 3px;
   padding-right: 3px;
   text-align: center;
+  line-height: 30px;
   span{
     color: @gray-dark;
     font-weight: bold;
@@ -64,8 +65,11 @@
   }
 }
 #bck_btn{
-  width: 80px;
+  width: 90px;
+  text-align: left;
+  padding-left: 2px;
   .left;
+  /*
   a {
     padding: 0 0 0 13px;
     display: block;
@@ -78,12 +82,15 @@
     &:active{
       background-image: url('../img/back_hover.png');
     }
-  }
+  }*/
 }
 
 #nxt_btn{
-  width: 80px;
+  width: 90px;
+  text-align: right;
+  padding-right: 2px;
   .rght;
+  /*
   a {
     height: 25px;
     padding-top: 3px;
@@ -96,7 +103,7 @@
     &:active{
       background-image: url('../img/next_hover.png');
     }
-  }
+  }*/
 }
 
 .step_title{
@@ -112,7 +119,7 @@
 // setp 1
 .step1_category{
   min-height: 24px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   vertical-align: middle;
   label{
     .round(5px);
@@ -164,10 +171,7 @@
   width: 94%;
 }
 #image_input{
-  width: 92%;
   margin-top: 10px;
-  padding: 8px;
-  height: 23px;
 }
 #overlay{
   -webkit-box-shadow: 0px -6px 20px 0px #ccc;
@@ -241,3 +245,4 @@
 .map-item-success-buttons, .map-tem-success-title {
   text-align: center;
 }
+

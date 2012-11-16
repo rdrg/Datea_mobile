@@ -509,12 +509,15 @@ var DateaRouter = Backbone.Router.extend({
     }   
 });
 
-$(document).ready(function () {
+
+$(document).ready(function(){ init_main(); });
+
+	
+function init_main () {
 	
 	main_h = ($(window).height() - 48);
 	main_w = $(window).width();
 	$('#main').css('height', main_h);
-	
 	
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
@@ -542,7 +545,6 @@ $(document).ready(function () {
                     'LocationInputView',
                     'MapItemDetailView',
                     'MapItemClusterView', 
-                    'ImageOverlayView',
                     'SelectImageOverlayView',
                     'CommentView',
                     'CommentListView',
@@ -555,66 +557,71 @@ $(document).ready(function () {
                     'SearchFormView'
                     ],
 	function () {
-	        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";       
-	        window.localSession = new Session();
-	        //window.localUser = new User();
-                //
+        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";       
+        window.localSession = new Session();
+        //window.localUser = new User();
+            //
+            
+        //if(localStorage.getItem('authdata') !== null) {
+        if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
+            //console.log(localStorage.getItem('authdata'));
+    	    //window.localSession = new localSession();
+            window.localUser = new User();
+               
+            var authdata = JSON.parse(localStorage.getItem('authdata'));
+            localSession.set(authdata);
+                //bootstrap user data
                 
-	        //if(localStorage.getItem('authdata') !== null) {
- 	        if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
-                   console.log(localStorage.getItem('authdata'));
-        	    //window.localSession = new localSession();
-	            window.localUser = new User();
-                   
-	            var authdata = JSON.parse(localStorage.getItem('authdata'));
-	            localSession.set(authdata);
-                    //bootstrap user data
+                if(localSession.get('logged')){
+                    userid = localSession.get('userid');
+                    //console.log('token: ' + localSession.get('token'));
+                    //console.log("fetching user data");
                     
-                    if(localSession.get('logged')){
-                        userid = localSession.get('userid');
-                        //console.log('token: ' + localSession.get('token'));
-                        //console.log("fetching user data");
-                        localUser.fetch({ 
-                            data:{
-                            	'id': userid,
-                            	'api_key': localSession.get('token'),
-                            	'username': localSession.get('username'),
-                            	'user_full': 1
-                            },
-                            success: function(mdl, res){
-                            	//console.log(mdl);
-                                //console.log("user model: " + JSON.stringify(mdl.toJSON()));
-                                if(mdl.get('follows') !== undefined ){
-                                        window.myFollows = new FollowCollection(mdl.get('follows'));
-                                        //console.log('follows: ' + JSON.stringify(myFollows));
-                                }
-                                if(mdl.get('votes') !== undefined){
-                                    window.myVotes = new VoteCollection(mdl.get('votes'));
-                                }
-                                window.dateaApp = new DateaRouter();           
-	                        Backbone.history.start();
-
-                            },
-                            error: function(){
-                                console.log("some error fetching");
-                                onOffline(true);
+                    fetch_data = { 
+                        data:{
+                        	'id': userid,
+                        	'api_key': localSession.get('token'),
+                        	'username': localSession.get('username'),
+                        	'user_full': 1
+                        },
+                        success: function(mdl, res){
+                        	//console.log(mdl);
+                            //console.log("user model: " + JSON.stringify(mdl.toJSON()));
+                            if(mdl.get('follows') !== undefined ){
+                                    window.myFollows = new FollowCollection(mdl.get('follows'));
+                                    //console.log('follows: ' + JSON.stringify(myFollows));
                             }
-                        });        
-                    }
-                    else{
-                        console.log("localstorage but not logged in");    
-	                	window.dateaApp = new DateaRouter();           
-	                	Backbone.history.start();
-                    }
-	        }else{
-                console.log("no data in localSotrage, storing persistent session data");    
-                window.localStorage.setItem('authdata', JSON.stringify(localSession));
-            	window.dateaApp = new DateaRouter();           
-           		Backbone.history.start();
-            }
+                            if(mdl.get('votes') !== undefined){
+                                window.myVotes = new VoteCollection(mdl.get('votes'));
+                            }
+                            window.dateaApp = new DateaRouter();           
+                        	Backbone.history.start();
 
+                        },
+                        error: function(){
+                            console.log("some error fetching");
+                            onOffline();
+                            //window.dateaApp = new DateaRouter();           
+                        	//Backbone.history.start();
+                            localUser.fetch(fetch_data);
+                        }
+                    }
+                    
+                    localUser.fetch(fetch_data);        
+                }
+                else{
+                    console.log("localstorage but not logged in");    
+                	window.dateaApp = new DateaRouter();           
+                	Backbone.history.start();
+                }
+        }else{
+            console.log("no data in localSotrage, storing persistent session data");    
+            window.localStorage.setItem('authdata', JSON.stringify(localSession));
+        	window.dateaApp = new DateaRouter();           
+       		Backbone.history.start();
+        }
     });  
-});
+}
 
 
 function onLoad() {
@@ -624,10 +631,21 @@ function onLoad() {
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
+    document.addEventListener("backbutton", onBackKeyPress, false);
+    //init_main();
 }
 
 function onMenuDown() {
 	$('#footer').toggle();
+}
+
+function onBackKeyPress() {
+	if (typeof(window.backbutton_func) != 'undefined') {
+		window.backbutton_func();
+		window.backbutton_func = undefined;
+	}else{
+		window.history.back();
+	}
 }
 
 function onOffline(close){
