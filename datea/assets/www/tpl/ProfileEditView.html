@@ -1,7 +1,7 @@
 <div id="wrapper">
     <div id="profile-edit_container">
       <form id="user_edit_form">
-        <h1>Editar perfil</h1>
+        <h2>Editar perfil</h2>
         <input type="text" name="full_name" id="fullname_in" placeholder="Nombre completo" value="<%= profile.full_name %>"/>
         
         <input type="email" name="email" id="email_in" placeholder="Email" value="<%= email %>" /> 
@@ -9,11 +9,11 @@
         <input type="text" name="message" id="message_in" placeholder="Mensaje personal" value="<%= profile.message %>"/>
         
         
-        <label class="image-input-label" for="image_input">Imágen de Perfil</label>
+        <label class="image-input-label" for="image_input">Imagen de Perfil</label>
 	    
 	    <div id="image_input" class="img-input-container">
 	    	<div class="img-preview"><img id="profile_image" src="<% if (typeof(profile.image_large) != 'undefined') { %><%= api_url%><%= profile.image_large %><% } %>" alt="" /></div>
-	    	<div class="help-text <% if (typeof(profile.image_large) != 'undefined') { %>has-image<% } %>">sube una imágen (opcional)</div>
+	    	<div class="help-text <% if (typeof(profile.image_large) != 'undefined') { %>has-image<% } %>">sube una imagen (opcional)</div>
 		</div>
 
         <button type="submit" class="btn btn-primary datea_btn_yllw">Guardar</button>
