@@ -148,14 +148,14 @@ var DateaRouter = Backbone.Router.extend({
         if (this.profileView.postRender){
             this.profileView.postRender();
         }
-        this.renderNavigation('general');
+        this.renderNavigation('general', 'ftr_profile');
         this.renderHeader('general');
     },
 	
 	userEditProfile: function (userid) {
         this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#main', this.profileEditView);
-    	this.renderNavigation('general');
+    	this.renderNavigation('general', 'ftr_profile');
         this.renderHeader('general');
 
 	},
@@ -222,7 +222,7 @@ var DateaRouter = Backbone.Router.extend({
             }
         });
         this.renderHeader('general');
-        this.renderNavigation('dateo', 'none', mapid);
+        this.renderNavigation('dateo', 'ftr_dateo', mapid);
     },
          
 	createReport: function(mapid) {
@@ -262,7 +262,7 @@ var DateaRouter = Backbone.Router.extend({
             }); 
             this.showView('#main', this.newMapItemView); 
 	    }
-   		this.renderNavigation('dateo', mapid);
+   	this.renderNavigation('dateo', 'ftr_new-dateo',mapid);
     	this.renderHeader('general');
     },
        
@@ -302,7 +302,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.mappingMapView.loadMap();
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}
-    this.renderNavigation('dateo', 'none', mapid);
+    this.renderNavigation('dateo', 'ftr_dateo', mapid);
     this.renderHeader('general');
     },
     
@@ -326,7 +326,7 @@ var DateaRouter = Backbone.Router.extend({
     		}
     		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	});
-        this.renderNavigation('dateo', 'none', mapping_id);
+        this.renderNavigation('dateo', 'ftr_dateo', mapping_id);
         this.renderHeader('general');
     },
     
@@ -375,7 +375,7 @@ var DateaRouter = Backbone.Router.extend({
         
     	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models();
-        this.renderNavigation('general');
+        this.renderNavigation('general', 'ftr_history');
         this.renderHeader('general'); 
 
     },
