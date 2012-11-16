@@ -92,10 +92,13 @@ var MappingMapView = Backbone.View.extend({
     		self.events_active = true;
     		//self.item_cluster_view.scroll('cluster-content-view');
     	});
+		window.backbutton_func = function() {
+			self.back_to_map();
+		}
     },
     
     back_to_map: function (ev) {
-    	ev.preventDefault();
+    	if (typeof(ev) != 'undefined') ev.preventDefault();
     	if (!this.check_events_active()) return;
     	this.item_cluster_view.close();
     	var self = this;

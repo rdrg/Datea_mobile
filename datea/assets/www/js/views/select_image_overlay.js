@@ -2,6 +2,10 @@ var SelectImageOverlayView = Backbone.View.extend({
 
     initialize: function(){
         _.bindAll(this);
+        var self = this;
+        window.backbutton_func = function() {
+        	self.hideOverlay();
+        }
     },
 
     events: {

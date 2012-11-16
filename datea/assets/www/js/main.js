@@ -623,10 +623,20 @@ function onLoad() {
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     document.addEventListener("offline", onOffline, false);
+    document.addEventListener("backbutton", onBackKeyPress, false);
 }
 
 function onMenuDown() {
 	$('#footer').toggle();
+}
+
+function onBackKeyPress() {
+	if (typeof(window.backbutton_func) != 'undefined') {
+		window.backbutton_func();
+		window.backbutton_func = undefined;
+	}else{
+		window.history.back();
+	}
 }
 
 function onOffline(close){
