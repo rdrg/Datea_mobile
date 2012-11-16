@@ -8,13 +8,14 @@
        
         <input type="text" name="message" id="message_in" placeholder="Mensaje personal" value="<%= profile.message %>"/>
         
-        <label for="image_input">Imágen de Perfil</label>
+        
+        <label class="image-input-label" for="image_input">Imágen de Perfil</label>
+	    
+	    <div id="image_input" class="img-input-container">
+	    	<div class="img-preview"><img id="profile_image" src="<% if (typeof(profile.image_large) != 'undefined') { %><%= api_url%><%= profile.image_large %><% } %>" alt="" /></div>
+	    	<div class="help-text <% if (typeof(profile.image_large) != 'undefined') { %>has-image<% } %>">sube una imágen (opcional)</div>
+		</div>
 
-        <!-- <textarea name="file" id="image_data" ></textarea> -->
-        <img src="<%= api_url%><%= profile.image %>" id="profile_image" class="left">
-        <!-- <label for="image_input">Imágen de Perfil</label>
-        <textarea name="file" id="image_data" /> -->
-        <button type="file" name="image" id="image_input" class="btn datea_btn_gry">Imagen</button>
         <button type="submit" class="btn btn-primary datea_btn_yllw">Guardar</button>
       </form>
   </div> 

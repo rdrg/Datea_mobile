@@ -542,7 +542,6 @@ $(document).ready(function () {
                     'LocationInputView',
                     'MapItemDetailView',
                     'MapItemClusterView', 
-                    'ImageOverlayView',
                     'SelectImageOverlayView',
                     'CommentView',
                     'CommentListView',

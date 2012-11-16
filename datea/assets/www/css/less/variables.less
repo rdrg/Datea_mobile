@@ -225,3 +225,38 @@
 }
 
 
+.img-input-container {
+  .round(10px);
+  background: #e2e2dd url(../img/camera-icon.png) no-repeat center 40%;
+  position: relative;
+  display: block;
+  min-height: 130px;
+  height: auto;
+  z-index: 1;
+  
+  .img-preview {
+    position: relative;
+    padding:10px;
+    z-index: 3;
+    height: auto;
+    img {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+  }
+  .help-text {
+    z-index: 1;
+    position: absolute;
+    bottom: 20%;
+    text-align: center;
+    left: 10px;
+    right: 10px;
+    color: #999;
+  }
+  .has-image {
+    &.help-text {display: none;}
+  }
+  
+}
+
