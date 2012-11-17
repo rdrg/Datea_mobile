@@ -165,7 +165,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	    
     actionList: function(){
-
+        console.log("normal action list");
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
@@ -433,14 +433,13 @@ var DateaRouter = Backbone.Router.extend({
         
     },
 
-    searchQuery : function(term, cat, order, mode){
-         
-        var self = this; 
+    searchQuery : function(term, cat, order){
+          
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
-
     	if (!this.searchResultView) {
+            console.log("new search view");
         	this.searchResultView = new ActionsView({
                         model: this.actionCollection,
         		user_model: localUser,
@@ -449,6 +448,13 @@ var DateaRouter = Backbone.Router.extend({
                         category_filter: cat,
                         order_by: order                    
     	 	});
+        }else{
+            console.log("same search view");
+            this.searchResultView.options.selected_mode = 'all_actions';
+            this.searchResultView.options.search_term = term;
+            this.searchResultView.options.category_filter = cat;
+            this.searchResultView.options.order_by = order;
+
         }
     	this.showView('#main', this.searchResultView);
     	this.searchResultView.search_models();
