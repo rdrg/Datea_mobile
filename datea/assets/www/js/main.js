@@ -13,7 +13,7 @@ Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
 
 Backbone.View.prototype.scroll = function(elem){
 	
-	this.$el.addClass('scroll-container');
+	//this.$el.addClass('scroll-container');
 	
 	if (typeof(elem) == 'undefined') elem = 'main';
 	
@@ -23,8 +23,8 @@ Backbone.View.prototype.scroll = function(elem){
         hideScrollbar: false,
         useTransform: false,
         zoom: false,
-        checkDOMChanges: false,
-        bounce: false,
+        //checkDOMChanges: false,
+        //bounce: false,
         onBeforeScrollStart: function (e) {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
@@ -33,10 +33,12 @@ Backbone.View.prototype.scroll = function(elem){
                 e.preventDefault();
         }
     });
+    /*
     $s_container = this.$el;
     var h = main_h - parseInt($s_container.css('margin-top').replace('px','')) - parseInt($s_container.css('margin-bottom').replace('px','')) - parseInt($s_container.css('padding-top').replace('px','')) - parseInt($s_container.css('padding-bottom').replace('px',''));
     var w = main_w - parseInt($s_container.css('margin-left').replace('px','')) - parseInt($s_container.css('margin-right').replace('px','')) - parseInt($s_container.css('padding-left').replace('px','')) - parseInt($s_container.css('padding-right').replace('px',''));
     $s_container.css({height: h + "px", width: w + "px"});
+    */
 };
 
 
@@ -67,14 +69,11 @@ var DateaRouter = Backbone.Router.extend({
 	    this.currentView.close();
 	    $(selector).html(view.render().el);
 	    this.currentView = view;
-	    /* TURN ISCROLL OFF FOR THE MOMENT: does not work!!!
-        if (!this.currentView.manual_scroll) {
-        	this.currentView.scroll();
-        	//this.currentView.$el.css('overflow', 'auto');
-        }else{
-        	this.currentView.$el.css('overflow', 'hidden');
-        }
-        */
+ 	    //this.currentView.scroll();
+            var self = this;
+            //setTimeout(function(){
+              //  self.currentView.scroller.refresh();
+            //}, 500);
 	    return view;
 	},
 	
@@ -157,6 +156,11 @@ var DateaRouter = Backbone.Router.extend({
         this.showView('#main', this.profileEditView);
     	this.renderNavigation('general', 'ftr_profile');
         this.renderHeader('general');
+        this.profileEditView.scroll();
+        setTimeout(function(){
+            this.profileEditView.scroller.refresh();
+        }, 300);
+
 
 	},
 	    
@@ -178,8 +182,13 @@ var DateaRouter = Backbone.Router.extend({
     	this.actionListView.search_models();
         this.renderHeader('actions', 'my_actions');
         this.renderNavigation('general', 'ftr_actions');
-        //$('#ftr_actions').addClass('menu_on');    
-        
+        //$('#ftr_actions').addClass('menu_on');  
+
+        this.actionListView.scroll();
+        var self = this;
+        setTimeout(function(){
+            self.actionListView.scroller.refresh();
+        }, 200); 
     },
 
     actionDetail: function(actionid){
@@ -196,9 +205,15 @@ var DateaRouter = Backbone.Router.extend({
                     self.actionView = new ActionView({model: self.actionModel});
                 }
                 self.showView('#main', self.actionView);
+                self.actionView.scroll();
+                var other = self;
+                setTimeout(function(){
+                    other.actionView.scroller.refresh();
+                }, 200);
+
             },
             error: function(error){
-                console.log("error fetching actions: " + JSON.stringify(error));
+                //console.log("error fetching actions: " + JSON.stringify(error));
             }
         });
     },
@@ -264,6 +279,12 @@ var DateaRouter = Backbone.Router.extend({
 	    }
    	this.renderNavigation('dateo', 'ftr_new-dateo',mapid);
     	this.renderHeader('general');
+        this.newMapItemView.scroll();
+        var self = this;
+        setTimeout(function(){
+            self.newMapItemView.scroller.refresh();
+        }, 200);
+
     },
        
 	mappingMap: function(mapid, callback_func) {
@@ -299,6 +320,7 @@ var DateaRouter = Backbone.Router.extend({
 			});
 		}else{
 			this.showView('#main', this.mappingMapView);
+
 			this.mappingMapView.loadMap();
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}
@@ -376,7 +398,12 @@ var DateaRouter = Backbone.Router.extend({
     	this.showView('#main', this.historyListView);
     	this.historyListView.fetch_models();
         this.renderNavigation('general', 'ftr_history');
-        this.renderHeader('general'); 
+        this.renderHeader('general');
+        this.historyListView.scroll(); 
+        var self = this;
+         setTimeout(function(){
+            self.historyListView.scroller.refresh();
+        }, 200);
 
     },
 
@@ -394,10 +421,16 @@ var DateaRouter = Backbone.Router.extend({
         this.categoryCollection.fetch({
             success: function(){
                 self.showView("#main", self.searchFormView );
+                self.searchFormView.scroll();
+                 setTimeout(function(){
+                    self.searchFormView.scroller.refresh();
+                }, 200);
+
             }
         })
         this.renderNavigation('general');
         this.renderHeader('actions', 'nav_srch');
+        
     },
 
     searchQuery : function(term, cat, order, mode){
@@ -421,6 +454,12 @@ var DateaRouter = Backbone.Router.extend({
     	this.searchResultView.search_models();
        this.renderNavigation('general', 'ftr_actions');
        this.renderHeader('actions', 'nav_srch');
+       this.searchResultView.scroll();
+       var self = this;
+        setTimeout(function(){
+            self.searchResultView.scroller.refresh();
+        }, 200);
+
     },
 
     renderNavigation: function(mode, highlight, action_id){
@@ -529,6 +568,7 @@ function init_main () {
                     'HomeView', 
                     'ActionsView',
                     'ActionView',
+                    'ActionItemView',
                     'FooterView', 
                     'LoggedInHeaderView', 
                     'LoggedOutHeaderView',
