@@ -31,7 +31,7 @@
   padding-top: 10px;
   padding-bottom: 10px;
   //background-color: @gray-bg;
-  width: 33%;
+  width: 33.3%;
   &:active, &.active{
     background-color: @datea;
   }
@@ -40,13 +40,13 @@
 #ftr_history{
   .ftr_common;
   .left;
-  margin-left: 33%;
+  margin-left: 33.3%;
   border-right: 1px solid @w;
 }
 #ftr_actions{
   .ftr_common;
   .left;
-  margin-left: -66%;
+  margin-left: -66.6%;
   border-right: 1px solid @w;
 }
 
@@ -57,40 +57,24 @@
 
 
 /// 
-.ftr_common_dateo{
-  padding-top: 10px;
-  padding-bottom: 10px;
+.ftr-dateo-btn {
   //background-color: @gray-bg;
-  width: 24.6%;
+  .left;
+  width: 25%;
+  a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-right: 1px solid @w;
+    display: block;
+  }
+  &:last-child a {
+     border-right: 0;
+  }
   &:active, &.active {
     background-color: @datea;
   }
 }
 
-#ftr_back{
-  .ftr_common_dateo;
-  .left;
-  border-right: 1px solid @w;
-}
-
-#ftr_home{
-  .ftr_common_dateo;
-  .left;
-  //margin-left: -66%;
-  border-right: 1px solid @w;
-}
-
-#ftr_dateo{
-  .ftr_common_dateo;
-  .left;
- // margin-left: 33%;
-  border-right: 1px solid @w;
-}
-
-#ftr_new-dateo{
-  .ftr_common_dateo;
-  .left;
-}
 
 
 #footer  .btn {

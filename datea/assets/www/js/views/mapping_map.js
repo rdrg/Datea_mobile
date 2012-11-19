@@ -90,7 +90,7 @@ var MappingMapView = Backbone.View.extend({
     	$content.html(self.item_cluster_view.render().el);
     	$content.fadeIn('normal', function(){
     		self.events_active = true;
-    		//self.item_cluster_view.scroll('cluster-content-view');
+    		self.item_cluster_view.scroll('cluster-content-view');
     	});
 		window.backbutton_func = function() {
 			self.back_to_map();

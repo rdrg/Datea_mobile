@@ -135,16 +135,12 @@ var HistoryListView = Backbone.View.extend({
     	ev.preventDefault();
     	this.page++;
     	this.fetch_models();
-		//$(document).scrollTop(0);
     },
     
     reset_event: function(ev) {
-    	console.log("RESET HIST MODEL");
         this.render_filter();
     	this.render_page();
-
-    	//console.log(this.model.meta);
-    	//this.scroller.refresh();
+    	this.scroll_refresh();
     } 
 	
 });
