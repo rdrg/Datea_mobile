@@ -111,7 +111,7 @@ var HistoryListView = Backbone.View.extend({
     	if (this.model.meta.total_count > this.model.meta.limit + this.model.meta.offset) {
        		add_pager = true;  
     	}
-        console.log("History Model Size: " + this.model.size());	
+
     	if (this.model.size() > 0) {
 	    	var self = this;
 	    	this.model.each(function (item) {
