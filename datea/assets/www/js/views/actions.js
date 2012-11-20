@@ -126,19 +126,20 @@ var ActionsView = Backbone.View.extend({
     },
 
     render_page: function(){
-        this.model.each(function(item, index,list){  
-            //console.log("action item: " + JSON.stringify(item));
-            var action = {model: item.toJSON()};
-            $("#action_list").append(new ActionItemView(action).render().el);
-            if(index < list.length - 1){
-                console.log("appending separator");
-                $("#action_list").append(
-                    '<hr class="action_separator">' 
-                    );
-            }
-            }, 
-            this
-        );
+    	var $list = $("#action_list");
+    	$list.empty();
+    	if (this.model.size() > 0) {
+	        this.model.each(function(item, index,list){  
+	            //console.log("action item: " + JSON.stringify(item));
+	            var action = {model: item.toJSON()};
+	            $list.append(new ActionItemView(action).render().el);
+	            if(index < list.length - 1){
+	                $list.append('<hr class="action_separator">');
+	            }
+	        }, this);
+	    }else{
+	    	$list.append('<div class="no-results">[ No se encontraron resultados. Inténtalo nuevamente con otros valores. ]</div>');
+	    }
                 
         var add_pager = false;
 
@@ -154,10 +155,10 @@ var ActionsView = Backbone.View.extend({
         var $pager_button = this.$el.find('.item-pager');
         
         if (add_pager) {
-                $pager_button.removeClass('hide');
+        	$pager_button.removeClass('hide');
         }else{
-                $pager_button.addClass('hide');
+            $pager_button.addClass('hide');
         }
-       this.scroller.refresh(); 
+        this.scroll_refresh(); 
     }
 });
