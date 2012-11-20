@@ -1,28 +1,37 @@
 <div id="wrapper">
     <div id="search_form">
-        <h2>Buscar acciones</h2> 
-        <form>
-            <input type="text" id="search_term" placeholder="filtrar por frase"></input>
-            <h4>
-                Filtrar por Categor&iacute;a:
-            </h4>
-
-            <select id="category_filter" >
-                    <option value="-" name="all">--todas--</option>
-                <% _.each(cat_list, function(cat){ %>
-                    <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
-                <% })%>
-            </select>
+        <h2>Buscar iniciativas</h2> 
+        <form class="form">
+            <div class="control-group">
+            	<div class="controls">
+            		<input type="text" id="search_term" placeholder="-- filtrar por frase --"></input>
+            	</div>
+            </div>
             
-            <h4>
-                Ordenar por:
-            </h4>
+            <div class="control-group">
+            	<label class="control-label">Filtrar por Categor&iacute;a:</label>
+            	<div class="controls">
+            		<select id="category_filter" >
+		                    <option value="-" name="all">--todas--</option>
+		                <% _.each(cat_list, function(cat){ %>
+		                    <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
+		                <% })%>
+		            </select>
+            	</div>
+            </div>
 
-            <select id="order_by"> 
-                <option value="featured" name="destacadas" selected="selected">Destacadas</option>
-                <option value="created" name="recientes">Recientes</option>
-                <option value="distance" name="cercanas">Cercanas</option>
-            </select>
+            
+            
+            <div class="control-group">
+            	<label class="control-label">Ordenar por:</label>
+            	<div class="controls">
+            		 <select id="order_by"> 
+		                <option value="featured" name="destacadas" selected="selected">Destacadas</option>
+		                <option value="created" name="recientes">Recientes</option>
+		                <option value="distance" name="cercanas">Cercanas</option>
+		            </select>
+            	</div>
+            </div>
 
             <a href="#" id="submit_search" class="btn datea_btn_gry">Mostrar Resultados</a>
         </form>

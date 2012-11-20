@@ -30,9 +30,12 @@ var ActionsView = Backbone.View.extend({
     
     search_models: function(){
         
+        $("#action_list", this.$el).addClass('hide');
+        
         this.params = {
             limit: this.items_per_page,
             offset: this.page * this.items_per_page,
+            published: 1,
             //page : this.page
             //following_user: this.user_model.get('id');
         };
@@ -40,12 +43,12 @@ var ActionsView = Backbone.View.extend({
         var get_location_first = false;
 
          if(this.options.search_term !== undefined && this.options.search_term !== '-'){
-            console.log("search term: " + this.options.search_term); 
+            //console.log("search term: " + this.options.search_term); 
             this.params.q = this.options.search_term;  
         }
 
         if(this.options.category_filter !== undefined && this.options.category_filter !== '-'){
-            console.log("catefgory filter: " + this.options.category_filter);
+            //console.log("catefgory filter: " + this.options.category_filter);
             this.params.category_id = this.options.category_filter;
         }
         if(this.model.meta
@@ -54,9 +57,6 @@ var ActionsView = Backbone.View.extend({
                     return;
                 }
      	
-     	console.log("selected mode: " + this.selected_mode); 
-        console.log("PAGE : "+this.page);
-       
         switch(this.selected_mode){
 
             case 'my_actions':
@@ -77,29 +77,32 @@ var ActionsView = Backbone.View.extend({
                 break;
    
             case 'all_actions':
-                console.log("all actions selected");
+                //console.log("all actions selected");
                 break;                
         }
         
         if(this.options.order_by !== undefined && this.options.order_by !== '-'){
-            console.log("order by: " + this.options.category_filter);
+            //console.log("order by: " + this.options.category_filter);
+            this.params.order_by = this.options.order_by;
             
             switch(this.options.order_by){
+            	
             	case 'distance':
-            		//navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
             		get_location_first = true;
-            		break
-            	case 'featured':
-            		this.params.featured = 1;
             		break;
+            		
+            	case 'featured':
+            		this.params.order_by = '-item_count';
+            		break;
+            		
             	case 'created':
             		break;
+            	
             	default:
             		break;
             }
-            this.params.order_by = this.options.order_by;
         }
-
+        
         if(get_location_first){
         	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
         }else{
@@ -191,6 +194,7 @@ var ActionsView = Backbone.View.extend({
 	    		$list.html(this.no_results_msg);
 	    	}
 	    }
+	    $list.removeClass('hide');
                 
         var add_pager = false;
 
