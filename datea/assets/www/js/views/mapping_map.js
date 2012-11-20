@@ -99,6 +99,7 @@ var MappingMapView = Backbone.View.extend({
     
     back_to_map: function (ev) {
     	if (typeof(ev) != 'undefined') ev.preventDefault();
+    	window.backbutton_func = undefined;
     	if (!this.check_events_active()) return;
     	this.item_cluster_view.close();
     	var self = this;

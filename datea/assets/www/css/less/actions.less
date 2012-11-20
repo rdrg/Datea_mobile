@@ -88,8 +88,13 @@
   padding-left: 10px;
   position: relative;
 
-  a{
+  a {
     color: @gray;
+    display: block;
+    .clearfix;
+    &:active {
+      background-color: @datea;
+    }
   }
 
   .action_img{
