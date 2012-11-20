@@ -35,7 +35,6 @@ var ActionView = Backbone.View.extend({
             //mdl['api_url'] = api_url;
             return this;
         }
-        console.log(mdl);
         this.$el.html(this.template(mdl));
         
         // follow widget

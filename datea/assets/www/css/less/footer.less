@@ -28,30 +28,35 @@
 }
 
 .ftr_common{
-  padding-top: 10px;
-  padding-bottom: 10px;
   //background-color: @gray-bg;
   width: 33.3%;
   &:active, &.active{
     background-color: @datea;
   }
+  a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+    border-right: 1px solid @w;
+    
+  }
+  &:last-child {
+    a {
+      border-right: 0;
+    }
+  }
 }
 
 #ftr_history{
-  .ftr_common;
   .left;
   margin-left: 33.3%;
-  border-right: 1px solid @w;
 }
 #ftr_actions{
-  .ftr_common;
   .left;
   margin-left: -66.6%;
-  border-right: 1px solid @w;
 }
 
 #ftr_profile{
-  .ftr_common;
   .left;
 }
 

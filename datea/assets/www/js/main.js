@@ -178,12 +178,12 @@ var DateaRouter = Backbone.Router.extend({
         //console.log("userid: " + localUser.get("id"));
     	if (!this.actionListView) {
         	this.actionListView = new ActionsView({
-                        model: this.actionCollection,
+                model: this.actionCollection,
         		user_model: localUser,
-                        selected_mode : 'my_actions'                        
+                selected_mode : 'my_actions'                        
     	 	});
         }
-        
+        this.actionListView.params_to_default();
     	this.showView('#main', this.actionListView);
     	this.actionListView.search_models();
         this.renderHeader('actions', 'my_actions');
@@ -379,6 +379,7 @@ var DateaRouter = Backbone.Router.extend({
             this.searchResultView.options.search_term = term;
             this.searchResultView.options.category_filter = cat;
             this.searchResultView.options.order_by = order;
+            this.searchResultView.page = 0;
 
         }
     	this.showView('#main', this.searchResultView);

@@ -34,52 +34,65 @@
   }
 } 
 
-#actions_msg_btns{
-  margin-top: 10px;
+.actions-intro {
+  margin: 10px;
+  padding: 10px;
+  background-color: #efefef;
+  .round(10px);
+  .clearfix;
+  
+  .intro-title {
+    
+  }
 
   .actions_btns_common{
     background-repeat: no-repeat;
     text-align: left;
     font-size: 12px;
-    line-height: 13px;
-    padding-left: 25px;
+    line-height: 15px;
+    padding-left: 28px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    height: 45px;
+    width: 100px;
+    .round(5px);
   }
 
   #actions_search{
     .left;
-    width: 125px;
     a{
+      display: block;
       .actions_btns_common;
       background-image: url('../img/icono_busqueda.png');
-      background-position: 5px 42px;
-    }
-    .datea_btn_gry{
+      background-position: 5px 35px;
       background-color: @w;
       font-weight: normal;
-      height: 55px;
+      -webkit-box-shadow: 3px 3px 2px 1px #CCC;
+      box-shadow: 2px 2px 2px 1px #CCC;
+      &:active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
     }
   }
   #actions_follow{
     .rght;
-    width: 100px;
     margin-right: 10px;
-    a{
-      .actions_btns_common;
-      background-image: url('../img/icono_seguir.png');
-      background-position: 5px 41px;
-    }
-    .datea_btn_gry{
-      font-weight: normal;
-      background-color: @w;
-      height: 55px;
-      cursor: default;
-      -webkit-box-shadow: none;
-    }
+    .actions_btns_common;
+    background-image: url('../img/icono_seguir.png');
+    background-position: 5px 35px;
+    background-color: @w;
   }
 }
 
 #action_list{
   height: 100%;
+}
+
+#actions-list-title {
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .actions_action{
