@@ -111,7 +111,7 @@ var HistoryListView = Backbone.View.extend({
     	if (this.model.meta.total_count > this.model.meta.limit + this.model.meta.offset) {
        		add_pager = true;  
     	}
-    	
+        console.log("History Model Size: " + this.model.size());	
     	if (this.model.size() > 0) {
 	    	var self = this;
 	    	this.model.each(function (item) {
@@ -128,20 +128,19 @@ var HistoryListView = Backbone.View.extend({
 		}else{
 			$pager_button.addClass('hide');
 		}
+                this.scroller.refresh();
     },
     
     load_more_results: function(ev) {
     	ev.preventDefault();
     	this.page++;
     	this.fetch_models();
-		//$(document).scrollTop(0);
     },
     
     reset_event: function(ev) {
-    	this.render_filter();
+        this.render_filter();
     	this.render_page();
-    	//console.log(this.model.meta);
-    	//this.scroller.refresh();
+    	this.scroll_refresh();
     } 
 	
 });

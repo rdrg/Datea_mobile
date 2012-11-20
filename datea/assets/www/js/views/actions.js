@@ -2,11 +2,11 @@ var ActionsView = Backbone.View.extend({
     initialize: function () {
         
         this.user_model = this.options.user_model;
-        this.model.bind("reset", this.reset_even, this);
+        this.model.bind("reset", this.reset_event, this);
         //console.log("selected mode: " + this.options.selected_mode);
         this.selected_mode = this.options.selected_mode;
-        this.items_per_page = 2;
-        this.page = 0;
+        this.items_per_page = 3;
+        this.page = 1;
         _.bindAll(this); 
     },
 
@@ -15,20 +15,16 @@ var ActionsView = Backbone.View.extend({
     },
 
     render: function () {
-
-        actions = {"actions": this.model.toJSON() };
-        console.log("render actions");
         
-        this.$el.html(this.template(actions));
-        //this.build_filter_options();
+        this.$el.html(this.template());
         return this;
         
     },
     search_models: function(){
-        
         this.params = {
             limit: this.items_per_page,
-            offset: this.page * this.items_per_page
+            offset: this.page * this.items_per_page,
+            page : this.page
             //following_user: this.user_model.get('id');
         };
 
@@ -110,8 +106,7 @@ var ActionsView = Backbone.View.extend({
     loadMoreResults: function(ev) {
     	ev.preventDefault();
     	this.page++;
-    	this.fetch_models();
-		//$(document).scrollTop(0);
+    	this.search_models();
     },
     
     fetch_models: function(){
@@ -120,26 +115,49 @@ var ActionsView = Backbone.View.extend({
         this.model.fetch({
             data: self.params,
             success: function(mdl, response){
-                console.log("action models search: " + JSON.stringify(mdl));
-                /*           
-    	        var add_pager = false;
-    	        if (self.model.meta.total_count > self.model.meta.limit + self.model.meta.offset) {
-       		    add_pager = true; 
-                   console.log("lets add a pager"); 
-    	        }
-        
-                var $pager_button = self.$el.find('.item-pager');
-                
-				if (add_pager) {
-					$pager_button.removeClass('hide');
-				}else{
-					$pager_button.addClass('hide');
-				}
-                */
-                self.render();
+                console.log('action models fetched');
             }
         });
     	
-    }
+    },
 
+    reset_event: function(){
+        this.render_page();
+    },
+
+    render_page: function(){
+        this.model.each(function(item, index,list){  
+            //console.log("action item: " + JSON.stringify(item));
+            var action = {model: item.toJSON()};
+            $("#action_list").append(new ActionItemView(action).render().el);
+            if(index < list.length - 1){
+                console.log("appending separator");
+                $("#action_list").append(
+                    '<hr class="action_separator">' 
+                    );
+            }
+            }, 
+            this
+        );
+                
+        var add_pager = false;
+
+        //if (this.model.meta.total_count > this.model.meta.limit + this.model.meta.offset) {
+        //console.log("HAS NEXT: " + JSON.stringify(this.model.meta));
+        if(this.model.meta.next){
+            add_pager = true; 
+           console.log("ADD PAGER"); 
+        }else{
+            console.log("NO PAGER");
+        }
+        
+        var $pager_button = this.$el.find('.item-pager');
+        
+        if (add_pager) {
+                $pager_button.removeClass('hide');
+        }else{
+                $pager_button.addClass('hide');
+        }
+       this.scroller.refresh(); 
+    }
 });

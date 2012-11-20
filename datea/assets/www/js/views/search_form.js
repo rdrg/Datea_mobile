@@ -19,6 +19,7 @@ var SearchFormView = Backbone.View.extend({
         var context = { 'cat_list': this.model.toJSON()};
         this.$el.html(this.template(context));
         var ret = false;
+        this.delegateEvents();
         return this; 
     },
 
@@ -38,6 +39,7 @@ var SearchFormView = Backbone.View.extend({
         console.log("setting order: " + this.order); 
     },
     search:function(event){
+        console.log("performing search");
         event.preventDefault();
         if($('#search_term').val() !== ''){
         	this.search_term = $('#search_term').val();
