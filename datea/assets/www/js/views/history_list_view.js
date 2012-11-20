@@ -17,7 +17,7 @@ var HistoryListView = Backbone.View.extend({
 		this.model = new HistoryCollection();
     	this.model.bind("reset", this.reset_event, this);
     	this.selected_mode = 'combined';
-    	this.items_per_page = 3;
+    	this.items_per_page = 15;
     	this.page = 0;
     	/*
 		this.pager_view = new Datea.PaginatorView({

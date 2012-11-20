@@ -6,7 +6,7 @@ var ActionsView = Backbone.View.extend({
         this.model.bind("reset", this.reset_event, this);
         //console.log("selected mode: " + this.options.selected_mode);
         this.selected_mode = this.options.selected_mode;
-        this.items_per_page = 2;
+        this.items_per_page = 15;
         this.page = 0;
         this.render_mode = 'new';
         this.user_follows_actions = true;
