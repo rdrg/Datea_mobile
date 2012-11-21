@@ -169,7 +169,7 @@ var ActionsView = Backbone.View.extend({
     	if (this.model.size() > 0) {
     		
     		if (!this.user_follows_actions) {
-    			$list_title.html('Inciativas en tu zona').removeClass('hide');
+    			$list_title.html('Inciativas cercanas a tu zona').removeClass('hide');
     			$list_intro.removeClass('hide');
     		}else{
     			$list_title.addClass('hide');

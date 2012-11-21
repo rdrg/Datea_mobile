@@ -201,10 +201,10 @@ var CreateMapItemView = Backbone.View.extend({
         },
 
         fail: function(error){
-            console.log("error Code = " + error.code);
-            console.log("upload error source: "+ error.source);
-            console.log("upload error target: " + error.target);
-            alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+            //console.log("error Code = " + error.code);
+            //console.log("upload error source: "+ error.source);
+            //console.log("upload error target: " + error.target);
+            onOffline();
             this.step = 3;
             this.render();
         },
@@ -264,11 +264,10 @@ var CreateMapItemView = Backbone.View.extend({
                 category_name: cat.name,
                 color: cat.color
             },{silent: true});
-            console.log("cat val: " + cat);
+            //console.log("cat val: " + cat);
         },
 
          setDescription: function(){
-            console.log("description changed: " + $('textarea').val());
 
             this.model.set({
                 content: $('textarea').val() 

@@ -1,7 +1,7 @@
 var CreateMapItemTwo = Backbone.View.extend({
     initialize: function(){
         _.bindAll(this);
-        console.log("this is step: " + this.options.step);
+        //console.log("this is step: " + this.options.step);
         this.context = Object();
         this.context.step = this.options.step;
     },
@@ -43,7 +43,7 @@ var CreateMapItemTwo = Backbone.View.extend({
      },
 
      setDescription: function(){
-        console.log("description changed");
+        //console.log("description changed");
         this.model.set({
             content: $('input[type="text"]').val() 
         });

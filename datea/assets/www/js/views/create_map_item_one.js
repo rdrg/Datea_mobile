@@ -54,7 +54,7 @@ var CreateMapItemOne = Backbone.View.extend({
     },
 
      setDescription: function(){
-        console.log("description changed: " + $('textarea').val());
+        //console.log("description changed: " + $('textarea').val());
 
         this.model.set({
             content: $('textarea').val() 

@@ -79,7 +79,7 @@ var MappingMapView = Backbone.View.extend({
 		}
 		
 		this.map = new Datea.olwidget.Map("mapping-map", [this.itemLayer], mapOptions, this.show_cluster_content_callback, this);
-		this.itemLayer.initCenter(); 
+		//this.itemLayer.initCenter(); 
     },
     
     show_cluster_content_callback: function (itemCollection, self) {
@@ -154,7 +154,7 @@ var MappingMapView = Backbone.View.extend({
     		},
     		function (error) {
     			self.events_active = true;
-    			console.log(error);
+    			//console.log(error);
     		},
     		{
 				maximumAge: 5000, 

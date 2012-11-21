@@ -133,7 +133,7 @@ window.LocationInputView = Backbone.View.extend({
     			self.inputLayer.initCenter(LocInfo);
     		},
     		function (error) {
-    			console.log(error);
+    			//console.log(error);
     		},
     		{
 				maximumAge: 5000, 

@@ -30,7 +30,6 @@ window.LoginView = Backbone.View.extend({
                     var uname = self.model.get("username");
                     var userid = self.model.get("userid");
                     */
-                    console.log("submit login desde el cliente");
                     
                     var localdata = {
                         "username": usr,
@@ -41,7 +40,7 @@ window.LoginView = Backbone.View.extend({
                     self.model.set(localdata);
                     self.model.unset("password");
                     //localStorage.setItem("authdata", JSON.stringify(localdata));
-                    console.log("login data: " + JSON.stringify(self.model));
+                    //console.log("login data: " + JSON.stringify(self.model));
                     localStorage.setItem("authdata", JSON.stringify(self.model));
 
                     Backbone.Tastypie = {

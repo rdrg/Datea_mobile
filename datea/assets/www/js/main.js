@@ -148,7 +148,7 @@ var DateaRouter = Backbone.Router.extend({
             };
 		
 	    localSession.set(logout_data);
-	    console.log(localSession.get('logged'));
+	    //console.log(localSession.get('logged'));
 	    localStorage.setItem("authdata", JSON.stringify(logout_data));
 	    dateaApp.navigate("/", { trigger: true });
 	},
@@ -364,7 +364,6 @@ var DateaRouter = Backbone.Router.extend({
             this.actionCollection = new ActionCollection();
         }
     	if (!this.searchResultView) {
-            console.log("new search view");
         	this.searchResultView = new ActionsView({
                 model: this.actionCollection,
 				user_model: localUser,
@@ -374,7 +373,6 @@ var DateaRouter = Backbone.Router.extend({
                 order_by: order                    
     	 	});
         }else{
-            console.log("same search view");
             this.searchResultView.options.selected_mode = 'all_actions';
             this.searchResultView.options.search_term = term;
             this.searchResultView.options.category_filter = cat;
@@ -564,7 +562,7 @@ function init_main () {
 
                         },
                         error: function(){
-                            console.log("some error fetching");
+                            //console.log("some error fetching");
                             onOffline();
                             //window.dateaApp = new DateaRouter();           
                         	//Backbone.history.start();
@@ -578,12 +576,12 @@ function init_main () {
                     localUser.fetch(fetch_data);        
                 }
                 else{
-                    console.log("localstorage but not logged in");    
+                    //console.log("localstorage but not logged in");    
                 	window.dateaApp = new DateaRouter();           
                 	Backbone.history.start();
                 }
         }else{
-            console.log("no data in localSotrage, storing persistent session data");    
+            //console.log("no data in localSotrage, storing persistent session data");    
             window.localStorage.setItem('authdata', JSON.stringify(localSession));
         	window.dateaApp = new DateaRouter();           
        		Backbone.history.start();
