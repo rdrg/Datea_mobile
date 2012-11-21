@@ -25,21 +25,21 @@ var SearchFormView = Backbone.View.extend({
 
     set_search_term: function(){
         this.search_term = $('#search_term').val();
-        console.log("search term: " + this.search_term); 
+        //console.log("search term: " + this.search_term); 
     },
 
     set_category: function(event){
         this.category = event.currentTarget.value;
-        console.log("set category: " + this.category);
+        //console.log("set category: " + this.category);
     },
 
     set_order: function(event){
         //this.params.order_by = $('#order_by').val();
         this.order = event.currentTarget.value;
-        console.log("setting order: " + this.order); 
+        //console.log("setting order: " + this.order); 
     },
     search:function(event){
-        console.log("performing search");
+        //console.log("performing search");
         event.preventDefault();
         if($('#search_term').val() !== ''){
         	this.search_term = $('#search_term').val();
@@ -47,15 +47,10 @@ var SearchFormView = Backbone.View.extend({
         
         this.category = $('#category_filter option:selected').val();
         this.order =  $('#order_by option:selected').val();
-        console.log("submit search: " + this.search_term + "," +  this.category + "," + this.order_by );
+        //console.log("submit search: " + this.search_term + "," +  this.category + "," + this.order_by );
         
         dateaApp.navigate("/search/" + this.search_term + "/" + this.category + "/" + this.order ,
                 {trigger: true}
                 );
-        /*
-        dateaApp.navigate("/search/" + "perros" + "/" + "1" + "/" + 'distance' ,
-                {trigger: true}
-                );
-        */
     } 
 });

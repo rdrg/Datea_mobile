@@ -21,7 +21,6 @@
       </a>
 	  
 	  <div class="clearfix btns-secondary">
-		  <% if (  typeof(active_message) != "undefined"  ) { %><%= active_message %><% } %>
 	
 		  <div class="action_stats clearfix">
 	          <% if (item_count > 0) { %>
@@ -29,6 +28,7 @@
 	          <% } if (user_count) { %>
 	            <div><%= user_count %> usuarios</div>
 	          <% } %>
+	          <% if (  typeof(active_message) != "undefined"  ) { %><%= active_message %><% } %>
 	     </div>
 	
 	      <div class="follow-button"></div>

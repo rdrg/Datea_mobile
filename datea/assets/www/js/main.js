@@ -171,7 +171,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	    
     actionList: function(){
-        console.log("normal action list");
+        //console.log("normal action list");
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
