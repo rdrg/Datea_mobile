@@ -221,18 +221,8 @@ var CreateMapItemView = Backbone.View.extend({
             });
             this.model.save({}, {
                 success: function(){
-                	console.log('map item after save: '+JSON.stringify(self.model.toJSON()));
-                	 /*
-                     self.options.mappingModel.save({
-                        success: function(){
-                            console.log('mapping model saved');
-                        },
-                        error: function(){
-                            alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
-                        }
-                    });
-                   console.log("saved");
-                   */
+                	//console.log('map item after save: '+JSON.stringify(self.model.toJSON()));
+                	 
                     if (self.options.mappingModel.attributes.map_items) {
                     	self.options.mappingModel.attributes.map_items.unshift(self.model.toJSON());	
                     }else{

@@ -32,7 +32,6 @@ var ActionView = Backbone.View.extend({
 		}
         
         if(!mdl.name){
-            //mdl['api_url'] = api_url;
             return this;
         }
         this.$el.html(this.template(mdl));

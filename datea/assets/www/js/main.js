@@ -598,7 +598,7 @@ function onLoad() {
 
 function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
-    document.addEventListener("offline", onOffline, false);
+    //document.addEventListener("offline", onOffline, false);
     document.addEventListener("backbutton", onBackKeyPress, false);
     //init_main();
 }
@@ -617,8 +617,8 @@ function onBackKeyPress() {
 }
 
 function onOffline(close){
-    alert(
-        'Datea necesita estar conectado a Internet',
+    navigator.notification.alert(
+        'Datea necesita Internet. Revisa tu conexión e intenta nuevamente.',
         function() 
         {
         	if (typeof(close) != 'undefined' && close == true) {
@@ -629,7 +629,7 @@ function onOffline(close){
 			    }
         	}
         },
-        'Sin Conexion',
+        'Error de conexión',
         'ok'
     );
 }

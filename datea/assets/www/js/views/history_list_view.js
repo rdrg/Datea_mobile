@@ -92,7 +92,10 @@ var HistoryListView = Backbone.View.extend({
     			break;
     	}
     	//console.log("history params: " + JSON.stringify(params));
-    	this.model.fetch({ data: params });
+    	this.model.fetch({ 
+    		data: params, 
+    		error: function(){ onOffline(); },
+    	});
     },
     
     render_page: function(page) {

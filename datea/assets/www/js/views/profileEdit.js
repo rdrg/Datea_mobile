@@ -83,7 +83,7 @@ var ProfileEditView = Backbone.View.extend({
 	                dateaApp.navigate("user/" + self.model.get("id"), { trigger: true });
 	            },
 	         	error: function(error) {
-	         		alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
+	         		onOffline();
 	         	}
 	        });
 		}

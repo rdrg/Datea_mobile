@@ -11,14 +11,17 @@
     </div>
     
     <div id="action_btns">
-      <% if (is_active) { %>
-      <a href="#mapping/<%= id %>/report/create" class="btn datea_btn_gry" id="new_dateo"> 
-        nuevo dateo
-      </a>
-      <% } %>
-      <a href="#mapping/<%= id %>/reports/map" class="btn datea_btn_gry" id="browse_dateos">
-        navegar dateos
-      </a>
+    	
+      <div class="primary-buttons">
+	      <% if (is_active) { %>
+	      <a href="#mapping/<%= id %>/report/create" class="btn datea_btn_gry" id="new_dateo"> 
+	        nuevo dateo
+	      </a>
+	      <% } %>
+	      <a href="#mapping/<%= id %>/reports/map" class="btn datea_btn_gry" id="browse_dateos">
+	        navegar dateos
+	      </a>
+	  </div>
 	  
 	  <div class="clearfix btns-secondary">
 	
@@ -42,7 +45,7 @@
       <div id="action_about">
         <h3>Sobre esta acci&oacute;n</h3>
         <% if (image) { %>
-          <img src="<%= api_url %><%= image %>" />
+          <img src="<%= api_url %><%= image.image %>" />
       <% } %> 
       
         <h4>misi&oacute;n / objetivos </h4>

@@ -61,6 +61,9 @@ window.LoginView = Backbone.View.extend({
                             data: {'id': localSession.get('userid')},
                             success: function(){
                                 dateaApp.navigate("/", {trigger: true});
+                            },
+                            error: function () {
+                            	onOffline();
                             }
                     });
                 
@@ -71,7 +74,7 @@ window.LoginView = Backbone.View.extend({
             },            
             error: function(response) {
                 //$("#result").html("Ocurrio un error");
-                alert('Ocurrion un error, revisa tu conexion a internet');
+                onOffline();
             }
         });
         return;
