@@ -18,14 +18,13 @@ var ActionsView = Backbone.View.extend({
     },
 
     render: function () {
-        
         this.$el.html(this.template());
         return this;
-        
     },
     
     params_to_default: function() {
     	this.user_follows_actions = true;
+    	this.requery_done = false;
     },
     
     search_models: function(){
@@ -103,6 +102,8 @@ var ActionsView = Backbone.View.extend({
             }
         }
         
+        console.log("ACTION FETCH PARAMS: "+JSON.stringify(this.params)+",  SELECTED_MODE: "+this.selected_mode+",  USER_FOLLOWS_ACTIONS: "+this.user_follows_actions);
+        
         if(get_location_first){
         	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
         }else{
@@ -132,12 +133,15 @@ var ActionsView = Backbone.View.extend({
     },
     
     fetch_models: function(){
-        console.log("action params: " + JSON.stringify(this.params));         
+        //console.log("action params: " + JSON.stringify(this.params));         
     	var self = this;
         this.model.fetch({
             data: self.params,
             success: function(mdl, response){
-                console.log('action models fetched');
+                //console.log('action models fetched');
+            },
+            error: function() {
+            	onOffline();
             }
         });
     	

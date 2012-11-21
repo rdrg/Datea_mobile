@@ -91,7 +91,7 @@ var HistoryListView = Backbone.View.extend({
     			params.sender_type = 'vote';
     			break;
     	}
-    	console.log("history params: " + JSON.stringify(params));
+    	//console.log("history params: " + JSON.stringify(params));
     	this.model.fetch({ data: params });
     },
     
@@ -128,7 +128,7 @@ var HistoryListView = Backbone.View.extend({
 		}else{
 			$pager_button.addClass('hide');
 		}
-                this.scroller.refresh();
+        this.scroll_refresh();
     },
     
     load_more_results: function(ev) {
