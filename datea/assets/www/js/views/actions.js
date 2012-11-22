@@ -29,7 +29,7 @@ var ActionsView = Backbone.View.extend({
     
     search_models: function(){
         
-        $("#action_list", this.$el).addClass('hide');
+        $('#actions_container', this.$el).addClass('hide');
         
         this.params = {
             limit: this.items_per_page,
@@ -102,7 +102,7 @@ var ActionsView = Backbone.View.extend({
             }
         }
         
-        console.log("ACTION FETCH PARAMS: "+JSON.stringify(this.params)+",  SELECTED_MODE: "+this.selected_mode+",  USER_FOLLOWS_ACTIONS: "+this.user_follows_actions);
+        //console.log("ACTION FETCH PARAMS: "+JSON.stringify(this.params)+",  SELECTED_MODE: "+this.selected_mode+",  USER_FOLLOWS_ACTIONS: "+this.user_follows_actions);
         
         if(get_location_first){
         	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
@@ -198,7 +198,7 @@ var ActionsView = Backbone.View.extend({
 	    		$list.html(this.no_results_msg);
 	    	}
 	    }
-	    $list.removeClass('hide');
+	    $('#actions_container', this.$el).removeClass('hide');
                 
         var add_pager = false;
 

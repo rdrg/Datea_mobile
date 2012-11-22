@@ -6,7 +6,7 @@ var RegisterView = Backbone.View.extend({
     
     events: {
         "submit": "submitRegister",
-        "click h1": "enter"
+        "click .enter": "enter"
     },
     
     render: function(){
@@ -20,7 +20,6 @@ var RegisterView = Backbone.View.extend({
         //parsing data into a convenient object
         var regdata = {};
         formdata.forEach(function(data){
-            console.log(data.name, data.value);
             regdata[data.name] = data.value;
         });
         
@@ -29,6 +28,7 @@ var RegisterView = Backbone.View.extend({
         
         var self = this;
        //there is no register model, so we're doing plain ajax post to create the user in the server, instead of using model.save().
+        /*
         $.post(api_url + "/api/v1/accounts/create/",
             JSON.stringify(regdata),
             function(response){
@@ -38,11 +38,45 @@ var RegisterView = Backbone.View.extend({
                         username: regdata.username,
                         password: regdata.password
                     });
-                    $('#result').html('<h1>enter</h1>');
+                    $('#result').html('<h1 class="enter">enter</h1>');
+                }else{
+                	console.log(reponse)
                 }
             }
             //'json'
-            );
+         );*/
+         $.post(api_url+"/api/v1/accounts/create/", JSON.stringify(regdata))
+         	.complete(function(data){
+         		
+         		response_msg = $.parseJSON(data.responseText);
+         		
+         		if (response_msg.status == 200) {
+         			
+         			self.model.set({
+                        username: regdata.username,
+                        password: regdata.password
+                    });
+                    self.$el.html(new RegisterSuccessView().render().el);
+         			
+         		} else if (response_msg.status == 500) {
+         			var error;
+         			
+         			if (response_msg.error_message.indexOf('auth_user_username_key') !== -1) {
+         				error = "El nombre de usuario ya ha sido tomado. Por favor, elige otro.";
+         				
+         			}else if (response_msg.error_message.indexOf('Recipient address rejected') !== -1) {
+         				error = "La dirección de correo no exite o tiene problemas.";
+         				
+         			}else if (response_msg.error_message.indexOf('duplicate email') !== -1) {
+         				error = "Ya existe una cuenta con este correo. Si te olvidaste de tu contraseña, recupérala en la web en "+api_url+".";
+         		
+         			}else{
+         				error = "Ocurrio un error. Revisa tus datos e inténtalo de nuevo.";	
+         			}
+         			//navigator.notification.alert(error, function(){}, 'Error de validación', 'ok');
+    				alert(error);
+         		}
+         	});
     },
     
     validate_form: function(data) {
@@ -81,6 +115,7 @@ var RegisterView = Backbone.View.extend({
     },
     
     enter: function(){
+    	
         var self = this;
         var logindata = {
             username: this.model.get('username'),
@@ -98,11 +133,11 @@ var RegisterView = Backbone.View.extend({
                         "userid" : response.userid
                     };
 
-                      Backbone.Tastypie = {
+                    Backbone.Tastypie = {
                         prependDomain: api_url,
                         doGetOnEmptyPostResponse: true,
                         doGetOnEmptyPutResponse:false,
-                        apiKey : {
+                        apiKey: {
                             username: logindata.username,
                             key: response.token
                         }
@@ -110,14 +145,32 @@ var RegisterView = Backbone.View.extend({
 
                     localStorage.setItem("authdata", JSON.stringify(authdata));
                     self.model.set(authdata);
-                    //self.model.set({logged: true});
-                    //redirecting to user profile for now
-                    //var userid = self.model.get("userid");
-                    //console.log("uierid: " + response.userid);
-                    app.navigate("user/" + response.userid, {trigger : true});
-                }else if(reponse.error){
-                    $("#result").html(response.error);
+                    
+                    localUser.fetch({
+                            data: {
+                            	'id': self.model.get('userid'),
+                            	'api_key': self.model.get('token'),
+                        		'username': self.model.get('username'),
+                            	'user_full': 1,
+                            },
+                            success: function(){
+                                dateaApp.navigate("/", {trigger: true});
+                            },
+                            error: function () {
+                            	onOffline();
+                            }
+                    });
+                    dateaApp.navigate("/", { trigger: true });
+                
+                }else if(response.error){
+                	var error = "Aún te falta activar tu cuenta."
+                	//navigator.notification.alert(error, function(){}, 'Error de activación', 'ok');
+		    		alert(error);
+		    		return false;
                 }
+            },
+            error: function() {
+            	onOffline();
             }
         });
     }

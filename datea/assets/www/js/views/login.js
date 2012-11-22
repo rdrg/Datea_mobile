@@ -57,7 +57,12 @@ window.LoginView = Backbone.View.extend({
                         window.localUser = new User();
                     }
                     localUser.fetch({
-                            data: {'id': localSession.get('userid')},
+                            data: {
+                            	'id': self.model.get('userid'),
+                            	'api_key': self.model.get('token'),
+                        		'username': self.model.get('username'),
+                            	'user_full': 1,
+                            },
                             success: function(){
                                 dateaApp.navigate("/", {trigger: true});
                             },

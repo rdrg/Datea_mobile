@@ -141,8 +141,7 @@ var DateaRouter = Backbone.Router.extend({
 	},
 	
 	register: function() {
-        this.session = new Session();
-        this.registerView = new RegisterView({model: this.session});
+        this.registerView = new RegisterView({model: localSession});
         this.showView("#main", this.registerView);
         this.renderHeader('general');
         this.renderNavigation('none');
@@ -159,6 +158,7 @@ var DateaRouter = Backbone.Router.extend({
 	    localSession.set(logout_data);
 	    //console.log(localSession.get('logged'));
 	    localStorage.setItem("authdata", JSON.stringify(logout_data));
+	    window.localUser = new User();
 	    dateaApp.navigate("/", { trigger: true });
 	},
 	
@@ -494,7 +494,8 @@ function init_main () {
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
                     'LoginView',
-                    'RegisterView', 
+                    'RegisterView',
+                    'RegisterSuccessView',
                     'ProfileView',
                     'ProfileEditView',
                     'NavBarView',
@@ -531,16 +532,16 @@ function init_main () {
                     'SearchFormView'
                     ],
 	function () {
-        Backbone.Tastypie.prependDomain = api_url || "http://10.0.2.2:8000";       
+        Backbone.Tastypie.prependDomain = api_url;       
         window.localSession = new Session();
-        //window.localUser = new User();
+        window.localUser = new User();
             //
             
         //if(localStorage.getItem('authdata') !== null) {
         if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
             //console.log(localStorage.getItem('authdata'));
     	    //window.localSession = new localSession();
-            window.localUser = new User();
+            //window.localUser = new User();
                
             var authdata = JSON.parse(localStorage.getItem('authdata'));
             localSession.set(authdata);
@@ -626,21 +627,26 @@ function onBackKeyPress() {
 }
 
 function onOffline(close){
-    navigator.notification.alert(
-        'Datea necesita Internet. Revisa tu conexión e intenta nuevamente.',
-        function() 
-        {
-        	if (typeof(close) != 'undefined' && close == true) {
-        		if (navigator.app && navigator.app.exitApp) {
-			        navigator.app.exitApp();
-			    } else if (navigator.device && navigator.device.exitApp) {
-			        navigator.device.exitApp();
-			    }
-        	}
-        },
-        'Error de conexión',
-        'ok'
-    );
+	var error = 'Datea necesita Internet. Revisa tu conexión e intenta nuevamente.';
+	if (navigator.notification){
+	    navigator.notification.alert(
+	        error,
+	        function() 
+	        {
+	        	if (typeof(close) != 'undefined' && close == true) {
+	        		if (navigator.app && navigator.app.exitApp) {
+				        navigator.app.exitApp();
+				    } else if (navigator.device && navigator.device.exitApp) {
+				        navigator.device.exitApp();
+				    }
+	        	}
+	        },
+	        'Error de conexión',
+	        'ok'
+	    );
+	 }else{
+	 	alert(error);
+	 }
 }
 
 function offLineAlertDismissed() {
