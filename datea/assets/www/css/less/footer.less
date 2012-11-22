@@ -82,22 +82,19 @@
 
 
 
-#footer  .btn {
-  margin-left: 30px;
-  margin-right: 20px;
-  margin-bottom: 10px;
+#footer .btn {
   background-image: none;
   border: none;
   color: @gray-dark;
 }
 
-#login_btn_footer{
+#login_btn_footer, #signup_btn_footer {
   background-color: @gray-bg;
+  &:active {
+    background-color: @datea;
+  }
 }
 
-#signup_btn_footer{
-  background-color: @yellow-btn;
-}
 
 @media (max-width: 767px) { 
   #footer{
@@ -107,4 +104,19 @@
 
 .menu_on{
     background-color:@datea;
+}
+
+
+#welcome-footer {
+  background-color: white;
+  .clearfix;
+  .help-text { font-size: 11px; margin-top: 3px; color: #aaa}
+  .right-button, .left-button {
+    width: 50%;
+    .left;
+    .inner { padding: 10px;}
+    .btn {
+      width: 100px;
+    }
+  }
 }

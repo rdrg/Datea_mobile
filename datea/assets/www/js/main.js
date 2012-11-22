@@ -65,6 +65,7 @@ var DateaRouter = Backbone.Router.extend({
 	    "": "home",
         "login": "login",
         "logout": "logout",
+        "register": "register",
         "about": "about",
         "search":"searchForm",
         "search/:term/:cat/:order": "searchQuery",
@@ -135,8 +136,16 @@ var DateaRouter = Backbone.Router.extend({
     login: function () {
         this.loginView = new LoginView({model: localSession});
 		this.showView('#main', this.loginView);
-        this.renderNavigation('loggedout');
-        this.renderHeader('loggedout');
+        this.renderNavigation('none');
+        this.renderHeader('general');
+	},
+	
+	register: function() {
+        this.session = new Session();
+        this.registerView = new RegisterView({model: this.session});
+        this.showView("#main", this.registerView);
+        this.renderHeader('general');
+        this.renderNavigation('none');
 	},
 	
 	logout: function () {
@@ -397,11 +406,12 @@ var DateaRouter = Backbone.Router.extend({
                 $('#footer').html(this.navBarView.render(action_id).el);
                 break;
             case 'loggedout':
- 
-                $('#footer').empty();
-                this.navBarView = new NavBarLoggedOutView();
+                this.navBarView = new NavBarWelcomeView();
                 $('#footer').html(this.navBarView.render().el);
                 break;
+            case 'none':
+            	$('#footer').empty();
+            	break;
             default:
                 this.navBarView = new NavBarView();
             	$('#footer').html(this.navBarView.render().el);
@@ -452,7 +462,6 @@ var DateaRouter = Backbone.Router.extend({
 
         }
         
-
         if(highlight !== undefined){
             $("#header li").each(function(index, elem){
                 //console.log("attribute: " + this.id);
@@ -468,7 +477,7 @@ var DateaRouter = Backbone.Router.extend({
             });   
 
         }
-
+        
     }   
 });
 
@@ -484,11 +493,13 @@ function init_main () {
 	
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
-                    'LoginView', 
+                    'LoginView',
+                    'RegisterView', 
                     'ProfileView',
                     'ProfileEditView',
                     'NavBarView',
                     'NavBarDateoView', 
+                    'NavBarWelcomeView',
                     'HomeView', 
                     'ActionsView',
                     'ActionView',
