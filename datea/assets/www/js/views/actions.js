@@ -41,7 +41,7 @@ var ActionsView = Backbone.View.extend({
         
         var get_location_first = false;
 
-         if(this.options.search_term !== undefined && this.options.search_term !== '-'){
+  		if(this.options.search_term !== undefined && this.options.search_term !== '-'){
             //console.log("search term: " + this.options.search_term); 
             this.params.q = this.options.search_term;  
         }
@@ -102,8 +102,6 @@ var ActionsView = Backbone.View.extend({
             }
         }
         
-        //console.log("ACTION FETCH PARAMS: "+JSON.stringify(this.params)+",  SELECTED_MODE: "+this.selected_mode+",  USER_FOLLOWS_ACTIONS: "+this.user_follows_actions);
-        
         if(get_location_first){
         	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
         }else{
@@ -137,9 +135,6 @@ var ActionsView = Backbone.View.extend({
     	var self = this;
         this.model.fetch({
             data: self.params,
-            success: function(mdl, response){
-                //console.log('action models fetched');
-            },
             error: function() {
             	onOffline();
             }
@@ -168,9 +163,14 @@ var ActionsView = Backbone.View.extend({
     	
     	if (this.model.size() > 0) {
     		
-    		if (!this.user_follows_actions) {
+    		if (this.selected_mode == 'my_actions' && !this.user_follows_actions) {
     			$list_title.html('Inciativas cercanas a tu zona').removeClass('hide');
     			$list_intro.removeClass('hide');
+    		}else if (this.selected_mode == 'all_actions') {
+    			var title = this.model.size()+" resultado";
+    			if (this.model.size() != 1) title = title+'s';
+    			$list_title.html(title).removeClass('hide');
+    			$list_intro.addClass('hide');	
     		}else{
     			$list_title.addClass('hide');
     			$list_intro.addClass('hide');

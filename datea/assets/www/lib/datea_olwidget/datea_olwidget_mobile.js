@@ -343,10 +343,19 @@ olwidget.BaseVectorLayer = OpenLayers.Class(OpenLayers.Layer.Vector, {
     	}
         
     	if (this.deviceCenter) {
-    		this.map.panTo(this.deviceCenter.transform(
-		        		this.map.displayProjection,
-		                this.map.getProjectionObject()
-		              ));
+    		
+    		var lonlat = this.deviceCenter.transform(
+			        		this.map.displayProjection,
+			                this.map.getProjectionObject()
+			              );
+			var point = new OpenLayers.Geometry.Point(lonlat.lon, lonlat.lat);
+    		
+    		if (this.boundaryPolygon && !this.boundaryPolygon.geometry.containsPoint(point)) {
+    			this.map.zoomToExtent(this.boundaryPolygon.geometry.getBounds());
+				this.map.zoomTo(Math.min(this.map.getZoom(), this.map.opts.zoomToDataExtentMin));
+				return;	
+    		}
+    		this.map.panTo(lonlat);
 		    this.map.zoomTo(this.deviceZoom);
     	
     	} else if (this.features.length > 0) {
@@ -851,11 +860,11 @@ olwidget.EditableLayer = OpenLayers.Class(olwidget.BaseVectorLayer, {
 			this.alert_popup = new OpenLayers.Popup.FramedCloud("Aviso",
                     	event.feature.geometry.getBounds().getCenterLonLat(),
                         null,
-                        gettext('Outside of active zone!'),
+                        gettext('Fuera de la zona permitida!'),
                         null, false);
 			this.map.addPopup(this.alert_popup);
 			
-			this.mapModel.set(this.mapModelField, null, {silent: true});
+			this.Model.set(this.ModelField, null, {silent: true});
 			this.destroyFeatures();
 			return false; 
 		}

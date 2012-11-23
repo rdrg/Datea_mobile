@@ -6,58 +6,6 @@ Backbone.View.prototype.close = function () {
     this.unbind();
 };
 
-Backbone.View.prototype.eventAggregator = _.extend({}, Backbone.Events);
-Backbone.View.prototype.eventAggregator.on("footer:hide", function(){
-    $("#footer").fadeOut("fast");
-});
-
-Backbone.View.prototype.scroll = function(elem){
-	
-	this.$el.addClass('scroll-container');
-	
-	if (typeof(elem) == 'undefined') elem = 'main';
-	
-    this.scroller = new iScroll( elem,{
-        hScroll : false,
-        fixedScrollbar: false,
-        hideScrollbar: false,
-        useTransform: false,
-        zoom: false,
-        //checkDOMChanges: false,
-        //bounce: false,
-        onBeforeScrollStart: function (e) {
-            var target = e.target;
-            while (target.nodeType != 1) target = target.parentNode;
-
-            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-                e.preventDefault();
-        }
-    });
-    
-    var self = this;
-    $('img', this.$el).load(function(){
-    	setTimeout(function(){
-    		self.scroller.refresh();
-    	},0);
-    });
-};
-
-
-Backbone.View.prototype.scroll_refresh = function () {
-	
-	var self = this;
-	setTimeout(function(){
-		self.scroller.refresh();
-		var $img = $('img', this.$el);
-		$img.unbind('load');
-		$img.load(function(){
-			setTimeout(function(){
-				self.scroller.refresh();
-			}, 0);
-		});
-	}, 0);
-}
-
 
 var DateaRouter = Backbone.Router.extend({
      
@@ -79,6 +27,8 @@ var DateaRouter = Backbone.Router.extend({
         "mapeo/:mapid/dateos/:reportid":"mapItemDetail",
     	"history": "openHistory",
 	},
+	
+	/******************** ROUTER CORE FUNCTIONS *****************************/
 	
     showView: function(selector, view) {
         //console.log("view name: " + view.constructor.toString());
@@ -107,6 +57,9 @@ var DateaRouter = Backbone.Router.extend({
 		$.support.cors = true;
         var self = this;
     },
+    
+    
+    /******************** ROUTE FUNCTIONS **************************/
 
     home: function() {
     	//console.log("enter home"); 
@@ -191,6 +144,13 @@ var DateaRouter = Backbone.Router.extend({
         		user_model: localUser,
                 selected_mode : 'my_actions'                        
     	 	});
+        }else{
+        	this.actionListView.selected_mode = 'my_actions';
+        	$.extend(this.actionListView.options, {
+        		search_term: '-',
+        		category_filter: '-',
+        		order_by: '-',
+        	});
         }
         this.actionListView.params_to_default();
     	this.showView('#main', this.actionListView);
@@ -372,8 +332,8 @@ var DateaRouter = Backbone.Router.extend({
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
-    	if (!this.searchResultView) {
-        	this.searchResultView = new ActionsView({
+    	if (!this.actionListView) {
+        	this.actionListView = new ActionsView({
                 model: this.actionCollection,
 				user_model: localUser,
                 selected_mode : 'all_actions',
@@ -382,18 +342,22 @@ var DateaRouter = Backbone.Router.extend({
                 order_by: order                    
     	 	});
         }else{
-            this.searchResultView.options.selected_mode = 'all_actions';
-            this.searchResultView.options.search_term = term;
-            this.searchResultView.options.category_filter = cat;
-            this.searchResultView.options.order_by = order;
-            this.searchResultView.page = 0;
-
+            this.actionListView.selected_mode = 'all_actions';
+            this.actionListView.page = 0;
+            $.extend(this.actionListView.options, {
+        		search_term: term,
+        		category_filter: cat,
+        		order_by: order,
+        	});
         }
-    	this.showView('#main', this.searchResultView);
-    	this.searchResultView.search_models();
+    	this.showView('#main', this.actionListView);
+    	this.actionListView.search_models();
        	this.renderNavigation('general', 'ftr_actions');
        	this.renderHeader('actions', 'nav_srch');
     },
+    
+    
+    /***********************  NAVIGATION AND HEADER FUNCTIONS ***********************/
 
     renderNavigation: function(mode, highlight, action_id){
         switch(mode){
@@ -513,7 +477,6 @@ function init_main () {
                     'MapItemListView',
                     'CreateMapItemView',
                     'CreateMapItemOne',
-                    'CreateMapItemTwo',
                     'CreateMapItemThree',
                     'CreateMapItemFour',
                     'MappingMapView',
@@ -532,6 +495,9 @@ function init_main () {
                     'SearchFormView'
                     ],
 	function () {
+		
+		init_autosize();
+		
         Backbone.Tastypie.prependDomain = api_url;       
         window.localSession = new Session();
         window.localUser = new User();
@@ -610,12 +576,54 @@ function onDeviceReady() {
 	document.addEventListener("menubutton", onMenuDown, false);
     //document.addEventListener("offline", onOffline, false);
     document.addEventListener("backbutton", onBackKeyPress, false);
-    //init_main();
+    document.addEventListener("hidekeyboard", onKBHide, false);
+    document.addEventListener("showkeyboard", onKBShow, false);
 }
 
-function onMenuDown() {
-	$('#footer').toggle();
+function onKBHide() {
+	if (footer_was_visible) showFooter('show');
 }
+
+function onKBShow() {
+	footer_was_visible = footer_visible;
+	showFooter('hide');
+}
+
+footer_visible = true;
+footer_was_visible = true;
+function onMenuDown() {
+	showFooter('toggle');
+}
+
+function showFooter(mode) {
+	
+	switch(mode) {
+		case 'show':
+			footer_visible = true;
+			$('#footer').slideDown('fast');
+			break;
+		case 'hide':
+			footer_visible = false;
+			$('#footer').hide();
+			break;
+		case 'toggle':
+			if (footer_visible) {
+				showFooter('hide');
+			}else{
+				showFooter('show');
+			}
+			break;
+	}
+}
+
+function init_autosize() {
+	$(document).on('focus', 'textarea',{},function(){
+		if (!$(this).hasClass('autosized')) {
+			$(this).addClass('autosized').autosize();
+		}
+	});
+}
+
 
 function onBackKeyPress() {
 	if (typeof(window.backbutton_func) != 'undefined') {

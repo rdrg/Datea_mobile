@@ -88,6 +88,8 @@ var SelectImageOverlayView = Backbone.View.extend({
     },
 
     hideOverlay: function(){
-        $("#overlay").slideUp("fast");
+        $("#overlay").slideUp("fast", function(){
+        	 onKBHide();
+        });
     }
 });

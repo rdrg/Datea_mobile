@@ -3,9 +3,9 @@ var MapItemClusterView = Backbone.View.extend({
 	
 	initialize: function() {
 		this.page = this.options.page || 0;
-		var $cluster_c = $('.cluster-content-view');
-		var c_h = main_h - parseInt($cluster_c.css('margin-top').replace('px','')) - parseInt($cluster_c.css('margin-bottom').replace('px','')) - parseInt($cluster_c.css('padding-top').replace('px','')) - parseInt($cluster_c.css('padding-bottom').replace('px',''));
-		$cluster_c.css('height', c_h+"px");
+		//var $cluster_c = $('.cluster-content-view');
+		//var c_h = main_h - parseInt($cluster_c.css('margin-top').replace('px','')) - parseInt($cluster_c.css('margin-bottom').replace('px','')) - parseInt($cluster_c.css('padding-top').replace('px','')) - parseInt($cluster_c.css('padding-bottom').replace('px',''));
+		//$cluster_c.css('height', c_h+"px");
 		//$cluster_c.css('width', $('#main').css('width'));
 	},
 	
@@ -44,7 +44,7 @@ var MapItemClusterView = Backbone.View.extend({
 		}
 		this.page++;
 		this.render();
-		this.scroll_refresh();
+		if (this.scroller) this.scroll_refresh();
 	},
 	
 	show_prev_item: function(ev) {
@@ -58,7 +58,7 @@ var MapItemClusterView = Backbone.View.extend({
 		
 		this.page--;
 		this.render();
-		this.scroll_refresh();
+		if (this.scroller) this.scroll_refresh();
 	}, 
 	
 });

@@ -1,7 +1,6 @@
 window.LoginView = Backbone.View.extend({
 	events: {
         "submit #login-form": "loginSubmit",
-        "focus input": "typing"
     },
     
 	initialize: function () {
@@ -83,7 +82,4 @@ window.LoginView = Backbone.View.extend({
         });
         return;
     },
-    typing: function(event){
-        this.eventAggregator.trigger("footer:hide");
-    }
 });

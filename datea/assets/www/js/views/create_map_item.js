@@ -10,6 +10,7 @@ var CreateMapItemView = Backbone.View.extend({
         this.has_categories = cats.length > 0;
 
     },
+    
     events: {
         "click #next_button": "stepForward",
         "click #back_button": "stepBackward",     
@@ -78,31 +79,24 @@ var CreateMapItemView = Backbone.View.extend({
 
     nextView: function(){
         //console.log("next view");
-
+		
+		// skew layout for map
+		if (this.step == 2) {
+			this.$el.css('bottom', '0');
+		}else{
+			this.$el.css('bottom', 'auto');
+		}
+		
         if(this.step == 1){
-            //console.log("perform actions for step 1");
             this.stepOneView = new CreateMapItemOne({
                 model: this.model,
                 mappingModel: this.options.mappingModel, 
                 step : this.step,
                 parent_view: this,
             });
-            //console.log("mapping url: " + this.model.get('action'));
             this.$el.find("#create_mapitem_content").html(this.stepOneView.render().el); 
-            //this.step = 2;
-        /*
+
         }else if(this.step == 2){
-            console.log("perform actions for step 2");
-               this.stepTwoView = new CreateMapItemTwo({
-                model: this.model,
-                mappingModel: this.options.mappingModel,
-                step : this.step
-            });
-            this.$("#create_mapitem_content").html(this.stepTwoView.render().el); 
-            this.step = 3;
-        */
-        }else if(this.step == 2){
-            //console.log("perform actions for step 3");
             
             this.locationView = new LocationInputView({
                 model: this.model,
@@ -112,11 +106,8 @@ var CreateMapItemView = Backbone.View.extend({
                 mapCenter: this.options.mappingModel.get('center'),
                 mapBoundary: this.options.mappingModel.get('boundary')
             });
-            //$("#main").html(this.locationView.render().el);
             this.$el.find("#create_mapitem_content").html(this.locationView.render().el); 
             this.locationView.loadMap();
-
-            this.eventAggregator.trigger("footer:hide");
 
             //this.step = 3;
         }else if(this.step == 3){
@@ -134,6 +125,8 @@ var CreateMapItemView = Backbone.View.extend({
       		this.$el.find("#create_mapitem_content").html('');
             this.transferImage();
         }
+        
+        //if (this.step !=2) this.scroll_refresh();
     },
 
      transferImage: function(){

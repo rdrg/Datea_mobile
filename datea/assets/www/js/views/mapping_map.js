@@ -7,7 +7,7 @@
 var MappingMapView = Backbone.View.extend({
     
     initialize: function() {
-    	this.$el.css({height: main_h+"px", overflow: "hidden"});
+    	//this.$el.css({height: main_h+"px", overflow: "hidden"});
     },
     
     events: {
@@ -16,12 +16,9 @@ var MappingMapView = Backbone.View.extend({
 		'click .zoom-to-item': 'zoom_to_item'
 	},
 	
-	manual_scroll: true,
-	
 	events_active: true,
     
     render: function(){
-      //this.eventAggregator.trigger("footer:hide");
       this.map_items = new MapItemCollection(this.model.get('map_items'));
       this.$el.html(this.template());
       this.$el.fadeIn("fast");
@@ -96,6 +93,12 @@ var MappingMapView = Backbone.View.extend({
 			self.back_to_map();
 		}
     },
+    
+   	manual_scroll: true,
+	
+	manual_scroll_refresh: function() {
+		self.item_cluster_view.scroll_refresh();
+	},
     
     back_to_map: function (ev) {
     	if (typeof(ev) != 'undefined') ev.preventDefault();

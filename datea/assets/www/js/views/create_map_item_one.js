@@ -26,7 +26,6 @@ var CreateMapItemOne = Backbone.View.extend({
         "click #image_input": "addImageOverlay",
         "change #description": "setDescription",
         "click input[type=radio]": "selectCategory",
-        "focus #description" : "typing"
     },
 
     render: function(){
@@ -70,15 +69,13 @@ var CreateMapItemOne = Backbone.View.extend({
         		$('#dateo-img-preview', self.$el).attr('src', imageURI);
         	}
         });
+        
+        // hide footer menu, but remember if it was hidden
+        onKBShow();
         $("#overlay").html(this.imageOverlay.render().el);
-        this.eventAggregator.trigger("footer:hide");
-        $("#overlay").slideDown("normal", function(){
+        $("#overlay").slideDown(300, function(){
         	self.imageOverlay.is_active = true;
         });
     },
-
-    typing: function(event){
-        this.eventAggregator.trigger("footer:hide");
-        $("#description").autosize();
-    }
+	
 });
