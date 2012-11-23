@@ -589,6 +589,13 @@ footer_visible = true;
 footer_was_visible = true;
 function onMenuDown() {
 	showFooter('toggle');
+	if (!dateaApp.currentView.manual_scroll) {
+		dateaApp.currentView.scroll_refresh();
+	}else{
+		if (dateaApp.currentView.manual_scroll_refresh) {
+			dateaApp.currentView.manual_scroll_refresh();
+		}
+	}
 }
 
 function showFooter(mode) {
@@ -597,11 +604,11 @@ function showFooter(mode) {
 		case 'show':
 			footer_visible = true;
 			$('#footer').slideDown('fast', function(){
-				$(body).addClass('with-footer');
+				$('body').addClass('with-footer');
 			});
 			break;
 		case 'hide':
-			$(body).removeClass('with-footer');
+			$('body').removeClass('with-footer');
 			footer_visible = false;
 			$('#footer').hide();
 			break;

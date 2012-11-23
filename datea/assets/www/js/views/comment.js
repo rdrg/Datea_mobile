@@ -1,4 +1,7 @@
 var CommentView = Backbone.View.extend({
+	
+	className: 'comment',
+	
     render: function(){
         var context = this.model.toJSON();
         context.created = utils.formatDateFromISO(context.created, "dd/mm/yyyy - H:MM");

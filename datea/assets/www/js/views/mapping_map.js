@@ -97,7 +97,7 @@ var MappingMapView = Backbone.View.extend({
    	manual_scroll: true,
 	
 	manual_scroll_refresh: function() {
-		self.item_cluster_view.scroll_refresh();
+		if (self.item_cluster_view) self.item_cluster_view.scroll_refresh();
 	},
     
     back_to_map: function (ev) {
@@ -105,6 +105,7 @@ var MappingMapView = Backbone.View.extend({
     	window.backbutton_func = undefined;
     	if (!this.check_events_active()) return;
     	this.item_cluster_view.close();
+    	this.item_cluster_view = undefined;
     	var self = this;
     	this.$el.find('.cluster-content-view').fadeOut("normal", function(){
     		self.events_active = true;

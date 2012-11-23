@@ -37,6 +37,7 @@ var MapItemDetailView = Backbone.View.extend({
 			object_id: this.model.get('id'),
 			callback: function () {
 				self.model.set({comment_count: (self.model.get('comment_count') + 1)});
+				self.options.parentView.scroll_refresh();
 			}
 		});
 		this.comment_view.render();

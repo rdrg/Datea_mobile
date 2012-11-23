@@ -48,15 +48,16 @@ var CommentListView = Backbone.View.extend({
 		var self = this;
 		comment.save({},{
 			'success': function(model, response) {
-				self.add_comment(model);
 				self.$el.find('.submit-comment').removeAttr('disabled');
 				localUser.attributes.profile.comment_count = localUser.get('profile').comment_count + 1;
-				this.is_active = true;
+				self.is_active = true;
+				self.$el.find('textarea').val('');
+				self.add_comment(model);
 			},
 			'error': function(error) {
 				// redirect to login
 				onOffline();
-				this.is_active = true;
+				self.is_active = true;
 			}
 		});
     },
@@ -68,8 +69,10 @@ var CommentListView = Backbone.View.extend({
   		new_comment.render();
   		new_comment.$el.hide();
   		$com_list.append(new_comment.el);
-  		new_comment.$el.slideDown('normal');
-  		if (this.options.callback) this.options.callback(model);
+  		var self = this;
+  		new_comment.$el.slideDown('normal', function(){
+  			  if (self.options.callback) self.options.callback(model);
+  		});
 	}
     
 });

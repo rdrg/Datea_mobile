@@ -1,12 +1,15 @@
 .comment-list{
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  
+  .comment:last-child {
+    border-bottom: 0;
+  }
 }
 .comment{
-  padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: 1px solid #CCC;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 5px;
+  padding: 5px 12px;
   .comment-head{
     margin-bottom: 5px;
     .user{
@@ -14,7 +17,8 @@
       margin-right: 8px;
     }
     .date{
-      font-size: 12px;
+      font-size: 11px;
+      color: #aaa;
     }
   }
   .comment-content{
@@ -22,5 +26,21 @@
     .comment-text{
       line-height: 15px;
     }
+  }
+}
+
+.comment-form{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  
+  #comment-input{
+    -webkit-box-sizing: border-box;
+    width: 99%;
+    height: 63px;
+    margin-bottom: 20px;
+  }
+  button{
+    width: 100%;
   }
 }
