@@ -238,9 +238,9 @@ var CreateMapItemView = Backbone.View.extend({
                 },
                 error: function(error){
                 	//console.log(JSON.stringify(error));
-                    alert('Error de conexión. Revisa tu conexión e intenta nuevamente.');
-		            this.step = 3;
-		            this.render();
+                    onOffline();
+		            self.step = 3;
+		            self.render();
                 }
             });          
         },

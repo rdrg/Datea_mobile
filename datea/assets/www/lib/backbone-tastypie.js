@@ -35,7 +35,11 @@
 				'Authorization': 'ApiKey ' + localSession.get('username') + ':' + localSession.get('token')
 			}, options.headers );
 			options.headers = headers;
+			//if (!options.data) options.data = {};
+			//options.data['username'] = localSession.get('username');
+			//options.data['api_key'] = localSession.get('token');
 		}
+		//console.log(options);
 		
 		return Backbone.oldSync( method, model, options );
 	};

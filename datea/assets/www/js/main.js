@@ -28,7 +28,7 @@ var DateaRouter = Backbone.Router.extend({
     	"history": "openHistory",
 	},
 	
-	/******************** ROUTER CORE FUNCTIONS *****************************/
+	/******************** VIEW FUNCTIONS *****************************/
 	
     showView: function(selector, view) {
         //console.log("view name: " + view.constructor.toString());
@@ -42,22 +42,7 @@ var DateaRouter = Backbone.Router.extend({
  	    	}, 0);
         }
 	    return view;
-	},
-	
-    initialize: function () {
-        $.ajaxSetup({ 
-            beforeSend: function(){
-                $('#spinner').fadeIn("fast");
-            },
-            complete: function(){
-                $('#spinner').fadeOut("fast");
-            },
-            crossDomain:true 
-        });
-		$.support.cors = true;
-        var self = this;
-    },
-    
+	},    
     
     /******************** ROUTE FUNCTIONS **************************/
 
@@ -498,6 +483,17 @@ function init_main () {
 		
 		init_autosize();
 		
+		$.ajaxSetup({ 
+            beforeSend: function(){
+                $('#spinner').fadeIn("fast");
+            },
+            complete: function(){
+                $('#spinner').fadeOut("fast");
+            },
+            crossDomain:true 
+        });
+		$.support.cors = true;
+		
         Backbone.Tastypie.prependDomain = api_url;       
         window.localSession = new Session();
         window.localUser = new User();
@@ -600,9 +596,12 @@ function showFooter(mode) {
 	switch(mode) {
 		case 'show':
 			footer_visible = true;
-			$('#footer').slideDown('fast');
+			$('#footer').slideDown('fast', function(){
+				$(body).addClass('with-footer');
+			});
 			break;
 		case 'hide':
+			$(body).removeClass('with-footer');
 			footer_visible = false;
 			$('#footer').hide();
 			break;
@@ -655,6 +654,7 @@ function onOffline(close){
 	 }else{
 	 	alert(error);
 	 }
+	 $('#spinner').fadeOut("fast");
 }
 
 function offLineAlertDismissed() {

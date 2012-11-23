@@ -202,8 +202,6 @@ var ActionsView = Backbone.View.extend({
                 
         var add_pager = false;
 
-        //if (this.model.meta.total_count > this.model.meta.limit + this.model.meta.offset) {
-        //console.log("HAS NEXT: " + JSON.stringify(this.model.meta));
         if(this.model.meta.next){
             add_pager = true; 
         }

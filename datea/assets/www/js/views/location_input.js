@@ -120,7 +120,8 @@ window.LocationInputView = Backbone.View.extend({
 		
 		this.map = new Datea.olwidget.Map("location-input-map", [this.inputLayer], mapOptions);
 		this.inputLayer.initCenter();
-		this.inputLayer.setEditOn(); 
+		this.inputLayer.setEditOn();
+		var self = this;
     },
     
     show_current_location: function (ev) {
