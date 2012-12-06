@@ -1,0 +1,122 @@
+.gradient_white{
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #ffffff 67%, #ededed 90%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(67%,#ffffff), color-stop(90%,#ededed)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#ffffff 67%,#ededed 90%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+}
+
+#footer{
+  background-color: @gray-bg;
+  -webkit-box-shadow: 0px -4px 15px 0px #bbb;
+  .fillWidth;
+  //display: none;
+  position: absolute;
+  bottom: 0px;
+  text-align: center;
+  z-index: 100;
+}
+
+#footer > .navbar-inner{
+  .gradient_white;
+  .rght;
+  width: 100%;
+  padding: 0px;
+}
+
+.ftr_common{
+  //background-color: @gray-bg;
+  width: 33.3%;
+  &:active, &.active{
+    background-color: @datea;
+  }
+  a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+    border-right: 1px solid @w;
+    
+  }
+  &:last-child {
+    a {
+      border-right: 0;
+    }
+  }
+}
+
+#ftr_history{
+  .left;
+  margin-left: 33.3%;
+}
+#ftr_actions{
+  .left;
+  margin-left: -66.6%;
+}
+
+#ftr_profile{
+  .left;
+}
+
+
+/// 
+.ftr-dateo-btn {
+  //background-color: @gray-bg;
+  .left;
+  width: 25%;
+  a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-right: 1px solid @w;
+    display: block;
+  }
+  &:last-child a {
+     border-right: 0;
+  }
+  &:active, &.active {
+    background-color: @datea;
+  }
+}
+
+
+
+#footer .btn {
+  background-image: none;
+  border: none;
+  color: @gray-dark;
+}
+
+#login_btn_footer, #signup_btn_footer {
+  background-color: @gray-bg;
+  &:active {
+    background-color: @datea;
+  }
+}
+
+
+@media (max-width: 767px) { 
+  #footer{
+    margin-right: 0px;
+  }
+}
+
+.menu_on{
+    background-color:@datea;
+}
+
+
+#welcome-footer {
+  background-color: white;
+  .clearfix;
+  .help-text { font-size: 11px; margin-top: 3px; color: #aaa}
+  .right-button, .left-button {
+    width: 50%;
+    .left;
+    .inner { padding: 10px;}
+    .btn {
+      width: 100px;
+    }
+  }
+}

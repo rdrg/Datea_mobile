@@ -1,0 +1,64 @@
+.login-container{
+  .datea_container;
+  margin-top: 25px;
+}
+
+#login-form, #register-form{
+  padding: 20px;
+  h1{
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+  p{
+    margin-bottom: 10px;
+    .regular;
+    color: @gray-dark;
+  }
+  input{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    .round(10px);
+    width: 97%;
+    height: 35px;
+  }
+  #pss{
+    margin-bottom: 16px;
+  }
+  #send{
+    margin-right: 29px;
+  }
+  
+  .btn-login, .btn-register {
+  }
+}
+
+@media (min-width: 333px) and (max-width: 767px) { 
+  #login-form{
+    input{
+      //width: 300px;
+    }
+  }
+}
+
+
+@media (max-width: 332px) { 
+  #login-form{
+    #send{
+      margin-right: 59px;
+    }
+    input{
+     // width: 216px;
+    }
+    #register{
+      width: 83px;
+      padding-left: 8px;
+    }
+  }
+}
+
+#register-success {
+  padding: 15px;
+  .btn-holder {
+    margin-top: 20px;
+  }
+}

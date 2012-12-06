@@ -1,0 +1,27 @@
+<div id="wrapper">
+	<div class="map-item-cluster">
+		<div class="item-pager">
+			<div class="prev">
+				<% if (page <= 0) { %>
+					<button class="back-to-map datea_btn_gry">x</button>
+				<% } else { %>
+					<button class="prev-item datea_btn_gry"> &lt; </button>
+				<% } %>
+			</div>
+			<% if (total_items > 1) { %>
+				
+				<div class="next">
+					<% if (page < total_items-1) { %>
+						<button class="next-item datea_btn_gry"> &gt; </button>
+					<% }else{ %>
+						<button class="back-to-map datea_btn_gry">x</button>
+					<% } %>
+				</div>
+				
+				<div class="counter"><%= page+1 %> de <%= total_items %></div>
+				
+			<% } %>
+		</div>
+		<div class="current-item-content"></div>
+	</div>
+</div>

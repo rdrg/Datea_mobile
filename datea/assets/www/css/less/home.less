@@ -1,31 +1,17 @@
-#header{
-    background-image: url('../img/home/header_bg.png');
-    background-repeat: repeat-x;
-    //.wh(100%,95px);
-    margin-bottom: 0px;
-}
 #home_header{
     .center;
     .wh(300px,95px);
 }
-#home_msg{
-    background-image: url('../img/home/message_bg.png');
-    .wh(100%,73px);
-    color:@w;
-}
 
 #h_title{
-    margin-left: 20px;
-    margin-right: 20px;
-    padding-top: 8px;
+    padding-top: 15px;
     text-align: center;
 }
 
 #h_sub{
-    margin-right: 20px;
-    margin-left: 27px;
-    margin-top: 11px;
-    line-height: 12px;
+  margin-top: 11px;
+  line-height: 12px;
+  text-align: center;
 }
 
 .home_bubble{
@@ -46,19 +32,139 @@
     padding-right: 20px;
 }
 
-#footer{
-    background-color: @w;
-    -webkit-box-shadow: 0px -6px 20px 0px #ccc;
-    //display: none;
-}
 .log{
     margin-top: 20px;
     margin-left: 20px;
 }
-#login{
-    width: 112px
-}
+
 
 #register{
     width: 130px;
+}
+
+///content btns
+#home_btns{
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  .round(10px);
+}
+
+.btn_container{
+  text-align: center;
+  button {
+    max-width: 280px;
+    min-height: 20px;
+  }
+}
+
+.home_i{
+  display: inline-block;
+  width: 40px;
+  height: 43px;
+  margin-top: 8px;
+  margin-right: 13px;
+  margin-left: 3px;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+}
+.home_btn{
+  padding: 8px;
+  margin-top: 20px;
+  
+  background-image: none;
+  background-color: @w;
+  border: 0px solid #BBB;
+
+  background-repeat: no-repeat;
+  background-position: 14px 7px;
+  white-space: normal;
+  padding-left: 63px;
+  text-align: left;
+}
+
+#login_btn{
+  .home_btn;
+  //.home_btn:hover;
+  box-shadow: 2px 2px 3px #888;
+  -webkit-box-shadow: 2px 2px 3px #888;    
+  background-image: url('../img/icono_registro_off.png');
+  &:active{
+    background-image: url('../img/icono_registro_on.png');
+  }
+}
+
+#explore_btn{
+  .home_btn;
+  background-image: url('../img/icono_apoya_off.png');
+  cursor: default;
+  &:active{
+    box-shadow: none;
+  }
+  /*&:hover{
+    background-image: url('../img/icono_apoya_on.png');
+  }*/
+}
+
+#participate_btn{
+  .home_btn;
+  background-image: url('../img/icono_participa_off.png');
+  cursor: default;
+  &:active{
+    box-shadow: none;
+  }
+  /*&:hover{
+    background-image: url('../img/icono_participa_on.png');
+  }*/
+}
+
+
+///responsive stuff
+
+.fillWidth{
+ // margin-left: -20px;
+  right: 0px;
+  left: 0px;
+  display: block; 
+}
+
+#home_msg{
+  margin-top: 40px;
+  background-image: url('../img/home/message_bg.png');
+  height: 73px;
+  color: @w;
+  position: static;
+  text-align: center;
+  .fillWidth;   
+}
+
+
+@media (min-width: 333px) and (max-width: 767px) { 
+  #home_msg{
+    margin-right: -20px;
+    margin-left: -20px;
+    right: 0px;
+    left: 0px;
+    position: static;
+  }
+  #login_btn{
+    height: 57px;
+    width: 355px;
+  }
+  #explore_btn{
+   height: 57px;
+    width: 355px; 
+  }
+  #participate_btn{
+    height: 57px;
+    width: 355px;
+  }
+}
+
+@media (max-width: 332px) { 
+  #home_msg{
+    margin-right: -22px;
+    margin-left: -22px;
+    //margin-top: -20px;
+  }
 }

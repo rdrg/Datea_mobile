@@ -1,17 +1,97 @@
 @import "variables.less";
 @import "home.less";
+@import "header.less";
+@import "footer.less";
+@import "login.less";
+@import "profile.less";
+@import "profileEdit.less";
+@import "actions.less";
+@import "action.less";
+@import "maps.less";
+@import "createMapItem.less";
+@import "map_item.less";
+@import "widgets.less";
+@import "history.less";
+@import "commentList.less";
+@import "search.less";
 
 body{
-  //font-family: "Helvetica Neue,​Helvetica,​Arial,​sans-serif";
-  background-image: url('../img/bg.png');
+  color: @gray;
+  padding: 0px;
+  -webkit-user-select: none;
+  -webkit-text-size-adjust: none;
+  font-family: helvetica;
 }
 
-#content{
-    //width: 100%;
-   // margin:0px;
-   // padding: 20px;
-    
+h1{
+  color: #999;
+  font-size: 30px;
+  margin-bottom: 0px;
 }
+
+h2{
+  color: #999;
+  font-size: 25px;
+}
+
+h3{
+  color: #666;
+  font-size: 15px;
+}
+
+h4{
+  color: #666;
+  font-size: 12px;
+}
+
+a{
+  color: @gray;
+}
+
+a:hover{
+  color: @gray-dark;
+  text-decoration: none;
+}
+
+#app{
+  width: 100%;
+  height: 100%;
+}
+
+#main{
+  position: absolute;
+  top: 48px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+ // overflow: auto;
+  background-image: url('../img/bg.png');
+  overflow: auto;
+}
+
+#wrapper{
+  //height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.with-footer #wrapper {
+   padding-bottom: 65px;
+}
+
+.container{
+  width: 91%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.scroll-container {
+  right: 0;
+  //bottom: 0;
+  //overflow: auto;
+}
+
 
 .title{
     .big;
@@ -27,3 +107,24 @@ body{
   float:none;
   //background-color: blue;
 }
+
+//spinner
+#spinner{
+  position: absolute;
+  display: none;
+  top:48px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 9999;
+  background-color: rgba(185, 185, 185, 0.34);
+  background-image: url('../img/spinner.gif');
+  background-repeat: no-repeat;
+  background-position: 50% 46%;
+}
+
+.load-more-items {
+    margin: 20px 0;
+    text-align: center;
+}
+

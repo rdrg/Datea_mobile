@@ -1,5 +1,29 @@
-<h1>Actions</h1>
-<% _.each(actions, function(action) { %>
-    <img src="/<%= action.image %>" />
-    <p><a href="#action/<%= action.id %>"> <%= action.name %></a></p>
-<% }) %>
+<div id="wrapper">
+		
+	<div id="actions-list-intro" class="actions-intro hide">
+		<p class="intro-title">Aún no sigues iniciativas.</p>
+		<div id="actions_search">
+			<a href="#search">
+				1. Encuentra iniciativas en la busqueda
+			</a>
+		</div>
+		<div id="actions_follow">
+			2. Siguelas y participa en ellas 
+		</div>
+	</div>
+	
+    <div id="actions_container" class="hide">
+    	<div id="actions-list-title" class="hide"></div>
+        <div id="action_list"></div>
+    </div>
+    
+    <div class="load-more-items hide">
+        <button type="button" class="btn btn-large load-more-results datea_btn">Ver más resultados</button>
+    </div>
+    
+    <div class="search-actions hide">
+    	<a class="list-search-button" href="#search">buscar iniciativas</a>
+    </div>      
+</div>
+
+

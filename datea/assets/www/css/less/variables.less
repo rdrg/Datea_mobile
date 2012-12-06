@@ -1,5 +1,12 @@
 //colors
 @w: #FFFFFF;
+@datea: #ECFF00;
+@datea-dark: #D2E303;
+@yellow-btn: #EDFF00;
+@gray: #666666;
+@gray-bg: #E3E3DD;
+@gray-dark: #4D4D4D;
+@green: #28bc45;
 
 ////dimension
 .wh(@w, @h){
@@ -25,22 +32,230 @@
 
 ///// fonts
 .big{
-    font-size: 26px;
+  font-size: 26px;
 }
 
 .medium{
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .regular{
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .bold{
-    font-weight: bold;
+  font-weight: bold;
+}
+
+.black{
+  color: #000000;
 }
 
 ///misc
 .round(@p){
     border-radius: @p;
 }
+.container_shadow{
+    -webkit-box-shadow: 2px 3px 2px -1px #CCC;
+}
+
+.gradient_gray{
+  background: #4c4c4c; /* Old browsers */
+  background: -moz-linear-gradient(top,  #4c4c4c 0%, #4c4c4c 53%, #1d1d1b 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4c4c4c), color-stop(53%,#4c4c4c), color-stop(100%,#1d1d1b)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #4c4c4c 0%,#4c4c4c 53%,#1d1d1b 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #4c4c4c 0%,#4c4c4c 53%,#1d1d1b 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #4c4c4c 0%,#4c4c4c 53%,#1d1d1b 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #4c4c4c 0%,#4c4c4c 53%,#1d1d1b 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#1d1d1b',GradientType=0 ); /* IE6-9 */
+}
+
+//container
+.datea_container{
+  background-color: @w;
+  margin: 13px 13px 13px 13px;
+  .round(10px);
+  .container_shadow;
+}
+
+//select
+.datea_select{
+  -webkit-appearance: button;
+  -webkit-border-radius: 5px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-padding-end: 20px;
+  -webkit-padding-start: 2px;
+  -webkit-user-select: none;
+  padding-bottom: 1px;
+  padding-top: 0px;
+  padding-left: 10px;
+  height: 33px;
+  font-weight: bold;
+  background-image: url('../img/flecha2.png');
+  background-repeat: no-repeat;
+  background-position: 95% 11px; 
+}
+
+//buttons
+.datea_btn{
+    background-image: none;
+    border: none;
+    -webkit-box-shadow: 0px 0px 2px 1px #aaa;
+    box-shadow: 0px 0px 2px 1px #aaa;
+    color: @gray-dark;
+    //.bold;
+    //height: 40px;
+    
+}
+.datea_btn_yllw{
+    .datea_btn;
+    background-color: @datea;
+    &:active{
+        background-color: @gray-bg;
+        color: @gray-dark;
+    }
+}
+
+.datea_btn_gry{
+    .datea_btn;
+    background-color: @gray-bg;
+    &:active{
+      background-color: @datea;
+    }
+}
+
+.datea_btn_big{
+  padding-top: 9px;
+  width: 197px;
+  height: 30px;
+  margin-bottom: 15px;
+  background-image: url('../img/flecha1.png');
+  background-repeat: no-repeat;
+  background-position: 204px 11px;
+}
+
+.clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// Border Radius
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+// Drop shadows
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow;
+     -moz-box-shadow: @shadow;
+          box-shadow: @shadow;
+}
+
+
+.btn-arrow {
+  position: relative;
+  display: inline-block;
+  padding: 0px 7px;
+  height: 30px;
+  line-height: 30px;
+ 
+  font-weight: normal;
+  
+  background-color: #e2e2dd;
+  color: black;
+  cursor: pointer;
+  
+  &.btn-uppercase {
+    text-transform: uppercase;
+  }
+  
+  .pointer {
+    position: absolute;
+    top: 0px;
+    width: 15px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+  }
+ 
+  // Active state
+  &.active,&:active {
+      background-color: @datea;
+      background-image: none;
+      outline: 0;
+  }
+}
+
+.btn-arrow-right {
+    .btn-arrow;
+    margin-right: 15px;
+    .pointer {
+        right: -15px;
+        background: url(../img/boton_flecha_large_derecha.png) no-repeat -8px -7px;
+    }
+    &.active, &:active {
+      .pointer {
+         background: url(../img/boton_flecha_large_derecha.png) no-repeat -31px -7px;
+      }
+    }
+}
+
+.btn-arrow-left {
+    .btn-arrow;
+    margin-left: 14px;
+    .pointer {
+        left: -14px;
+        background: url(../img/boton_flecha_large_izquierda.png) no-repeat -69px center;
+    }
+    &.active, &:active {
+      .pointer {
+         background: url(../img/boton_flecha_large_izquierda.png) no-repeat -46px center;
+      }
+    }
+}
+
+
+.img-input-container {
+  .round(10px);
+  background: #e2e2dd url(../img/camera-icon.png) no-repeat center 40%;
+  position: relative;
+  display: block;
+  min-height: 130px;
+  height: auto;
+  z-index: 1;
+  
+  .img-preview {
+    position: relative;
+    padding:10px;
+    z-index: 3;
+    height: auto;
+    img {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+  }
+  .help-text {
+    z-index: 1;
+    position: absolute;
+    bottom: 20%;
+    text-align: center;
+    left: 10px;
+    right: 10px;
+    color: #999;
+  }
+  .has-image {
+    &.help-text {display: none;}
+  }
+  
+}
+

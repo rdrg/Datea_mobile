@@ -10,8 +10,7 @@ var ProfileView = Backbone.View.extend({
     	if (!mdl.username) {
     		return this;
     	}
-    	
     	this.$el.html(this.template(mdl));
         return this;
-    }
+    },
 });

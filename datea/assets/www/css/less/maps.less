@@ -1,0 +1,78 @@
+.map-view {
+	position: absolute;
+	left: 0;	
+	right: 0;
+	top: 0;
+	z-index: 0;
+	height: 100%;
+  .map-controls {
+      position: absolute;
+      top: 15px;
+      right: 5px;
+      z-index: 1000;
+  } 
+}
+
+
+.map-canvas {
+	position: absolute;
+	left: 0; right: 0; bottom: 0; top: 0;
+	
+	background-color: #ccc;
+	img { max-width: none; }
+	.olControlAttribution {
+		position: absolute;
+		right: 3px;
+		bottom: 0px;
+		font-size: 10px;
+	}
+	.olControlZoom{
+		top: 25px;
+	}
+	.olControlZoomIn, .olControlZoomOut {
+		background-color: #999;
+		&:active {
+			background-color: #666;
+		}
+	}
+}
+
+.with-footer .map-canvas {
+  bottom: 65px;
+}
+
+#createReport_container .map-canvas {
+  bottom: 65px;
+}
+
+.with-footer #createReport_container .map-canvas {
+  bottom: 130px;
+}
+
+
+#location-input-view { 
+	bottom: 0px; 
+  top: 66px;
+  position: absolute;
+  //min-height: 334px;
+  width: 100%;
+}
+
+#mapping-map{
+	//min-height: 500px;
+  width: 100%;
+}
+
+.crosshair {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  line-height: 19px;
+  vertical-align: text-top;
+  background: url(../img/mira.png) no-repeat left top;
+  opacity: 0.5;
+}
+
+#content {
+	min-height: 500px;
+}

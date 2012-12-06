@@ -1,0 +1,77 @@
+.follow-widget {
+	
+	cursor: pointer;
+	
+	.widget-icon {
+		width: 35px;
+		display: block;
+		float: left;
+		height: 37px;
+		background: url(../img/seguir_large.png) no-repeat 0px 0px;
+		margin-right: 10px;
+	}
+	
+	.widget-text {
+		line-height: 15px;
+		.widget-counter {
+			
+		}
+		.widget-label {
+			font-size: 12px;
+		}
+	}
+	
+	&.active {
+		.widget-icon {
+			background: url(../img/seguir_large.png) no-repeat -35px 0px;
+		}
+	}
+}
+
+
+.vote-widget, .comment-widget {
+	cursor: pointer;
+	height: 50px;
+	background-color: white;
+	.border-radius(6px);
+	.box-shadow(0px 0px 5px rgba(0,0,0,.30));
+	
+	width: 65px;
+	padding:8px;
+	
+	.widget-top {
+		.widget-icon {
+			float: left;
+			display:block;
+			width: 39px;
+			height: 42px;
+		}
+		.widget-counter {
+			float:right;
+			margin-top:3px;
+			display:block;
+			font-size: 16px;
+			font-weight: 100;
+		}
+	}
+	.widget-label {
+		.clearfix();
+		font-size: 10px;
+		line-height: 12px;
+	}
+	&.active {
+		background-color: @datea;
+	}
+}
+
+.vote-widget {
+	.widget-icon {
+		background:url(../img/icono_apoya_off.png) no-repeat center center;
+	}
+}
+
+.comment-widget {
+	.widget-icon {
+		background:url(../img/icono_comentarios_off.png) no-repeat center center;
+	}
+}

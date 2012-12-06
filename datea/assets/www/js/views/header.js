@@ -6,10 +6,8 @@ window.HeaderView = Backbone.View.extend({
             // FIXME: NOT PROUD
             if (localSession.get('logged')) {
                     var userid = localSession.get('userid');
-                    console.log("loged header");
                     return this;
             }else{
-                console.log("not logged header");
                 this.$el.html(this.tempate());
             }
 
