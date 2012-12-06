@@ -278,6 +278,7 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
      */  
     openMapItems: function (evt) {
     	var feature = evt.feature;
+    	this.selectedFeature = evt.feature;
     	var models = []; 
     	if (feature.cluster) {
     		for (var i = 0; i < feature.cluster.length; i++) {
@@ -289,7 +290,16 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
     		models.push(feature.layer.mapItems.get(id));
     	}
     	if (this.showItemsCallback) this.showItemsCallback(new MapItemCollection(models), this.mappingView);
+    	this.selectControl.unselect(this.selectedFeature);
     },
+    
+    clearSelected: function () {
+    	if (typeof(this.selectedFeature) != 'undefined') {
+    		this.selectControl.unselect(this.selectedFeature);
+    		this.selectedFeature = undefined;
+    	}
+    },
+    
     CLASS_NAME: "olwidget.Map"
 });
 

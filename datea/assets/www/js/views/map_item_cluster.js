@@ -29,7 +29,7 @@ var MapItemClusterView = Backbone.View.extend({
 		var self = this;
 		setTimeout(function(){
 			self.events_active = true;
-		}, 500);
+		},300);
 		
 		return this;
 	},

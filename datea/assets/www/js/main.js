@@ -74,7 +74,7 @@ var DateaRouter = Backbone.Router.extend({
     login: function () {
         this.loginView = new LoginView({model: localSession});
 		this.showView('#main', this.loginView);
-        this.renderNavigation('none');
+        this.renderNavigation('back');
         this.renderHeader('general');
 	},
 	
@@ -82,7 +82,7 @@ var DateaRouter = Backbone.Router.extend({
         this.registerView = new RegisterView({model: localSession});
         this.showView("#main", this.registerView);
         this.renderHeader('general');
-        this.renderNavigation('none');
+        this.renderNavigation('back');
 	},
 	
 	logout: function () {
@@ -211,7 +211,7 @@ var DateaRouter = Backbone.Router.extend({
     	this.renderHeader('general');
     },
        
-	mappingMap: function(mapid, callback_func) {
+	mappingMap: function(mapid, callback_func, zoom_item_id) {
 		
 		//mapid = 16;
     	
@@ -235,7 +235,7 @@ var DateaRouter = Backbone.Router.extend({
     		this.actionModel.fetch({
     			success: function () {
 					self.showView('#main', self.mappingMapView);
-					self.mappingMapView.loadMap();
+					self.mappingMapView.loadMap(zoom_item_id);
 					if (typeof(callback_func) != 'undefined') callback_func();
 				},
 				error: function(error) {
@@ -244,8 +244,9 @@ var DateaRouter = Backbone.Router.extend({
 			});
 		}else{
 			this.showView('#main', this.mappingMapView);
-
-			this.mappingMapView.loadMap();
+			this.mappingMapView.undelegateEvents();
+			this.mappingMapView.delegateEvents();
+			this.mappingMapView.loadMap(zoom_item_id);
 			if (typeof(callback_func) != 'undefined') callback_func();
 		}
 	    this.renderNavigation('dateo', 'ftr_dateo', mapid);
@@ -253,25 +254,17 @@ var DateaRouter = Backbone.Router.extend({
     },
     
     mapItemDetail: function(mapping_id, item_id) {
-
-    	var self = this;
+		
+		var self = this;
     	this.mappingMap( mapping_id, function(){
     		// find model data in actionModel map items
-    		var item_data = _.find(self.actionModel.get('map_items'), function(item){
+	    	var item_data = _.find(self.actionModel.get('map_items'), function(item){
     			return item.id == item_id;
     		});
-    		var item_model =  new MapItem(item_data);
-    		var clusterCol = new MapItemCollection([item_model]);
-    		if (item_model.get('position') && item_model.get('position').coordinates) {
-    			//self.mappingMapView.zoom_to_item(item_model);
-    			var pos = item_model.get('position').coordinates;
-			    var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};
-			    if (self.mappingMapView.itemLayer) {
-			    	self.mappingMapView.itemLayer.initCenter(locInfo);
-			    }
-    		}
+	    	var item_model =  new MapItem(item_data);
+	    	var clusterCol = new MapItemCollection([item_model]);
     		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
-    	});
+    	}, item_id);
         this.renderNavigation('dateo', 'ftr_dateo', mapping_id);
         this.renderHeader('general');
     },
@@ -358,6 +351,10 @@ var DateaRouter = Backbone.Router.extend({
                 this.navBarView = new NavBarWelcomeView();
                 $('#footer').html(this.navBarView.render().el);
                 break;
+            case 'back':
+            	this.navBarView = new NavBarBackView();
+                $('#footer').html(this.navBarView.render().el);
+                break;
             case 'none':
             	$('#footer').empty();
             	break;
@@ -388,22 +385,18 @@ var DateaRouter = Backbone.Router.extend({
             case 'general':
                 this.headerView = new LoggedInHeaderView();
                 $('#header').html(this.headerView.render().el);
-
                 break;
             case 'actions':
                 this.headerView = new ActionHeaderView();
                 $('#header').html(this.headerView.render().el);
-
                 break;
             case 'loggedout':
                 this.headerView = new LoggedOutHeaderView();
                 $('#header').html(this.headerView.render().el);
-
                 break;
             case 'first':
                 this.headerView = new FirstHeaderView();
                 $('#header').html(this.headerView.render().el);
-
                 break;
             default:
                 this.headerView = new LoggedInHeaderView();
@@ -450,11 +443,11 @@ function init_main () {
                     'NavBarView',
                     'NavBarDateoView', 
                     'NavBarWelcomeView',
+                    'NavBarBackView',
                     'HomeView', 
                     'ActionsView',
                     'ActionView',
                     'ActionItemView',
-                    'FooterView', 
                     'LoggedInHeaderView', 
                     'LoggedOutHeaderView',
                     'ActionHeaderView',

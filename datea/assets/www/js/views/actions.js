@@ -153,6 +153,7 @@ var ActionsView = Backbone.View.extend({
     	var $list = $("#action_list", this.$el);
     	var $list_title = $('#actions-list-title', this.$el);
     	var $list_intro = $('#actions-list-intro', this.$el);
+    	var $list_search = $('.search-actions', this.$el);
     	
     	if (this.render_mode == 'new') {
     		$list.empty();
@@ -163,17 +164,27 @@ var ActionsView = Backbone.View.extend({
     	
     	if (this.model.size() > 0) {
     		
-    		if (this.selected_mode == 'my_actions' && !this.user_follows_actions) {
-    			$list_title.html('Inciativas cercanas a tu zona').removeClass('hide');
-    			$list_intro.removeClass('hide');
+    		if (this.selected_mode == 'my_actions') {
+    			if(!this.user_follows_actions) {
+	    			$list_title.html('Inciativas cercanas a tu zona').removeClass('hide');
+	    			$list_intro.removeClass('hide');
+	    			$list_search.addClass('hide');
+	    		}else{
+	    			$list_title.html('iniciativas que sigo');
+	    			$list_intro.addClass('hide');
+	    			$list_title.removeClass('hide');
+	    			$list_search.removeClass('hide');
+	    		}
     		}else if (this.selected_mode == 'all_actions') {
     			var title = this.model.size()+" resultado";
     			if (this.model.size() != 1) title = title+'s';
     			$list_title.html(title).removeClass('hide');
     			$list_intro.addClass('hide');	
+    			$list_search.addClass('hide');
     		}else{
     			$list_title.addClass('hide');
     			$list_intro.addClass('hide');
+    			$list_search.addClass('hide');
     		}
     		
 	        this.model.each(function(item, index,list){  

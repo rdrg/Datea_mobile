@@ -13,12 +13,32 @@
   .item-pager{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    height: 57px;
-    margin-bottom: 20px;
+    height: 55px;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 15px;
     margin-top: 0px;
     background: #ffffff; /* Old browsers */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(16%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 16%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+    //background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(16%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+    //background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 16%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+    
+    button {
+      .round(4px);
+      display: inline-block;
+      line-height: 20px;
+      padding: 4px 14px 8px 14px;
+      vertical-align: middle;
+      text-align: center;
+      color: #999 !important;
+      border: 1px solid #999 !important;
+      opacity: 0.4;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 20px;
+      text-shadow: 0 1px 0 #FFFFFF;
+      cursor:pointer;
+      background:transparent;
+    }
+    
     .prev{
       .left;
     }

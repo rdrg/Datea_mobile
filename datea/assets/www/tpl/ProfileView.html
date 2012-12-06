@@ -1,45 +1,46 @@
-
-<div id="profile_container">
-  <div id="profile_name">
-    <h1><%= username %></h1>
-    <% if(profile.full_name) {%>
-      <span><%= profile.full_name %></span>
-    <% } %>
-  </div>
-
-  <div id="profile_info">
-    <div id="profile_picture" class="left">
-      <img src="<%= api_url %><%= profile.image_large %>" id="profile_img" />
-    </div>
-    <div id="profile_stats" class="left">
-      <div id="profile_dateos">
-        <img src="img/dateo_mini.png" alt="">
-         <%= profile.item_count %> dateos
-      </div>
-      <div id="profile_comments">
-        <img src="img/comentario_mini.png" alt="">
-         <%= profile.comment_count %> comentarios
-      </div>
-      <div id="profile_supports">
-        <img src="img/apoyo_mini.png" alt="">
-         <%= profile.vote_count %> apoyos
-      </div>
-      <!--
-      <div id="follow">
-        <img src="img/seguir_mini.png" alt="">
-        siguiendo / seguidores
-      </div>
-    -->
-    </div>
-  </div>
-
-  <hr id="profile_separator">
-
-
-  <div id="profile_btns">
-    <a id="profile_edit" href="#user/edit/<%= id %>" class="btn datea_btn_gry" data-ftrans="slide">editar perfil</a>
-    <a id="profile_logout" href="#logout" class="btn datea_btn_gry">cerrar sesi&oacute;n</a>
-  </div>
-</div> 
+<div id="wrapper">
+	<div id="profile_container">
+	  <div id="profile_name">
+	    <h1><%= username %></h1>
+	    <% if(profile.full_name) {%>
+	      <span><%= profile.full_name %></span>
+	    <% } %>
+	  </div>
+	
+	  <div id="profile_info">
+	    <div id="profile_picture" class="left">
+	      <img src="<%= api_url %><%= profile.image_large %>" id="profile_img" />
+	    </div>
+	    <div id="profile_stats" class="left">
+	      <div id="profile_dateos">
+	        <img src="img/dateo_mini.png" alt="">
+	         <%= profile.item_count %> dateos
+	      </div>
+	      <div id="profile_comments">
+	        <img src="img/comentario_mini.png" alt="">
+	         <%= profile.comment_count %> comentarios
+	      </div>
+	      <div id="profile_supports">
+	        <img src="img/apoyo_mini.png" alt="">
+	         <%= profile.vote_count %> apoyos
+	      </div>
+	      <!--
+	      <div id="follow">
+	        <img src="img/seguir_mini.png" alt="">
+	        siguiendo / seguidores
+	      </div>
+	    -->
+	    </div>
+	  </div>
+	
+	  <hr id="profile_separator">
+	
+	
+	  <div id="profile_btns">
+	    <a id="profile_edit" href="#user/edit/<%= id %>" class="btn datea_btn_gry" data-ftrans="slide">editar perfil</a>
+	    <a id="profile_logout" href="#logout" class="btn datea_btn_gry">cerrar sesi&oacute;n</a>
+	  </div>
+	</div>
+</div>
 
   

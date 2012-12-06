@@ -93,6 +93,9 @@
 #actions-list-title {
   margin-left: 10px;
   margin-bottom: 10px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #aaa;
 }
 
 .actions_action{
@@ -143,12 +146,12 @@
   		position: absolute;
   		bottom:-11px;
   		right:10px;
-  		font-size:10px;
+  		font-size:11px;
   		color: #e35b59;
   }
 }
 
-.action_separator{
+.action_separator {
   width: 100%;
   border-top: 1px solid @gray-bg;
 }
@@ -165,4 +168,21 @@
 .no-results {
   padding: 30px 15px;
   text-align: center;
+}
+
+.search-actions {
+  margin-left: 13px; 
+  margin-top: 20px;
+  .list-search-button {
+    .datea_btn_gry();
+    opacity: 0.7;
+    display: inline-block;
+    line-height: 20px;
+    padding: 6px 14px 6px 32px;
+    .round(5px);
+    background: url("../img/icono_busqueda.png") no-repeat 5px center transparent;
+    &:active {
+      opacity: 1;
+    }
+  }
 }
