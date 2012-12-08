@@ -207,7 +207,7 @@ var DateaRouter = Backbone.Router.extend({
             }); 
             this.showView('#main', this.newMapItemView); 
 	    }
-   		this.renderNavigation('dateo', 'ftr_new-dateo',mapid);
+   		this.renderNavigation('dateo', 'ftr_new-dateo', this.actionModel.toJSON());
     	this.renderHeader('general');
     },
        
@@ -237,6 +237,7 @@ var DateaRouter = Backbone.Router.extend({
 					self.showView('#main', self.mappingMapView);
 					self.mappingMapView.loadMap(zoom_item_id);
 					if (typeof(callback_func) != 'undefined') callback_func();
+					self.renderNavigation('dateo', 'ftr_dateo', self.actionModel.toJSON());
 				},
 				error: function(error) {
 	                onOffline();
@@ -248,8 +249,8 @@ var DateaRouter = Backbone.Router.extend({
 			this.mappingMapView.delegateEvents();
 			this.mappingMapView.loadMap(zoom_item_id);
 			if (typeof(callback_func) != 'undefined') callback_func();
+			this.renderNavigation('dateo', 'ftr_dateo', this.actionModel.toJSON());
 		}
-	    this.renderNavigation('dateo', 'ftr_dateo', mapid);
 	    this.renderHeader('general');
     },
     
@@ -337,7 +338,8 @@ var DateaRouter = Backbone.Router.extend({
     
     /***********************  NAVIGATION AND HEADER FUNCTIONS ***********************/
 
-    renderNavigation: function(mode, highlight, action_id){
+    renderNavigation: function(mode, highlight, context){
+    	
         switch(mode){
             case 'general':
                 this.navBarView = new NavBarView();
@@ -345,7 +347,7 @@ var DateaRouter = Backbone.Router.extend({
                 break;
             case 'dateo':
                 this.navBarView = new NavBarDateoView();
-                $('#footer').html(this.navBarView.render(action_id).el);
+                $('#footer').html(this.navBarView.render(context).el);
                 break;
             case 'loggedout':
                 this.navBarView = new NavBarWelcomeView();

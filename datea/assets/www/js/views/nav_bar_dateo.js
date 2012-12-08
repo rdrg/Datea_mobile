@@ -1,8 +1,7 @@
 var NavBarDateoView = Backbone.View.extend({
     
-    render: function(id){
-        var mapid = {'mapid': id};
-        this.$el.html(this.template(mapid));
+    render: function(context){
+        this.$el.html(this.template(context));
         return this;
     }
 });
