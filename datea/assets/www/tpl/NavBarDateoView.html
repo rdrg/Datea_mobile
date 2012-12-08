@@ -19,7 +19,7 @@
   </a>
 </div>
 <div id="ftr_dateo" class="ftr-dateo-btn">
-    <a href="#mapping/<%= mapid %>/reports/map" id="">
+    <a href="#mapping/<%= id %>/reports/map" id="">
     <div>
       <img src="img/icono_dateos.png" alt="actions">  
     </div>
@@ -29,12 +29,14 @@
   </a>
 </div>
 <div id="ftr_new-dateo" class="ftr-dateo-btn">
-    <a href="#mapping/<%= mapid %>/report/create" id="">
-    <div>
-      <img src="img/icono_creardateo.png" alt="actions">  
-    </div>
-    <div>
-      crear dateo
-    </div>
-  </a>
+	<% if (is_active) { %>
+	    <a href="#mapping/<%= id %>/report/create" id="">
+	    <div>
+	      <img src="img/icono_creardateo.png" alt="actions">  
+	    </div>
+	    <div>
+	      crear dateo
+	    </div>
+	  </a>
+  <% } %>
 </div>
