@@ -89,7 +89,7 @@ var MappingMapView = Backbone.View.extend({
     	self.item_cluster_view = new MapItemClusterView({collection: itemCollection, parent_view: self});
     	var $content = self.$el.find('.cluster-content-view');
     	$content.html(self.item_cluster_view.render().el);
-    	$content.fadeIn('normal', function(){
+    	$content.fadeIn('fast', function(){
     		self.events_active = true;
     		console.log(self.events_active);
     	});
@@ -110,7 +110,7 @@ var MappingMapView = Backbone.View.extend({
     	window.backbutton_func = undefined;
     	if (!this.check_events_active()) return;
     	var self = this;
-    	this.$el.find('.cluster-content-view').fadeOut("normal", function(){
+    	this.$el.find('.cluster-content-view').fadeOut("fast", function(){
     		self.events_active = true;
     		self.item_cluster_view.close();
     		self.item_cluster_view = undefined;
