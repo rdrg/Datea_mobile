@@ -572,26 +572,29 @@ function onDeviceReady() {
 }
 
 function onKBHide() {
-	console.log('KB HIDE');
-	console.log('INPUT FOCUSED: '+input_focused);
-	if (input_focused) return;
+	if (input_focused) {
+		footer_visible = footer_was_visible;
+		return;
+	}
 	if (footer_was_visible) showFooter('show');
 }
 
 function onKBShow() {
 	footer_was_visible = footer_visible;
 	showFooter('hide');
-	console.log('KB SHOW');
 }
 
 input_focused = false;
 function init_kb_extra() {
 	
-	$(document).on('focus','input', {}, function(){
+	$(document).on('focus','input, textarea', {}, function(){
 		input_focused = true;
 		setTimeout(function(){
 			input_focused = false;
-		}, 300)
+		}, 1000)
+	});
+	$(document).on('blur','input, textarea', {}, function(){
+		input_focused = false;
 	});
 }
 
@@ -642,6 +645,7 @@ function init_autosize() {
 
 
 function onBackKeyPress() {
+	input_focused = false;
 	if (typeof(window.backbutton_func) != 'undefined') {
 		window.backbutton_func();
 		window.backbutton_func = undefined;

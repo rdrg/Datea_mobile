@@ -54,10 +54,4 @@ public class DateaMobile extends DroidGap
         super.onCreate(savedInstanceState);
         super.loadUrl("file:///android_asset/www/index.html");
     }
-<<<<<<< HEAD:datea/src/com/example/TestPhone/TestPhone.java
 }
->>>>>>> 6143f1ed07c97fd7fd87b294ed0f5ab9135f69c4:datea/src/com/example/TestPhone/TestPhone.java
-
-=======
-}
->>>>>>> experimental:datea/src/pe/datea/DateaMobile/DateaMobile.java
