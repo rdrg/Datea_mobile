@@ -433,6 +433,8 @@ function init_main () {
 	main_w = $(window).width();
 	$('#main').css({height: main_h, width: main_w});
 	
+	init_kb_extra();
+	
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
                     'LoginView',
@@ -570,12 +572,27 @@ function onDeviceReady() {
 }
 
 function onKBHide() {
+	console.log('KB HIDE');
+	console.log('INPUT FOCUSED: '+input_focused);
+	if (input_focused) return;
 	if (footer_was_visible) showFooter('show');
 }
 
 function onKBShow() {
 	footer_was_visible = footer_visible;
 	showFooter('hide');
+	console.log('KB SHOW');
+}
+
+input_focused = false;
+function init_kb_extra() {
+	
+	$(document).on('focus','input', {}, function(){
+		input_focused = true;
+		setTimeout(function(){
+			input_focused = false;
+		}, 300)
+	});
 }
 
 footer_visible = true;
