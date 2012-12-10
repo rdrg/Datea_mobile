@@ -31,7 +31,6 @@ Backbone.View.prototype.scroll = function(elem){
 
 
 Backbone.View.prototype.scroll_refresh = function () {
-	console.log('scroll refresh');
 	var self = this;
 	setTimeout(function(){
 		self.scroller.refresh();

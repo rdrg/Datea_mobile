@@ -575,17 +575,13 @@ function onDeviceReady() {
 }
 
 function onKBHide() {
-	console.log('footer_was_visible: '+footer_was_visible);
-	console.log('input_focused: '+input_focused);
 	if (input_focused) {
 		footer_visible = footer_was_visible;
-		console.log('kbhide stopped');
 		return;
 	}
 	if (footer_was_visible) showFooter('show');
 	var inter = setInterval(function(){
 		if ($(window).height() >= window_h) {
-			console.log('w height: '+$(window).height());
 			clearInterval(inter);
 			if (window.dateaApp.currentView.scroller) window.dateaApp.currentView.scroll_refresh();
 		}
@@ -593,8 +589,6 @@ function onKBHide() {
 }
 
 function onKBShow() {
-	console.log('w height: '+$(window).height());
-	console.log('onKB SHOW');
 	footer_was_visible = footer_visible;
 	showFooter('hide');
 }
