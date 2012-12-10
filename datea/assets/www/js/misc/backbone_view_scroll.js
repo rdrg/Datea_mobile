@@ -31,7 +31,7 @@ Backbone.View.prototype.scroll = function(elem){
 
 
 Backbone.View.prototype.scroll_refresh = function () {
-	
+	console.log('scroll refresh');
 	var self = this;
 	setTimeout(function(){
 		self.scroller.refresh();
@@ -40,7 +40,7 @@ Backbone.View.prototype.scroll_refresh = function () {
 		$img.load(function(){
 			setTimeout(function(){
 				self.scroller.refresh();
-			}, 0);
+			}, 50);
 		});
-	}, 0);
+	},0);
 }

@@ -62,12 +62,20 @@ var CreateMapItemOne = Backbone.View.extend({
 
     addImageOverlay: function(event){
         event.preventDefault();
+        if (!this.events_active) return;
+        else this.events_active = false;
+        
         var self = this;
         this.imageOverlay = new SelectImageOverlayView({
         	image_callback: function(imageURI) {
         		self.options.parent_view.imageURI = imageURI;
         		$('#dateo-img-preview', self.$el).attr('src', imageURI);
-        	}
+        		self.options.parent_view.scroll_refresh();
+        		self.events_active = true;
+        	}, 
+        	cancel_callback: function () {
+        		self.events_active = true;
+        	},
         });
         
         // hide footer menu, but remember if it was hidden

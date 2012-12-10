@@ -126,7 +126,7 @@ var CreateMapItemView = Backbone.View.extend({
             this.transferImage();
         }
         
-        //if (this.step !=2) this.scroll_refresh();
+        if (this.step !=2 && this.scroller) this.scroll_refresh();
     },
 
      transferImage: function(){

@@ -4,6 +4,7 @@ var SelectImageOverlayView = Backbone.View.extend({
         _.bindAll(this);
         var self = this;
         window.backbutton_func = function() {
+        	if (self.options.cancel_callback) self.options.cancel_callback();
         	self.hideOverlay();
         }
     },
@@ -27,11 +28,11 @@ var SelectImageOverlayView = Backbone.View.extend({
     	if (this.is_active) this.is_active = false;
     	else return;
     	
-        this.hideOverlay();
         var self = this;
         event.preventDefault();
         navigator.camera.getPicture(
             function(imageURI){
+               self.hideOverlay();
                self.options.image_callback(imageURI);
             },
             function(message){
@@ -40,10 +41,6 @@ var SelectImageOverlayView = Backbone.View.extend({
             {
                 quality: 50,
                 destinationType: navigator.camera.DestinationType.FILE_URI
-                //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                //destinationType: navigator.camera.DestinationType.DATA_URL,
-                //sourceType: navigator.camera.PictureSourceType.CAMERA
-                //sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
             }
         );
      },
@@ -54,19 +51,12 @@ var SelectImageOverlayView = Backbone.View.extend({
     	if (this.is_active) this.is_active = false;
     	else return;
      	
-        this.hideOverlay();
         var self = this;
         event.preventDefault();
         navigator.camera.getPicture(
             function(imageURI){
-                //var images = [];
-                //images.push(imageURI);
-                //$("#image_data").val(imageURI);
-                //self.model.set({
-                  //  images: images
-                //});
+            	self.hideOverlay();
                 self.options.image_callback(imageURI);
-              // self.imageURI = imageURI;
             },
             function(message){
                 alert(message);
@@ -74,22 +64,22 @@ var SelectImageOverlayView = Backbone.View.extend({
             {
                 quality: 50,
                 destinationType: navigator.camera.DestinationType.FILE_URI,
-                //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                //destinationType: navigator.camera.DestinationType.DATA_URL,
                 sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
             }
         );
-     },
-     cancel:function(ev){
+    },
+    
+    cancel:function(ev){
         ev.preventDefault();
     	if (this.is_active) this.is_active = false;
     	else return;
         this.hideOverlay();
+        if (this.options.cancel_callback) this.options.cancel_callback();
     },
 
     hideOverlay: function(){
-        $("#overlay").slideUp("fast", function(){
-        	 onKBHide();
+        $("#overlay").slideUp("fast", function() {
+        	onKBHide();
         });
     }
 });

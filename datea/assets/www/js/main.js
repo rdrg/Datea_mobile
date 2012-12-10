@@ -431,7 +431,8 @@ $(document).ready(function(){ init_main(); });
 	
 function init_main () {
 	
-	main_h = ($(window).height() - 48);
+	window_h = $(window).height();
+	main_h = (window_h - 48);
 	main_w = $(window).width();
 	$('#main').css({height: main_h, width: main_w});
 	
@@ -574,14 +575,26 @@ function onDeviceReady() {
 }
 
 function onKBHide() {
+	console.log('footer_was_visible: '+footer_was_visible);
+	console.log('input_focused: '+input_focused);
 	if (input_focused) {
 		footer_visible = footer_was_visible;
+		console.log('kbhide stopped');
 		return;
 	}
 	if (footer_was_visible) showFooter('show');
+	var inter = setInterval(function(){
+		if ($(window).height() >= window_h) {
+			console.log('w height: '+$(window).height());
+			clearInterval(inter);
+			if (window.dateaApp.currentView.scroller) window.dateaApp.currentView.scroll_refresh();
+		}
+	}, 100);
 }
 
 function onKBShow() {
+	console.log('w height: '+$(window).height());
+	console.log('onKB SHOW');
 	footer_was_visible = footer_visible;
 	showFooter('hide');
 }
@@ -593,7 +606,7 @@ function init_kb_extra() {
 		input_focused = true;
 		setTimeout(function(){
 			input_focused = false;
-		}, 1000)
+		}, 500)
 	});
 	$(document).on('blur','input, textarea', {}, function(){
 		input_focused = false;
@@ -618,9 +631,8 @@ function showFooter(mode) {
 	switch(mode) {
 		case 'show':
 			footer_visible = true;
-			$('#footer').slideDown('fast', function(){
-				$('body').addClass('with-footer');
-			});
+			$('body').addClass('with-footer');
+			$('#footer').slideDown('fast');
 			break;
 		case 'hide':
 			$('body').removeClass('with-footer');

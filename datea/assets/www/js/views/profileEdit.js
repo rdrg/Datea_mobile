@@ -9,17 +9,18 @@ var ProfileEditView = Backbone.View.extend({
     events: {
       "click #image_input": "addImageOverlay",	
       "submit #user_edit_form": "updateUser",
-      "load #profile_image": "image_load",
     },
     
-    image_load: function() {
-    	alert("image load");
-    },
+    events_active: false,
 
     render: function() {
     	var context = this.model.toJSON();
     	if (context.profile.full_name == null) context.profile.full_name = '';
         this.$el.html(this.template(this.model.toJSON()));
+        var self = this;
+        setTimeout(function(){
+        	self.events_active = true;
+        }, 500);
         return this;
     },
 
@@ -117,19 +118,20 @@ var ProfileEditView = Backbone.View.extend({
 
     addImageOverlay:function(ev){
         ev.preventDefault();
+        if (!this.events_active) return;
+        else this.events_active = false;
+        
         var self = this;
         this.imageOverlay = new SelectImageOverlayView({
         	image_callback: function (imageURI){
-        		$("#profile_imßage").attr('src', imageURI);
+        		$("#profile_image").attr('src', imageURI);
         		self.new_image_uri = imageURI;
-        		
-        		/*
-        		setTimeout(function(){
-        			self.scroller.refresh();
-        			console.lgo("scroller refresh");
-        		}, 300);
-        		*/
-        	}
+        		self.scroll_refresh();
+        		self.events_active = true;
+        	},
+        	cancel_callback: function () {
+        		self.events_active = true;
+        	},
         });
         
         // hide keyboard, but remember if it was hidden
