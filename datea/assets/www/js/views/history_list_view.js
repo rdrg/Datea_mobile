@@ -8,7 +8,7 @@ var HistoryListView = Backbone.View.extend({
 	className: 'history-list-view',
 	
 	events: {
-    	'click .load-more-results': 'load_more_results',
+    	'tap .load-more-results': 'load_more_results',
     	'change #history-filter': 'filter_changed',
     },
 	

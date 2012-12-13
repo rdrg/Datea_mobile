@@ -39,7 +39,7 @@ Backbone.View.prototype.scroll_refresh = function () {
 		$img.load(function(){
 			setTimeout(function(){
 				self.scroller.refresh();
-			}, 50);
+			}, 0);
 		});
 	},0);
 }

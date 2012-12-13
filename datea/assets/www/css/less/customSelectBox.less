@@ -1,0 +1,85 @@
+
+.custom-select-box {
+  background-image: url('../img/flecha2.png');
+  background-repeat: no-repeat;
+  background-position: 95% 11px; 
+  height: auto !important;
+  padding: 7px 10px;
+  border: 1px solid #ccc;
+  color: black;
+  .round(5px);
+  .opt-content {
+    .opt-label {
+        padding-right: 40px;
+    }
+  }
+}
+
+.opt-content {
+  display: table-row;
+  width: 100%;
+  .opt-color {
+    display: table-cell;
+    vertical-align: center;
+    width: 32px;
+  }
+  .opt-label {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+
+.cselect-opt-bg {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right:0;
+  background-color: black;
+  opacity: 0.6;
+}
+
+.cselect-opt-container {
+  z-index: 1001;
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 15px;
+  right: 15px;
+  overflow: auto;
+  
+  .cselect-opt-wrapper {
+    width: 100%;  
+    ul.opt-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    
+      li {
+        .clearfix;
+        display: block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-bottom: 2px solid transparent;
+        
+        a.opt-link {
+          padding: 18px 5px;
+          background-color: white;
+          display: block;
+          .opt-content {
+            .opt-color {
+            }
+            .opt-label {
+            }
+          }
+          &.active, &:active {
+            background-color: @gray-bg;
+          }
+        }
+      }
+    }  
+  }
+}

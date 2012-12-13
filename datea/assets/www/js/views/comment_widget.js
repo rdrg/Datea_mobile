@@ -3,9 +3,8 @@ var CommentWidgetView = Backbone.View.extend({
 	className: 'comment-widget',
 	
 	events: {
-		'click': 'scroll_bottom',
+		'tap': 'scroll_bottom',
 	},
-	
 	
 	initialize: function() {
 		this.model.bind('change', this.render, this);
@@ -21,15 +20,9 @@ var CommentWidgetView = Backbone.View.extend({
 	
 	scroll_bottom: function (ev) {
 		ev.preventDefault();
-	  
-	  var container = $(document).find('#main'),
-	  	scrollTo = $(document).find('#comment-input');
-      
-      scrollTo.autosize();
-     
-      container.scrollTop(
-        scrollTo.offset().top - container.offset().top + container.scrollTop()
-      );
+	  	if (this.options.cluster_view) {
+	  		this.options.cluster_view.scrollToElement('.comment-form', 200);
+	  	}
 	}
 	
 });

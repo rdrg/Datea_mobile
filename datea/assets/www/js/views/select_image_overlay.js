@@ -10,9 +10,9 @@ var SelectImageOverlayView = Backbone.View.extend({
     },
 
     events: {
-        "click #capture_image": "captureImage",
-        "click #album_image" : "browseImage",
-        "click #cancel" : "cancel"
+        "tap #capture_image": "captureImage",
+        "tap #album_image" : "browseImage",
+        "tap #cancel" : "cancel",
     },
     
     is_active: false,
@@ -36,7 +36,8 @@ var SelectImageOverlayView = Backbone.View.extend({
                self.options.image_callback(imageURI);
             },
             function(message){
-                alert(message);
+            	alert(message);
+               	self.hideOverlay();
             },
             {
                 quality: 50,
@@ -59,7 +60,8 @@ var SelectImageOverlayView = Backbone.View.extend({
                 self.options.image_callback(imageURI);
             },
             function(message){
-                alert(message);
+            	alert(message);
+                self.hideOverlay();
             },
             {
                 quality: 50,
@@ -78,8 +80,12 @@ var SelectImageOverlayView = Backbone.View.extend({
     },
 
     hideOverlay: function(){
+    	var self = this;
         $("#overlay").slideUp("fast", function() {
-        	onKBHide();
+        	self.close();
+        	setTimeout(function(){
+        		onKBHide();
+        	}, 150);
         });
     }
 });

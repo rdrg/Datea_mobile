@@ -10,10 +10,10 @@ window.HomeView = Backbone.View.extend({
 
   events:{
     //'mousedown button#login_btn' : 'login',
-    'click button#login_btn' : 'login',
+    'tap button#login_btn' : 'login',
 
-    'mousedown button#explore_btn' : 'explore',
-    'mousedown button#participate_btn' : 'participate'
+    'tap button#explore_btn' : 'explore',
+    'tap button#participate_btn' : 'participate'
   },
   
   login: function(data){

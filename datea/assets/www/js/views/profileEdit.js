@@ -7,8 +7,9 @@ var ProfileEditView = Backbone.View.extend({
     new_image_uri: '',
     
     events: {
-      "click #image_input": "addImageOverlay",	
+      "tap #image_input": "addImageOverlay",	
       "submit #user_edit_form": "updateUser",
+      "tap .profile-submit": "updateUser",
     },
     
     events_active: false,

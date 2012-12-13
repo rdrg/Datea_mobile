@@ -33,7 +33,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 	},
 	
 	events: {
-		'click': 'follow',
+		'tap': 'follow',
 	},
 	
 	render: function (ev) {

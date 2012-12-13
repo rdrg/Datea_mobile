@@ -57,7 +57,7 @@ window.LocationInputView = Backbone.View.extend({
 	},
 	
 	events: {
-		'click .show-current-location': 'show_current_location'
+		'tap .show-current-location': 'show_current_location'
 	},
 	
 	render: function () {	

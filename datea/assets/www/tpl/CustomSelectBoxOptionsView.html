@@ -1,0 +1,21 @@
+<div class="cselect-opt-bg"></div>
+<div id="opt-scroll-container" class="cselect-opt-container">
+	<div class="cselect-opt-wrapper" style="display:none">
+		<ul class="opt-list">
+			<% _.each(options, function(opt) { %>
+				<% if (opt.value && opt.value != '') { %>
+					<li>
+						<a id="opt-<%= opt.value %>" href="javascript:void(0);" class="opt-link<% if (opt.value == selected_option.value) { %> active<% } %>" data-value="<%= opt.value %>">
+							<div class="opt-content">
+								<% if (opt.color) { %>
+									<div class="opt-color"><div class="color-sample" style="background-color: <%= opt.color %>;">&nbsp;</div></div>
+								<% } %>
+								<div class="opt-label"><%= opt.label %></div>
+							</div>
+						</a>
+					</li>
+				<% } %>
+			<% }); %>
+		</ul>
+	</div>
+</div>

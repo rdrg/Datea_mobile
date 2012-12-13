@@ -14,7 +14,13 @@ var ActionsView = Backbone.View.extend({
     },
 
     events: {
-        'click .load-more-results': 'loadMoreResults'
+        'tap .load-more-results': 'loadMoreResults',
+        'tap .action_detail': 'setActive',
+    },
+    
+    setActive: function (ev) {
+    	ev.preventDefault();
+    	$(ev.currentTarget).addClass('active');
     },
 
     render: function () {
@@ -103,7 +109,12 @@ var ActionsView = Backbone.View.extend({
         }
         
         if(get_location_first){
-        	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err);
+        	$('#spinner').fadeIn("fast");
+        	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err, {
+					maximumAge: 5000, 
+					timeout: 5000, 
+					enableHighAccuracy: true
+				});
         }else{
         	this.fetch_models();
         }
@@ -120,7 +131,7 @@ var ActionsView = Backbone.View.extend({
         alert("location not available");
         //falling back to created
         this.params.order_by = 'created';
-        
+        this.fetch_models();
     },
 
     loadMoreResults: function(ev) {
@@ -146,7 +157,7 @@ var ActionsView = Backbone.View.extend({
         this.render_page();
     },
     
-    no_results_msg: '<div class="no-results">[ No se encontraron resultados. Inténtalo nuevamente con otros valores. ]</div>',
+    no_results_msg: '<div class="no-results">No se encontraron resultados. Inténtalo nuevamente con otros valores.</div>',
 
     render_page: function(){
     	
@@ -180,7 +191,7 @@ var ActionsView = Backbone.View.extend({
     			if (this.model.size() != 1) title = title+'s';
     			$list_title.html(title).removeClass('hide');
     			$list_intro.addClass('hide');	
-    			$list_search.addClass('hide');
+    			$list_search.removeClass('hide');
     		}else{
     			$list_title.addClass('hide');
     			$list_intro.addClass('hide');
@@ -204,9 +215,15 @@ var ActionsView = Backbone.View.extend({
 	    		}else{
 	    			this.requery_done = undefined;
 	    			$list.html(this.no_results_msg);
+	    			$list_intro.addClass('hide');
+	    			$list_title.html('0 resultados').removeClass('hide');
+	    			$list_search.removeClass('hide');
 	    		}
 	    	}else{
 	    		$list.html(this.no_results_msg);
+	    		$list_title.html('0 resultados').removeClass('hide');
+	    		$list_search.removeClass('hide');
+	    		$list_intro.addClass('hide');
 	    	}
 	    }
 	    $('#actions_container', this.$el).removeClass('hide');

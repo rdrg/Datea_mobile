@@ -71,7 +71,7 @@ var MapItemDetailView = Backbone.View.extend({
 		$widgets.append(this.vote_widget.render().el);
 		
 		// COMMENT WIDGET
-		this.comment_widget = new CommentWidgetView({model:this.model});
+		this.comment_widget = new CommentWidgetView({model:this.model, cluster_view: this.options.parentView});
 		$widgets.append(this.comment_widget.render().el);
 		
 		return this;

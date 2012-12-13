@@ -5,8 +5,9 @@
 var RegisterView = Backbone.View.extend({
     
     events: {
-        "submit": "submitRegister",
-        "click .enter": "enter"
+        "submit #register-form": "submitRegister",
+        "tap .register-submit": "submitRegister",
+        "tap .enter": "enter"
     },
     
     render: function(){

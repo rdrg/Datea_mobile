@@ -8,12 +8,12 @@ var CreateMapItemView = Backbone.View.extend({
         _.bindAll(this);
         var cats = this.options.mappingModel.get('item_categories');
         this.has_categories = cats.length > 0;
-
+		
     },
     
     events: {
-        "click #next_button": "stepForward",
-        "click #back_button": "stepBackward",     
+        "tap #next_button": "stepForward",
+        "tap #back_button": "stepBackward",   
     },
 
     events_active: true,
@@ -37,14 +37,13 @@ var CreateMapItemView = Backbone.View.extend({
         
         if(this.step == 1){
             if (this.has_categories) {
-           		var tmp_cat_id =  $('[name="category"]:checked', this.$el).val();
+           		var tmp_cat_id =  this.model.get('category_id');
            		var tmp_desc = $('textarea').val();
            		if(!tmp_cat_id || !tmp_desc){
            			alert("Los campos de categoria y descripción son obligatorios.");
            			this.events_active = true;
                 	return;
                 }
-                this.selectCategory();
            	}else{
            		var tmp_desc = $('textarea').val();
            		if(!tmp_desc){
@@ -245,23 +244,7 @@ var CreateMapItemView = Backbone.View.extend({
             });          
         },
 
-         selectCategory: function(){
-            //console.log("category clicked");
-            var cat_id = $('[name="category"]:checked', this.$el).val();
-            var cat = null;
-            var categories = this.options.mappingModel.get('item_categories');
-            cat = _.find(categories, function(c){return c.id == cat_id;});
-            this.model.set({
-                category: cat,
-                category_id: cat.id,
-                category_name: cat.name,
-                color: cat.color
-            },{silent: true});
-            //console.log("cat val: " + cat);
-        },
-
-         setDescription: function(){
-
+        setDescription: function(){
             this.model.set({
                 content: $('textarea').val() 
             });

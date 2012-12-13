@@ -1,8 +1,8 @@
 var CommentListView = Backbone.View.extend({
     
     events: {
-    	'submit #comment-form': 'submit_comment',
-      'focus #comment-input': 'typing',
+      'submit #comment-form': 'submit_comment',
+      'tap .submit-comment': 'submit_comment',
     },
     
     is_active: true,
@@ -20,10 +20,6 @@ var CommentListView = Backbone.View.extend({
         return this;
     },
 
-    typing: function(event){
-      $("#comment-input").autosize();
-    },
-    
     submit_comment: function (ev) {
     	ev.preventDefault();
     	

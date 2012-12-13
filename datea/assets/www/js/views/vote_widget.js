@@ -39,7 +39,7 @@ var VoteWidgetView = Backbone.View.extend({
 	},
 	
 	events: {
-		'click': 'vote',
+		'tap': 'vote',
 	},
 	
 	render: function (ev) {

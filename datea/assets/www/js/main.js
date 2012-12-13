@@ -2,9 +2,15 @@ Backbone.View.prototype.close = function () {
     if (this.beforeClose) {
         this.beforeClose();
     }
+    if (this.scroller) this.scroller.destroy();
     this.remove();
     this.unbind();
 };
+
+Backbone.View.prototype.kill_event = function (ev) {
+	ev.preventDefault();
+	ev.stopImmediatePropagation();
+}
 
 
 var DateaRouter = Backbone.Router.extend({
@@ -26,6 +32,19 @@ var DateaRouter = Backbone.Router.extend({
         "mapping/:mapid/reports/:reportid":"mapItemDetail",
         "mapeo/:mapid/dateos/:reportid":"mapItemDetail",
     	"history": "openHistory",
+	},
+	
+	initialize: function () {
+		/* INIT MAIN CATEGORIES */
+		this.categoryCollection = new CategoryCollection();
+		this.categoryCollection.fetch();
+	},
+	
+	route: function (route, name, callback) {
+		return Backbone.Router.prototype.route.call(this, route, name, function() {
+            this.last_route = route;
+            callback.apply(this, arguments);
+        });
 	},
 	
 	/******************** VIEW FUNCTIONS *****************************/
@@ -191,7 +210,8 @@ var DateaRouter = Backbone.Router.extend({
 	                    model: self.newMapItem,
 	                    mappingModel: self.actionModel
 	                }); 
-	                self.showView('#main', self.newMapItemView);   
+	                self.showView('#main', self.newMapItemView);
+	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());   
 	            },
 	            error: function(error){
 	                onOffline();
@@ -206,8 +226,8 @@ var DateaRouter = Backbone.Router.extend({
                 mappingModel: this.actionModel
             }); 
             this.showView('#main', this.newMapItemView); 
+            this.renderNavigation('dateo', 'ftr_new-dateo', this.actionModel.toJSON());
 	    }
-   		this.renderNavigation('dateo', 'ftr_new-dateo', this.actionModel.toJSON());
     	this.renderHeader('general');
     },
        
@@ -294,14 +314,19 @@ var DateaRouter = Backbone.Router.extend({
                 model: this.categoryCollection
             });
         }
-        this.categoryCollection.fetch({
-            success: function(){
-                self.showView("#main", self.searchFormView );
-            },
-            error: function(error){
-                onOffline();
-            }
-        })
+        if (this.categoryCollection.size() == 0) {
+	        this.categoryCollection.fetch({
+	            success: function(){
+	                self.showView("#main", self.searchFormView );
+	            },
+	            error: function(error){
+	            	this.navigate(this.last_route, {trigger: false, replace: true});
+	                onOffline();
+	            }
+	        });
+	    }else{
+	    	self.showView("#main", self.searchFormView );
+	    }
         this.renderNavigation('general');
         this.renderHeader('actions', 'nav_srch');
     },
@@ -434,9 +459,8 @@ function init_main () {
 	window_h = $(window).height();
 	main_h = (window_h - 48);
 	main_w = $(window).width();
+	$('#main').css({height: "460px", width: "302px"});
 	$('#main').css({height: main_h, width: main_w});
-	
-	init_kb_extra();
 	
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
@@ -475,12 +499,18 @@ function init_main () {
                     'CommentWidgetView',
                     'HistoryItemView',
                     'HistoryListView',
-                    'SearchFormView'
+                    'SearchFormView',
+                    'CustomSelectBoxView',
+                    'CustomSelectBoxOptionsView'
                     ],
 	function () {
 		
 		init_autosize();
+		init_links();
+		init_kb_extra();
 		
+		
+		/******************* INIT AJAX *******************/
 		$.ajaxSetup({ 
             beforeSend: function(){
                 $('#spinner').fadeIn("fast");
@@ -492,66 +522,63 @@ function init_main () {
         });
 		$.support.cors = true;
 		
-        Backbone.Tastypie.prependDomain = api_url;       
+        Backbone.Tastypie.prependDomain = api_url;
+        
+        /******************* INIT USER ***********************/       
         window.localSession = new Session();
         window.localUser = new User();
-            //
-            
-        //if(localStorage.getItem('authdata') !== null) {
+
         if(localStorage.getItem('authdata') && localStorage.getItem('authdata')!== null) {
-            //console.log(localStorage.getItem('authdata'));
-    	    //window.localSession = new localSession();
-            //window.localUser = new User();
                
             var authdata = JSON.parse(localStorage.getItem('authdata'));
             localSession.set(authdata);
-                //bootstrap user data
+            //bootstrap user data
+            
+            if(localSession.get('logged')){
+                userid = localSession.get('userid');
+                //console.log('token: ' + localSession.get('token'));
+                //console.log("fetching user data");
                 
-                if(localSession.get('logged')){
-                    userid = localSession.get('userid');
-                    //console.log('token: ' + localSession.get('token'));
-                    //console.log("fetching user data");
-                    
-                    fetch_data = { 
-                        data:{
-                        	'id': userid,
-                        	'api_key': localSession.get('token'),
-                        	'username': localSession.get('username'),
-                        	'user_full': 1
-                        },
-                        success: function(mdl, res){
-                        	//console.log(mdl);
-                            //console.log("user model: " + JSON.stringify(mdl.toJSON()));
-                            if(mdl.get('follows') !== undefined ){
-                                    window.myFollows = new FollowCollection(mdl.get('follows'));
-                                    //console.log('follows: ' + JSON.stringify(myFollows));
-                            }
-                            if(mdl.get('votes') !== undefined){
-                                window.myVotes = new VoteCollection(mdl.get('votes'));
-                            }
-                            window.dateaApp = new DateaRouter();           
-                        	Backbone.history.start();
-
-                        },
-                        error: function(){
-                            //console.log("some error fetching");
-                            onOffline();
-                            //window.dateaApp = new DateaRouter();           
-                        	//Backbone.history.start();
-                        	setTimeout(function(){
-                        		localUser.fetch(fetch_data);
-                        	},1000);
-              
+                fetch_data = { 
+                    data:{
+                    	'id': userid,
+                    	'api_key': localSession.get('token'),
+                    	'username': localSession.get('username'),
+                    	'user_full': 1
+                    },
+                    success: function(mdl, res){
+                    	//console.log(mdl);
+                        //console.log("user model: " + JSON.stringify(mdl.toJSON()));
+                        if(mdl.get('follows') !== undefined ){
+                                window.myFollows = new FollowCollection(mdl.get('follows'));
+                                //console.log('follows: ' + JSON.stringify(myFollows));
                         }
+                        if(mdl.get('votes') !== undefined){
+                            window.myVotes = new VoteCollection(mdl.get('votes'));
+                        }
+                        window.dateaApp = new DateaRouter();           
+                    	Backbone.history.start();
+
+                    },
+                    error: function(){
+                        //console.log("some error fetching");
+                        onOffline();
+                        //window.dateaApp = new DateaRouter();           
+                    	//Backbone.history.start();
+                    	setTimeout(function(){
+                    		localUser.fetch(fetch_data);
+                    	},1500);
+          
                     }
-                    
-                    localUser.fetch(fetch_data);        
                 }
-                else{
-                    //console.log("localstorage but not logged in");    
-                	window.dateaApp = new DateaRouter();           
-                	Backbone.history.start();
-                }
+                
+                localUser.fetch(fetch_data);
+            
+            }else{
+                //console.log("localstorage but not logged in");    
+            	window.dateaApp = new DateaRouter();           
+            	Backbone.history.start();
+            }
         }else{
             //console.log("no data in localSotrage, storing persistent session data");    
             window.localStorage.setItem('authdata', JSON.stringify(localSession));
@@ -561,6 +588,7 @@ function init_main () {
     });  
 }
 
+/************************* INIT EVENTS ****************************/
 
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
@@ -574,15 +602,41 @@ function onDeviceReady() {
     document.addEventListener("showkeyboard", onKBShow, false);
 }
 
+/*************************** EVENTS *******************************/
+
+function init_links() {
+	
+	$(document).on('tap','.link, a',{}, function(ev){
+		ev.stopPropagation();
+		ev.preventDefault();
+		var $this = $(this);
+		if ($this.hasClass('back-link')){
+			onBackKeyPress();
+			return;
+		} else if (!!$this.attr('href')) {
+			var href = $this.attr('href').replace('#','');
+		}else{
+			var href = $this.data('href');
+		} 
+		dateaApp.navigate(href, {trigger: true});
+	});
+	
+	$(document).on('click', '.link, a', {}, function(ev){
+		ev.stopPropagation();
+		ev.preventDefault();
+	});
+
+}
+
 function onKBHide() {
 	if (input_focused) {
 		footer_visible = footer_was_visible;
 		return;
 	}
-	if (footer_was_visible) showFooter('show');
 	var inter = setInterval(function(){
 		if ($(window).height() >= window_h) {
 			clearInterval(inter);
+			if (footer_was_visible) showFooter('show');
 			if (window.dateaApp.currentView.scroller) window.dateaApp.currentView.scroll_refresh();
 		}
 	}, 100);
@@ -600,12 +654,14 @@ function init_kb_extra() {
 		input_focused = true;
 		setTimeout(function(){
 			input_focused = false;
-		}, 500)
+		}, 700)
 	});
 	$(document).on('blur','input, textarea', {}, function(){
 		input_focused = false;
 	});
 }
+
+
 
 footer_visible = true;
 footer_was_visible = true;

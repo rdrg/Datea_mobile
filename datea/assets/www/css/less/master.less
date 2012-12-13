@@ -14,6 +14,7 @@
 @import "history.less";
 @import "commentList.less";
 @import "search.less";
+@import "customSelectBox.less";
 
 body{
   color: @gray;
@@ -21,6 +22,7 @@ body{
   -webkit-user-select: none;
   -webkit-text-size-adjust: none;
   font-family: helvetica;
+  background-image: url('../img/bg.png');
 }
 
 h1{
@@ -31,7 +33,7 @@ h1{
 
 h2{
   color: #999;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 h3{
@@ -66,7 +68,6 @@ a:hover{
   right: 0;
   width: 100%;
  // overflow: auto;
-  background-image: url('../img/bg.png');
   overflow: auto;
 }
 
@@ -128,3 +129,16 @@ a:hover{
     text-align: center;
 }
 
+.badge {
+  white-space: normal !important;
+  display: inline-block;
+}
+
+.color-sample {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: none;
+  margin-left: 2px;
+  .round(5px);
+}

@@ -13,7 +13,8 @@ var SearchFormView = Backbone.View.extend({
         //'change #search_term': 'set_search_term',
         //'change #category_filter': 'set_category',
         //'change #order_by': 'set_order',
-        'click #submit_search': 'search'
+        'tap #submit_search': 'search',
+        'submit #search-form': 'search'
     },
     render: function(){
         var context = { 'cat_list': this.model.toJSON()};

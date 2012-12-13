@@ -11,9 +11,9 @@ var MappingMapView = Backbone.View.extend({
     },
     
     events: {
-		'click .show-current-location': 'show_current_location',
-		'click .back-to-map': 'back_to_map',
-		'click .zoom-to-item': 'show_item_on_map'
+		'tap .show-current-location': 'show_current_location',
+		'tap .back-to-map': 'back_to_map',
+		'tap .zoom-to-item': 'show_item_on_map'
 	},
 	
 	events_active: true,
@@ -91,7 +91,6 @@ var MappingMapView = Backbone.View.extend({
     	$content.html(self.item_cluster_view.render().el);
     	$content.fadeIn('fast', function(){
     		self.events_active = true;
-    		console.log(self.events_active);
     	});
     	self.item_cluster_view.scroll('cluster-content-view');
 		window.backbutton_func = function() {
@@ -177,11 +176,9 @@ var MappingMapView = Backbone.View.extend({
     		if (!this.item_cluster_view.events_active) return false;
     	}
     	if (this.events_active) {
-    		console.log("aca esta");
     		this.events_active = false;
     		return true;
     	} else {
-    		console.log("aca no esta");
     		return false;
     	} 
     }
