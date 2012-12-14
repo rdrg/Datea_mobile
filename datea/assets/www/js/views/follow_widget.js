@@ -95,8 +95,10 @@ var FollowWidgetBaseView = Backbone.View.extend({
 					self.render();
 					self.$el.removeClass('loading');
 					self.is_active = true;
+					if (self.options.object_type == 'dateaaction') localUser.follows_actions = true;
 					if (!localUser.attributes.follows) localUser.set('follows', []);
 					localUser.attributes.follows.push(self.model.toJSON());
+					if (self.options.follow_callback) self.options.follow_callback(model);
 				},
 				error: function(error) {
 					onOffline();
@@ -113,6 +115,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 					localUser.set('follows', _.reject(localUser.get('follows'), function (item){
 						if (item.id == id) return true;
 					}));
+					if(self.options.unfollow_callback) self.options.unfollow_callback();
 					self.model = new Follow({
 						object_type: self.model.get('object_type'),
 						object_id: self.model.get('object_id'),

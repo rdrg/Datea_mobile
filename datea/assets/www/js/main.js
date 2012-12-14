@@ -3,6 +3,7 @@ Backbone.View.prototype.close = function () {
         this.beforeClose();
     }
     if (this.scroller) this.scroller.destroy();
+    if (this.map) this.map.destroy();
     this.remove();
     this.unbind();
 };
@@ -146,10 +147,15 @@ var DateaRouter = Backbone.Router.extend({
         	this.actionListView = new ActionsView({
                 model: this.actionCollection,
         		user_model: localUser,
-                selected_mode : 'my_actions'                        
+                selected_mode : 'my_actions',
+                router: this                        
     	 	});
         }else{
+        	if (this.current_action_mode && this.current_action_mode != 'my_actions') {
+        		this.actionListView.page = 0;
+        	}
         	this.actionListView.selected_mode = 'my_actions';
+        	this.actionListView.delegateEvents();
         	$.extend(this.actionListView.options, {
         		search_term: '-',
         		category_filter: '-',
@@ -157,6 +163,7 @@ var DateaRouter = Backbone.Router.extend({
         	});
         }
         this.actionListView.params_to_default();
+        
     	this.showView('#main', this.actionListView);
     	this.actionListView.search_models();
         this.renderHeader('actions', 'my_actions');
@@ -165,26 +172,40 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     actionDetail: function(actionid){
+    	
+    	this.back_to_action = actionid;
+    	
         if(!this.actionModel){
             this.actionModel = new Action();
         }
-        this.actionModel.url = api_url + "/api/v1/mapping_full/" + actionid + '/';
+        this.actionModel.url = api_url + "/api/v1/mapping/" + actionid + '/';
         var self = this;
-        this.actionModel.fetch({
-            success: function(){
-                //console.log("action fetched");
-                if(!this.actionView){
-                    self.actionView = new ActionView({model: self.actionModel});
-                }
-                self.showView('#main', self.actionView);
-                self.renderNavigation('general');
-            },
-            error: function(error){
-                onOffline();
+        
+        if (this.actionModel.get('id') == actionid) {
+        	
+        	if(!this.actionView){
+                self.actionView = new ActionView({model: self.actionModel, router: this});
             }
-        });
+            self.showView('#main', self.actionView);
+            self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());
+             
+        }else{
+	        this.actionModel.fetch({
+	            success: function(){
+	                //console.log("action fetched");
+	                if(!this.actionView){
+	                    self.actionView = new ActionView({model: self.actionModel, router: self});
+	                }
+	                self.showView('#main', self.actionView);
+	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON()); 
+	            },
+	            error: function(error){
+	            	self.navigate(self.last_route, {trigger: false, replace: true});
+	                onOffline();
+	            }
+	        });
+	    }
     },
-
          
 	createReport: function(mapid) {
         
@@ -192,7 +213,7 @@ var DateaRouter = Backbone.Router.extend({
         
         if (!this.actionModel) {
     		this.actionModel = new Action({id: mapid});
-    		this.actionModel.urlRoot = '/api/v1/mapping_full';
+    		this.actionModel.urlRoot = '/api/v1/mapping';
     	}else if (this.actionModel.get('id') == mapid) {
     		do_fetch = false;
     	}
@@ -233,14 +254,11 @@ var DateaRouter = Backbone.Router.extend({
        
 	mappingMap: function(mapid, callback_func, zoom_item_id) {
 		
-		//mapid = 16;
-    	
     	var do_fetch = true;
     	
-    	if (!this.actionModel) {
-    		this.actionModel = new Action({id: mapid});
-    		this.actionModel.urlRoot = '/api/v1/mapping_full';
-    	}else if (this.actionModel.get('id') == mapid) {
+    	if (!this.actionModel.get('map_items')) {
+    		this.mapItems = new MapItemCollection();
+    	} else if (this.actionModel.get('id') == mapid && this.actionModel.get('map_items')) {
     		do_fetch = false;
     	}
         
@@ -252,20 +270,27 @@ var DateaRouter = Backbone.Router.extend({
     	
     	if (do_fetch) {
     		var self = this;
-    		this.actionModel.fetch({
+    		this.mapItems.fetch({
+    			data: {
+    				published: 1,
+    				action: mapid,
+    				order_by: '-created',
+    			},
     			success: function () {
+    				self.actionModel.set('map_items', self.mapItems.toJSON(), {silent: true});
 					self.showView('#main', self.mappingMapView);
 					self.mappingMapView.loadMap(zoom_item_id);
 					if (typeof(callback_func) != 'undefined') callback_func();
 					self.renderNavigation('dateo', 'ftr_dateo', self.actionModel.toJSON());
 				},
-				error: function(error) {
+				error: function(model,error) {
+					console.log(error);
 	                onOffline();
 				}
 			});
+			
 		}else{
 			this.showView('#main', this.mappingMapView);
-			this.mappingMapView.undelegateEvents();
 			this.mappingMapView.delegateEvents();
 			this.mappingMapView.loadMap(zoom_item_id);
 			if (typeof(callback_func) != 'undefined') callback_func();
@@ -320,7 +345,7 @@ var DateaRouter = Backbone.Router.extend({
 	                self.showView("#main", self.searchFormView );
 	            },
 	            error: function(error){
-	            	this.navigate(this.last_route, {trigger: false, replace: true});
+	            	self.navigate(self.last_route, {trigger: false, replace: true});
 	                onOffline();
 	            }
 	        });
@@ -329,6 +354,7 @@ var DateaRouter = Backbone.Router.extend({
 	    }
         this.renderNavigation('general');
         this.renderHeader('actions', 'nav_srch');
+        this.action_reset = true;
     },
 
     searchQuery : function(term, cat, order){
@@ -343,21 +369,26 @@ var DateaRouter = Backbone.Router.extend({
                 selected_mode : 'all_actions',
                 search_term: term,
                 category_filter: cat,
-                order_by: order                    
+                order_by: order,
+                router: this                  
     	 	});
         }else{
+            if (this.action_reset || (this.current_action_mode && this.current_action_mode != 'all_actions')) {
+            	this.actionListView.page = 0;
+            	this.action_reset = undefined;
+            }
             this.actionListView.selected_mode = 'all_actions';
-            this.actionListView.page = 0;
             $.extend(this.actionListView.options, {
         		search_term: term,
         		category_filter: cat,
         		order_by: order,
         	});
+			this.actionListView.delegateEvents();
         }
     	this.showView('#main', this.actionListView);
     	this.actionListView.search_models();
        	this.renderNavigation('general', 'ftr_actions');
-       	this.renderHeader('actions', 'nav_srch');
+       	this.renderHeader('actions');
     },
     
     
@@ -620,12 +651,10 @@ function init_links() {
 		} 
 		dateaApp.navigate(href, {trigger: true});
 	});
-	
 	$(document).on('click', '.link, a', {}, function(ev){
 		ev.stopPropagation();
 		ev.preventDefault();
 	});
-
 }
 
 function onKBHide() {

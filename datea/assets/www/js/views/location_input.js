@@ -142,5 +142,6 @@ window.LocationInputView = Backbone.View.extend({
 				enableHighAccuracy: true
 			}
     	);
-    }	
+    },
+  	
 });

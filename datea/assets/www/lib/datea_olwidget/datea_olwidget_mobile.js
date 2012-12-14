@@ -282,11 +282,11 @@ olwidget.Map = OpenLayers.Class(OpenLayers.Map, {
     	var models = []; 
     	if (feature.cluster) {
     		for (var i = 0; i < feature.cluster.length; i++) {
-    			var id = feature.layer.mapItems.url+feature.cluster[i].item_id+'/';
+    			var id = "/api/v1/map_item/"+feature.cluster[i].item_id+'/';
     			models.push(feature.layer.mapItems.get(id));
     		}
     	}else{
-    		var id = feature.layer.mapItems.url+feature.item_id+'/';
+    		var id = "/api/v1/map_item/"+feature.item_id+'/';
     		models.push(feature.layer.mapItems.get(id));
     	}
     	if (this.showItemsCallback) this.showItemsCallback(new MapItemCollection(models), this.mappingView);

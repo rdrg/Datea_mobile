@@ -36,12 +36,21 @@ var ActionView = Backbone.View.extend({
         }
         this.$el.html(this.template(mdl));
         
+        var self = this;
+        var follow_callback = function () {
+        	if (self.options.router.current_action_mode == 'my_actions') {
+        		self.options.router.action_reload = true;
+        	}
+        }
+        
         // follow widget
         var f_options = {
   				object_type: 'dateaaction',
 				object_id: this.model.get('id'),
 				followed_model: this.model,
 				silent: true,
+				follow_callback: follow_callback,
+				unfollow_callback: follow_callback
   			}
   		if (localUser.get('id') == this.model.get('user').id) {
   			f_options.read_only = true;

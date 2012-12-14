@@ -1,22 +1,20 @@
-<div class="actions_action">
-    <% if (!is_active) { %>
-        <div class="expired">finalizada</div>
-    <% } %>
-    <a href="#action/<%= id %>" class="action_detail clearfix">
-        <div class="action_img">
-            <img src="<%= api_url %><%= image %>"/>    
+<% if (!is_active) { %>
+    <div class="expired">finalizada</div>
+<% } %>
+<a href="#action/<%= id %>" class="action_detail clearfix">
+    <div class="action_img">
+        <img src="<%= api_url %><%= image_thumb %>"/>    
+    </div>
+    <div class="action_info">
+        <div class="action_name"><%= name %></div>
+        <div class="action_stats clearfix">
+            <% if (item_count > 0) { %>
+                <%= item_count %> dateos <span class="sep">|</span>
+            <% } if (user_count) { %>
+                <%= user_count %> usuarios<span class="sep">|</span>
+            <% } %>
         </div>
-        <div class="action_info">
-            <div class="action_name"><%= name %></div>
-            <div class="action_stats clearfix">
-                <% if (item_count > 0) { %>
-                    <%= item_count %> dateos <span class="sep">|</span>
-                <% } if (user_count) { %>
-                    <%= user_count %> usuarios<span class="sep">|</span>
-                <% } %>
-            </div>
-        </div>
-    </a>
-</div>
+    </div>
+</a>
 <!--<hr class="action_separator">-->
 

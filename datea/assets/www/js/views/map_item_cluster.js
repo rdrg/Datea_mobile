@@ -18,7 +18,6 @@ var MapItemClusterView = Backbone.View.extend({
 			page: this.page,
 			total_items: this.collection.length,
 		};
-		
 		var item_view = new MapItemDetailView({model: this.collection.models[this.page], parentView: this});
 		this.$el.html(this.template(context));
 		this.$el.find('.current-item-content').html(item_view.render().el);

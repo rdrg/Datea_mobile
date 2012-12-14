@@ -172,9 +172,6 @@ var MappingMapView = Backbone.View.extend({
     },
     
     check_events_active: function () {
-    	if (this.item_cluster_view) {
-    		if (!this.item_cluster_view.events_active) return false;
-    	}
     	if (this.events_active) {
     		this.events_active = false;
     		return true;
