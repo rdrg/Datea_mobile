@@ -1,8 +1,8 @@
 
 This project ships with multiple third party software libraries like:
-Openlayers, Twitter Bootstrap, jQuery etc. each with its own licensing.
+Cordova/Phonegap, Openlayers, Twitter Bootstrap, jQuery etc. each with its own licensing.
 
-The Datea plattform code is licensed (if not otherwise noted) as follows:
+The Datea mobile code is licensed (if not otherwise noted) as follows:
 
 Copyright (C) 2012 La Factura, all rights reserved.
 
