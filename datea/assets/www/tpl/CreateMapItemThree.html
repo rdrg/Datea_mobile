@@ -1,0 +1,26 @@
+<div class="create-mapitem-confirm">
+	<p class="subtitle">
+	<strong>Confirma tu dateo:</strong>
+	</p>
+	
+	<% if (typeof(category) != 'undefined') { %>
+	<div>
+	    <span class="label" style="background-color: <%= category.color %>"><%= category_name %></span>   
+	</div>
+	<% } %>
+	
+	<div class="description">
+	   <p>
+	   <%= content %>
+	   </p>
+	</div>
+	
+	<p id="image_container">
+	    <% if (typeof(imageURI) !== "undefined"){ %>
+	    	<img src="<%= imageURI %>" alt="" />
+	    <% } %>
+	</p>
+	
+	<p class="send-button"><button class="btn btn-large datea_btn_gry" style="display: block" id="next_button">Crear dateo!</button></p>
+	
+</div>

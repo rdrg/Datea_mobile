@@ -1,0 +1,14 @@
+<div class="item-row">
+	
+	<div class="item-image">
+		<!--<a href="#user/<>" title="{{ username }}">-->
+			<img src="<%= api_url %><%= user_image %>" alt="">
+		<!-- </a> -->
+	</div>
+	<div class="item-content">
+		<div class="item-title"><%= title_html %></div>
+		<div class="item-date"><%= created %></div>
+		<% if (extract && extract != '') { %><div class="item-extract"><%= extract %></div><% } %>
+		<a class="more-link" href="#<%= link %>">leer más</a>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<div class="custom-select-box">
+	<div class="current-option opt-content">
+		<% if (typeof(selected_option.color) != "undefined") { %>
+			<div class="opt-color"><div class="color-sample" style="background-color: <%= selected_option.color %>;">&nbsp;</div></div>
+		<% } %>
+		<div class="opt-label"><%= selected_option.label %></div>
+	</div>
+</div>

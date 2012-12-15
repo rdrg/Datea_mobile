@@ -1,11 +1,124 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    
     <title>Datea</title>
-    <script type="text/javascript" charset="utf-8" src="js/cordova-1.7.0.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="css/master.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="lib/openlayers/theme/default/style.mobile.css" type="text/css">
+    <!--<script src="http://192.168.2.113:8080/target/target-script-min.js#anonymous"></script>-->
   </head>
-  <body>
-    <h1>Datea mobile 0.0</h1>
+
+  <body onload="onLoad()" class="with-footer">
+   
+		<div id="header"></div>
+		
+		<div id="main"></div>
+ 
+		<div id="footer"></div>
+		
+        <div id="overlay" ></div>
+        
+        <div id="map_overlay"></div>
+        
+        <div id="spinner"></div>
+    
+
+    <script src="lib/cordova-2.2.0.js"></script>
+    <script src="lib/json2.js"></script>
+    <script src="lib/jquery-1.8.3.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/backbone-min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/backbone-tastypie.js"></script>
+    <script src="lib/backbone_filters.js"></script>
+    <script src="lib/iscroll.js"></script>
+    <script src="lib/jquery.mobile.events.min.js"></script>
+    <!--<script src="lib/hammer.js"></script>-->
+    <!--<script src="lib/jquery.hammer.js"></script>-->
+    <script src="lib/jquery.autosize-min.js"></script>
+    <!--<script src="lib/backstack-min.js"></script>-->
+    <script src="lib/date.format.js"></script>
+    <script src="js/misc/utils.js"></script>
+	<script src="js/misc/backbone_view_scroll.js"></script>
+	<script src="js/misc/main_event_functions.js"></script>
+	<script src="js/misc/device_wrappers.js"></script>
+	<script src="js/config.js"></script>
+	
+    <script src="js/models/session.js"></script>
+    <script src="js/models/localSession.js"></script>
+    <script src="js/models/user.js"></script>
+    <script src="js/models/profile.js"></script>
+    <script src="js/models/image.js"></script>
+    <script src="js/models/action.js"></script>
+    <script src="js/models/map_item.js"></script>
+    <script src="js/models/nav_bar.js"></script>
+    <script src="js/models/comment.js"></script>
+    <script src="js/models/map_item_response.js"></script>   
+    <script src="js/models/follow.js"></script>   
+    <script src="js/models/vote.js"></script>
+    <script src="js/models/history.js"></script>      
+    <script src="js/models/category.js"></script>      
+
+    <script src="js/collections/actions.js"></script>
+    <script src="js/collections/images.js"></script>
+    <script src="js/collections/map_items.js"></script>
+    <script src="js/collections/comments.js"></script>
+    <script src="js/collections/map_item_responses.js"></script>     	
+    <script src="js/collections/follows.js"></script>     
+    <script src="js/collections/votes.js"></script> 
+    <script src="js/collections/history.js"></script>      
+    <script src="js/collections/categories.js"></script>      
+
+	<!-- map stuff -->    
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
+	<script src="lib/openlayers/OpenLayers.js?mobile"></script>
+    <script src="lib/datea_olwidget/datea_olwidget_mobile.js"></script>
+    
+    <script src="js/views/home.js"></script>
+    <script src="js/views/header.js"></script>
+    <script src="js/views/about.js"></script>
+    <script src="js/views/login.js"></script>
+    <script src="js/views/register.js"></script>
+    <script src="js/views/register_success.js"></script>
+    <script src="js/views/profile.js"></script>
+    <script src="js/views/profileEdit.js"></script>
+    <script src="js/views/actions.js"></script>
+    <script src="js/views/action.js"></script>
+    <script src="js/views/action_item.js"></script>
+    <script src="js/views/loggedin_header.js"></script>
+    <script src="js/views/loggedout_header.js"></script>
+    <script src="js/views/action_header.js"></script>
+    <script src="js/views/first_header.js"></script>   
+    <script src="js/views/map_item_list.js"></script>
+    <script src="js/views/create_map_item.js"></script>
+    <script src="js/views/create_map_item_one.js"></script>
+    <script src="js/views/create_map_item_three.js"></script>   
+    <script src="js/views/create_map_item_four.js"></script>
+    <script src="js/views/nav_bar.js"></script>
+    <script src="js/views/nav_bar_dateo.js"></script>
+    <script src="js/views/nav_bar_welcome.js"></script>
+    <script src="js/views/nav_bar_back.js"></script>
+    <script src="js/views/mapping_map.js"></script>
+    <script src="js/views/map_item_detail.js"></script>
+    <script src="js/views/map_item_cluster.js"></script>
+    <script src="js/views/location_input.js"></script>
+    <script src="js/views/comment.js"></script>
+    <script src="js/views/comment_list.js"></script>
+    <script src="js/views/map_item_response.js"></script>
+    <script src="js/views/follow_widget.js"></script>
+    <script src="js/views/vote_widget.js"></script>
+    <script src="js/views/comment_widget.js"></script>
+    <script src="js/views/history_item_view.js"></script>
+    <script src="js/views/history_list_view.js"></script>
+    <script src="js/views/search_form.js"></script>
+    <script src="js/views/select_image_overlay.js"></script>
+    <script src="js/views/custom_select_box.js"></script>
+
+    <script src="js/main.js"></script>
+
   </body>
 </html>
-

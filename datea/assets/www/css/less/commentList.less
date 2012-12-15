@@ -1,0 +1,46 @@
+.comment-list{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  
+  .comment:last-child {
+    border-bottom: 0;
+  }
+}
+.comment{
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 5px;
+  padding: 5px 12px;
+  .comment-head{
+    margin-bottom: 5px;
+    .user{
+      color: @green;
+      margin-right: 8px;
+    }
+    .date{
+      font-size: 11px;
+      color: #aaa;
+    }
+  }
+  .comment-content{
+    margin-bottom: 10px;
+    .comment-text{
+      line-height: 15px;
+    }
+  }
+}
+
+.comment-form{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  
+  #comment-input{
+    -webkit-box-sizing: border-box;
+    width: 99%;
+    height: 63px;
+    margin-bottom: 20px;
+  }
+  button{
+    width: 100%;
+  }
+}

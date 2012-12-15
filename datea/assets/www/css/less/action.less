@@ -1,0 +1,114 @@
+#action_container{
+  .datea_container;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+  hr{
+    width: 100%;
+    border-top: 1px solid @gray-bg;
+    margin-bottom: 10px;
+  }
+}
+
+#action_header{
+  min-height: 60px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  .clearfix;
+  
+  #action_image{
+    .left;
+    width: 60px;
+    img{
+      width: 60px;
+    }
+  }
+  #action_info{
+    .left;
+    width: 70%;
+    padding-left: 10px;
+    h3{
+      line-height: 15px;
+      font-size: 14px;
+      margin-top: 0px;
+      margin-bottom: 3px;
+    }
+    span{
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+}
+
+#action_btns{
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  
+  .primary-buttons {
+    
+    text-align: center;
+  
+    #new_dateo{
+      .datea_btn_big;
+      margin-bottom: 30px;
+    }
+    
+    #browse_dateos{
+      .datea_btn_big;
+      margin-bottom: 30px;
+    }
+  }
+  
+  .btns-secondary {
+    .clearfix();
+    
+    .action_stats {
+      display: block;
+      float: right;
+      font-size: 12px;
+      color: #999;
+      padding-right: 15px;
+    }
+  }
+  
+	  /* action-days-left,  */
+	.action-active {
+		float: right;
+		margin-top:2px;
+		font-size: 12px;
+		color: #999;
+		.icono {
+			display: inline-block;
+			min-height: 14px;
+			width: 15px;
+			margin-right:4px;
+		}
+		&.action-days-left, .action-last-day {
+			.icono {
+				background: url(../img/action_active.png) no-repeat 0px center;
+			}
+		}
+		&.action-expired {
+			color: #e35b59;
+			.icono {
+				background: url(../img/action_active.png) no-repeat -15px center;
+			}
+		}
+	}
+}
+
+#action_footer{
+  margin-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  #action_about{
+     h4 {
+         margin-bottom: 2px;
+     }
+  }
+}

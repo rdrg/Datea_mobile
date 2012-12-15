@@ -1,0 +1,152 @@
+#header{
+  position: absolute;
+  z-index: 100;
+  right: 0px;
+  left: 0px;
+  width: 100%;
+  //height: 54px;
+  height: 48px;
+}
+
+.header-inner{
+  //padding: 10px;
+  .nav.pull-right {
+    margin-bottom: 0px;
+  }
+  .brand { 
+    display: inline-block;
+    line-height: 48px; 
+    padding-left: 10px;
+   }
+   .brand-loggedout {
+      display: inline-block;
+   }
+}
+
+#nav_drop{
+  width: 63px;
+  margin-left: -120px;
+  margin-top: 5px;
+  a{
+    font-weight: bold;
+    color: black;
+  }
+  a:active{
+    background-color: transparent;
+  }
+}
+
+#nav_srch{
+  a:active{
+    background-color: transparent;
+  }
+}
+
+.gradient_yellow{
+  background: #d2e303; /* Old browsers */
+  background: -moz-linear-gradient(top, #d2e303 0%, #ecff00 50%, #ecff00 51%, #d2e303 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d2e303), color-stop(50%,#ecff00), color-stop(51%,#ecff00), color-stop(100%,#d2e303)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #d2e303 0%,#ecff00 50%,#ecff00 51%,#d2e303 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #d2e303 0%,#ecff00 50%,#ecff00 51%,#d2e303 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #d2e303 0%,#ecff00 50%,#ecff00 51%,#d2e303 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #d2e303 0%,#ecff00 50%,#ecff00 51%,#d2e303 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d2e303', endColorstr='#d2e303',GradientType=0 ); /* IE6-9 */
+}
+
+//loggedOutHeader
+#headerOut{
+  position: absolute;
+  z-index: 100;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  width: 100%;
+  .gradient_yellow;  
+}
+
+//
+#datea_header{
+  margin: 0;
+  padding: 0;
+  li{
+    height: 48px;
+    //position: absolute;
+    //right: 70px;
+    //top: 0px;
+    padding-top: 0px;
+    float: left;
+    display: block;
+    
+    a {
+      padding: 0 6px;
+      display: block;
+      line-height: 48px;
+      height: 48px;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+  #nav_srch a {
+    width: 45px;
+    background: url(../img/icono_busqueda.png) no-repeat center center;
+    
+  }
+}
+
+//////// review, some things maybe are unsed!!
+.navbar-inner{
+  .gradient_yellow;
+  border-radius: 0px;
+  border: none;
+  img{
+    margin-top: 5px;
+    margin-left: 10px;
+  }
+}
+
+.navbar .nav > li > a{
+  color: #000;
+  font-weight: bold;
+  padding: 15px 15px 10px;
+  text-shadow: none;
+}
+
+.dropdown-menu{
+  background-color: @datea-dark;
+}
+
+.dropdown-menu li > a:active,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:active > a {
+  text-decoration: none;
+  background-color: @datea;
+  background-image: none;
+}
+
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:active {
+  background-color: @datea;
+  background-image: none;
+}
+
+.header_on{
+    background-color: @datea;
+    background-image: none;
+    //-webkit-box-shadow: 0px -6px 20px 0px #ccc;
+    -webkit-box-shadow: inset 4px 0px 6px -6px;
+    box-shadow: 4px 0px 5px -5px darken(@datea, 10%);
+    a {
+      -webkit-box-shadow: inset 4px 0px 6px -6px #999;
+      box-shadow: inset 4px 0px 6px -6px #999;
+    }
+}
+
+.logged-out-header {
+    padding: 10px 0;
+    .gradient_yellow;
+}
+
+.logged-in-header {
+   .gradient_yellow;
+}

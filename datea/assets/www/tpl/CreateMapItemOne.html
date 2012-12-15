@@ -1,0 +1,28 @@
+<div class="step_title">
+  <strong>Paso 1: </strong> 
+  <% if (has_categories) { %><span>Elige la categor&iacute;a apropiada:</span>
+  <% } else { %><span>Agrega una descripci&oacute;n e imagen (opcional): </span> <% } %>
+</div>
+
+<form class="form">
+	
+    <% if(has_categories){ %>
+    	
+    	<div class="select-box-view"></div>
+    	
+    <% } %>
+    
+   <% if (has_categories) { %>
+	   <div class="step_title">
+	       <span>Agrega una descripci&oacute;n e una imagen (opcional):</span>  
+	   </div>
+   <% } %>
+   
+    <textarea name='desc' id='description' placeholder="aqui la descripción"><% if (description) { %><%= description %><% } %></textarea>
+    
+    <div id="image_input" class="img-input-container">
+    	<div class="img-preview"><img id="dateo-img-preview" src="<% if (typeof(imageURI) != 'undefined') { %><%= imageURI %><% } %>" alt="" /></div>
+    	<div class="help-text">agrega una imagen (opcional)</div>
+	</div>
+</form>
+

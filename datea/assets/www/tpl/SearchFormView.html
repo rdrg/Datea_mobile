@@ -1,0 +1,39 @@
+<div id="wrapper">
+    <div id="search_form">
+        <h2>Buscar iniciativas</h2> 
+        <form id="search-form" class="form">
+            <div class="control-group">
+            	<div class="controls">
+            		<input type="text" id="search_term" placeholder="-- filtrar por frase --"></input>
+            	</div>
+            </div>
+            
+            <div class="control-group">
+            	<label class="control-label">Filtrar por Categor&iacute;a:</label>
+            	<div class="controls">
+            		<select id="category_filter" >
+		                    <option value="-" name="all">--todas--</option>
+		                <% _.each(cat_list, function(cat){ %>
+		                    <option value="<%= cat.id %>" name="<%= cat.name%>"><%= cat.name %></option>
+		                <% })%>
+		            </select>
+            	</div>
+            </div>
+
+            
+            
+            <div class="control-group">
+            	<label class="control-label">Ordenar por:</label>
+            	<div class="controls">
+            		 <select id="order_by"> 
+		                <option value="featured" name="destacadas" selected="selected">Destacadas</option>
+		                <option value="created" name="recientes">Recientes</option>
+		                <option value="distance" name="cercanas">Cercanas</option>
+		            </select>
+            	</div>
+            </div>
+
+            <span href="#" id="submit_search" class="btn datea_btn_gry">Mostrar Resultados</span>
+        </form>
+    </div>
+</div>

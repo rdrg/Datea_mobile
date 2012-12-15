@@ -1,0 +1,72 @@
+<div id="wrapper">
+  <div id="createReport_container">
+    
+    <% if (step === 1){%>
+        <div id="create_mapitem_header">
+          <div id="create_container">
+          	
+            <div id="bck_btn">&nbsp;</div>  
+
+			<div id="nxt_btn">
+              <span id="next_button" class="btn-arrow-right">siguiente<span class="pointer">&nbsp;</span></span>
+            </div> 
+          
+            <div id="create_title">
+                <span>Crear Dateo</span>
+            </div>
+  
+          </div>
+      </div>
+      
+    <% } else if (step === 2){ %>
+        <div id="create_mapitem_header_2">
+          <div id="create_container">
+            <div id="bck_btn">
+              <span id="back_button" class="btn-arrow-left">regresar<span class="pointer">&nbsp;</span></span>
+            </div>  
+          
+            <div id="nxt_btn">
+              <span id="next_button" class="btn-arrow-right">siguiente<span class="pointer">&nbsp;</span></span>
+            </div> 
+          
+            <div id="create_title">
+                <span>Crear Dateo</span>
+            </div>
+              
+          </div>
+          <div id="title">
+            <strong>Paso 2: </strong> <span>Ubica tu dateo en el mapa:</span>  
+          </div>
+        </div>    
+      
+    <% } else if (step === 3){ %>
+        <div id="create_mapitem_header">
+          <div id="create_container">
+            <div id="bck_btn">
+              <span id="back_button" class="btn-arrow-left">regresar<span class="pointer">&nbsp;</span></span>
+            </div>
+            
+            <div id="nxt_btn">&nbsp;</div>
+          
+            <div id="create_title">
+                <span>Crear Dateo</span>
+            </div>
+               
+          </div>
+        </div>
+    <% } else if (step === 4){ %>
+        <div id="create_mapitem_header">
+          <div id="create_container"> 
+          
+            <div id="create_title">
+                <span>Dateo Creado</span>
+            </div>
+          </div>
+        </div>
+    <% }%>
+    
+    <div id="create_mapitem_content">
+        
+    </div>
+  </div>
+</div>
