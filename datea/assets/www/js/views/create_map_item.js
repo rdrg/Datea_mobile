@@ -106,7 +106,7 @@ var CreateMapItemView = Backbone.View.extend({
                 mapCenter: this.options.mappingModel.get('center'),
                 mapBoundary: this.options.mappingModel.get('boundary')
             });
-            $content.html(this.locationView.render().el); 
+            $content.html(this.currentView.render().el); 
             this.currentView.loadMap();
 
             //this.step = 3;
@@ -204,6 +204,7 @@ var CreateMapItemView = Backbone.View.extend({
 
 	saveMapItem: function(){
 	    var self = this;
+	    /*
 	    var count = this.options.mappingModel.get('item_count');
 	    count++; 
 	    var mapItems = this.options.mappingModel.get('map_items');
@@ -211,7 +212,7 @@ var CreateMapItemView = Backbone.View.extend({
 	    this.options.mappingModel.set({
 	        map_tems: mapItems,
 	        item_count: count
-	    });
+	    });*/
 	    this.model.save({}, {
 	        success: function(){
 	        	//console.log('map item after save: '+JSON.stringify(self.model.toJSON()));

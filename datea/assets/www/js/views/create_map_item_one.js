@@ -12,7 +12,7 @@ var CreateMapItemOne = Backbone.View.extend({
         });
         
         this.context = this.model.toJSON();
-        this.context.has_categories = cat_options.length > 0;
+        this.context.has_categories = cat_options.length > 1;
         this.context.cat_options = cat_options;
         this.context.step = this.options.step;
         this.context.description = this.options.content;

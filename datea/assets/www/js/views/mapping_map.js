@@ -126,8 +126,8 @@ var MappingMapView = Backbone.View.extend({
 			}else{
 				var id = parseInt(arg);
 			}
-			var bone_id = this.map_items.url+id+'/';
-	    	var mdl = this.map_items.get(bone_id)
+			var mdl_id = '/api/v1/map_item/'+id+'/';
+	    	var mdl = this.map_items.get(mdl_id)
 		}
 		
 		//$('#mapping-map-view').fadeIn('fast');

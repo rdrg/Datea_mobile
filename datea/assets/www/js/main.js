@@ -191,10 +191,12 @@ var DateaRouter = Backbone.Router.extend({
              
         }else{
 	        this.actionModel.fetch({
-	            success: function(){
+	            success: function(model, response){
 	                //console.log("action fetched");
-	                if(!this.actionView){
+	                if(!self.actionView){
 	                    self.actionView = new ActionView({model: self.actionModel, router: self});
+	                }else{
+	                	self.actionView.delegateEvents();
 	                }
 	                self.showView('#main', self.actionView);
 	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON()); 
@@ -300,7 +302,7 @@ var DateaRouter = Backbone.Router.extend({
     },
     
     mapItemDetail: function(mapping_id, item_id) {
-		
+
 		var self = this;
     	this.mappingMap( mapping_id, function(){
     		// find model data in actionModel map items
@@ -311,8 +313,6 @@ var DateaRouter = Backbone.Router.extend({
 	    	var clusterCol = new MapItemCollection([item_model]);
     		self.mappingMapView.show_cluster_content_callback(clusterCol, self.mappingMapView);
     	}, item_id);
-        this.renderNavigation('dateo', 'ftr_dateo', mapping_id);
-        this.renderHeader('general');
     },
     
     openHistory: function () {    	
@@ -651,10 +651,11 @@ function init_links() {
 		} 
 		dateaApp.navigate(href, {trigger: true});
 	});
+	/*
 	$(document).on('click', '.link, a', {}, function(ev){
 		ev.stopPropagation();
 		ev.preventDefault();
-	});
+	});*/
 }
 
 function onKBHide() {

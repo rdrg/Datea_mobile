@@ -114,7 +114,6 @@ var ActionsView = Backbone.View.extend({
             }
         }
         var param_str = JSON.stringify(this.params);
-
         if (this.options.router.current_action_params 
         	&& param_str == this.options.router.current_action_params 
         	&& this.selected_mode == this.options.router.current_action_mode
