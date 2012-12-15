@@ -76,6 +76,8 @@ var DateaRouter = Backbone.Router.extend({
         else {
             if(!this.homeView) {
                 this.homeView = new HomeView();
+            }else{
+            	this.homeView.delegateEvents();
             }
             this.showView('#main', this.homeView);
             this.renderHeader('loggedout');
@@ -172,8 +174,6 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     actionDetail: function(actionid){
-    	
-    	this.back_to_action = actionid;
     	
         if(!this.actionModel){
             this.actionModel = new Action();

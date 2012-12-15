@@ -1,7 +1,7 @@
 <% if (!is_active) { %>
     <div class="expired">finalizada</div>
 <% } %>
-<a href="#action/<%= id %>" class="action_detail clearfix">
+<div data-nav="action/<%= id %>" class="action_detail clearfix">
     <div class="action_img">
         <img src="<%= api_url %><%= image_thumb %>"/>    
     </div>
@@ -15,6 +15,6 @@
             <% } %>
         </div>
     </div>
-</a>
+</div>
 <!--<hr class="action_separator">-->
 
