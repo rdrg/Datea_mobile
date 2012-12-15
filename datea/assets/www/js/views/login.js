@@ -72,7 +72,7 @@ window.LoginView = Backbone.View.extend({
                 
                 } else if(response.error) {
                     //$("#result").html(response.error);
-                    alert("Usuario o contraseña invalidos");
+                    notify_alert("Error en logeo", "Usuario o contraseña invalidos");
                 }
             },            
             error: function(model, xhr, options) {

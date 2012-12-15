@@ -152,10 +152,15 @@ var ActionsView = Backbone.View.extend({
     },
 
     location_err: function(error){
-        alert("location not available");
-        //falling back to created
-        this.params.order_by = 'created';
-        this.fetch_models();
+    	var self = this;
+    	notify_alert(
+    		'Error de ubicación', 
+    		'La ubicación no está disponible', 
+    		function(){
+    			//falling back to created
+    			self.params.order_by = 'created';
+        		self.fetch_models();
+    		});
     },
 
     loadMoreResults: function(ev) {

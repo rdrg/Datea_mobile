@@ -36,7 +36,7 @@ var SelectImageOverlayView = Backbone.View.extend({
                self.options.image_callback(imageURI);
             },
             function(message){
-            	alert(message);
+            	notify_alert('Error', message);
                	self.hideOverlay();
             },
             {
@@ -60,7 +60,7 @@ var SelectImageOverlayView = Backbone.View.extend({
                 self.options.image_callback(imageURI);
             },
             function(message){
-            	alert(message);
+            	notify_alert('Error', message);
                 self.hideOverlay();
             },
             {

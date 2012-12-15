@@ -37,19 +37,25 @@ var CreateMapItemView = Backbone.View.extend({
            		var tmp_cat_id =  this.model.get('category_id');
            		var tmp_desc = $('textarea').val();
            		if(!tmp_cat_id || !tmp_desc){
-           			alert("Los campos de categoria y descripción son obligatorios.");
+           			notify_alert(
+           				'Error de validación',
+           				"Los campos de categoria y descripción son obligatorios."
+           			);
            			this.events_active = true;
                 	return;
                 }
            	}else{
            		var tmp_desc = $('textarea').val();
            		if(!tmp_desc){
-           			alert("El campo de descripción es obligatorio.");
+           			notify_alert(
+           				'Error de validación',
+           				"El campo de descripción es obligatorio."
+           			);
            			this.events_active = true;
                 	return;
                 }
            	}
-            this.setDescription(); 
+            this.setDescription();
         }
 		
 		this.step++;
@@ -160,26 +166,6 @@ var CreateMapItemView = Backbone.View.extend({
            this.saveMapItem();
         }
     },
-     
-    browseImage: function(event){
-        event.preventDefault();
-        navigator.camera.getPicture(
-            function(imageURI){
-                //alert(imageURI);
-                $("#image_data").val(imageURI);
-            },
-            function(message){
-                alert(message);
-            },
-            {
-                quality: 50,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-                //destinationType: navigator.camera.DestinationType.DATA_URL,
-                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
-            }
-        );
-    },
 
     win: function(r){
 
@@ -246,7 +232,7 @@ var CreateMapItemView = Backbone.View.extend({
 
 	setDescription: function(){
         this.model.set({
-            content: $('textarea').val() 
+            content: $('textarea', this.$el).val() 
         });
     },
          

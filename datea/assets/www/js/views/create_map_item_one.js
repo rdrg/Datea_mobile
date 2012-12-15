@@ -57,6 +57,15 @@ var CreateMapItemOne = Backbone.View.extend({
 			        	$('textarea', self.$el).removeAttr('disabled');
 			        }, 0);
 			        self.options.parent_view.scroll_refresh();
+			        // if there's user input, override back function
+			        window.backbutton_func = function () {
+			        	notify_confirm(
+			        		'Alerta', 
+			        		'Al regresar pierdes los datos que ingresaste. Quieres proseguir?',
+			        		function () {
+			        			window.history.back();	
+			        		});	
+			        }
         		},
         		cancel_callback: function () {
         			setTimeout(function(){
@@ -75,6 +84,15 @@ var CreateMapItemOne = Backbone.View.extend({
         this.model.set({
             content: $('textarea').val() 
         });
+        // if there's user input, override back function
+        window.backbutton_func = function () {
+        	notify_confirm(
+        		'Alerta', 
+        		'Al regresar pierdes los datos que ingresaste. Quieres proseguir?',
+        		function () {
+        			window.history.back();	
+        		});	
+        }
      },
 
     addImageOverlay: function(event){
