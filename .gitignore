@@ -1,3 +1,6 @@
+#datea config file
+config.js
+
 # built application files
 *.apk
 *.ap_
@@ -24,6 +27,8 @@ tmp/**/*
 *.tmp
 *.bak
 *.swp
+*.swo
+*.swq
 *~.nib
 local.properties
 .classpath
