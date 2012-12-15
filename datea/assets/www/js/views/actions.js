@@ -16,13 +16,17 @@ var ActionsView = Backbone.View.extend({
 
     events: {
         'tap .load-more-results': 'loadMoreResults',
-        'tap .action_detail': 'setActive',
+        'tap .action_detail': 'openAction',
         'tap .action-reload': 'reload',
     },
     
-    setActive: function (ev) {
+    openAction: function (ev) {
     	ev.preventDefault();
-    	$(ev.currentTarget).addClass('active');
+    	var $target = $(ev.currentTarget);
+    	this.last_scrollTop = this.scroller.y;
+    	$target.addClass('active');
+    	var url = $target.data('nav');
+    	this.options.router.navigate(url, {trigger: true});
     },
 
     render: function () {
@@ -42,6 +46,12 @@ var ActionsView = Backbone.View.extend({
         	$('.load-more-items', this.$el).addClass('hide');
         	$('.search-actions', this.$el).addClass('hide'); 
         };
+        
+        if (this.last_scrollTop && 
+        	(this.selected_mode != this.options.router.current_action_mode 
+        		|| this.options.router.action_reload)) {
+        	this.last_scrollTop = undefined;		
+        }
         
         this.params = {
             limit: this.items_per_page,
@@ -296,18 +306,16 @@ var ActionsView = Backbone.View.extend({
         this.scroll_refresh();
         
         // scroll to last seen action
-        if (this.options.router.back_to_action) {
+        if (this.last_scrollTop && this.last_scrollTop < 0) {
+        	console.log(this.last_scrollTop);
+        	var $wrapper = $('#wrapper', this.$el);
+        	$wrapper.css('visibility', 'hidden');
         	var self = this;
         	setTimeout(function(){
-        		var $curr_act = $('div#action-'+self.options.router.back_to_action);
-        		if ($curr_act.size() == 1) {
-	        		var scrolltop = $curr_act.position().top - (main_h-$curr_act.outerHeight(true))/3;
-	        		if (scrolltop > 0) {
-	        			self.scroller.scrollTo(0, -scrolltop, 0);
-	        		}
-	        		self.options.router.back_to_action = undefined;
-	        	}
-	        }, 100);
+	        	self.scroller.scrollTo(0, self.last_scrollTop, 0);
+	        	self.last_scrollTop = undefined;
+	        	$wrapper.css('visibility', 'visible');
+	        }, 50);
         }
         this.render_mode = 'new';
     }
