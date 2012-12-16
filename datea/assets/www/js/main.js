@@ -188,13 +188,13 @@ var DateaRouter = Backbone.Router.extend({
         if (this.actionModel.get('id') == actionid) {
         	
         	if(!this.actionView){
-                self.actionView = new ActionView({model: self.actionModel, router: this});
+                this.actionView = new ActionView({model: self.actionModel, router: this});
             }else{
-	            self.actionView.delegateEvents();
+	            this.actionView.delegateEvents();
 	        }
-            self.showView('#main', self.actionView);
-            self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());
-            self.setBackNavTo('actions');
+            this.showView('#main', self.actionView);
+            this.renderNavigation('dateo', 'none', self.actionModel.toJSON());
+            this.setBackNavTo('actions');
              
         }else{
 	        this.actionModel.fetch({
@@ -206,7 +206,7 @@ var DateaRouter = Backbone.Router.extend({
 	                	self.actionView.delegateEvents();
 	                }
 	                self.showView('#main', self.actionView);
-	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());
+	                self.renderNavigation('dateo', 'none', self.actionModel.toJSON());
 	                self.setBackNavTo('actions');   
 	            },
 	            error: function(error){
@@ -260,7 +260,7 @@ var DateaRouter = Backbone.Router.extend({
             }); 
             this.showView('#main', this.newMapItemView); 
             this.renderNavigation('dateo', 'ftr_new-dateo', this.actionModel.toJSON());
-            self.setBackNavTo('action/'+mapid);  
+            this.setBackNavTo('action/'+mapid);  
 	    }
     	this.renderHeader('general');
     },
@@ -295,6 +295,7 @@ var DateaRouter = Backbone.Router.extend({
 					self.mappingMapView.loadMap(zoom_item_id);
 					if (typeof(callback_func) != 'undefined') callback_func();
 					self.renderNavigation('dateo', 'ftr_dateo', self.actionModel.toJSON());
+					self.setBackNavTo('action/'+mapid); 
 				},
 				error: function(model,error) {
 					self.navigate(self.last_route, {trigger: false, replace: true});
@@ -308,6 +309,7 @@ var DateaRouter = Backbone.Router.extend({
 			this.mappingMapView.loadMap(zoom_item_id);
 			if (typeof(callback_func) != 'undefined') callback_func();
 			this.renderNavigation('dateo', 'ftr_dateo', this.actionModel.toJSON());
+			this.setBackNavTo('action/'+mapid); 
 		}
 	    this.renderHeader('general');
     },
