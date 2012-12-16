@@ -181,13 +181,20 @@ var DateaRouter = Backbone.Router.extend({
         this.actionModel.url = api_url + "/api/v1/mapping/" + actionid + '/';
         var self = this;
         
+        window.backbutton_func = function() {
+        	self.navigate('actions', {trigger: true, replace: true});
+        }
+        
         if (this.actionModel.get('id') == actionid) {
         	
         	if(!this.actionView){
                 self.actionView = new ActionView({model: self.actionModel, router: this});
-            }
+            }else{
+	            self.actionView.delegateEvents();
+	        }
             self.showView('#main', self.actionView);
             self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());
+            self.setBackNavTo('actions');
              
         }else{
 	        this.actionModel.fetch({
@@ -199,7 +206,8 @@ var DateaRouter = Backbone.Router.extend({
 	                	self.actionView.delegateEvents();
 	                }
 	                self.showView('#main', self.actionView);
-	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON()); 
+	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());
+	                self.setBackNavTo('actions');   
 	            },
 	            error: function(error){
 	            	self.navigate(self.last_route, {trigger: false, replace: true});
@@ -234,7 +242,8 @@ var DateaRouter = Backbone.Router.extend({
 	                    mappingModel: self.actionModel
 	                }); 
 	                self.showView('#main', self.newMapItemView);
-	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());   
+	                self.renderNavigation('dateo', 'ftr_new-dateo', self.actionModel.toJSON());
+	                self.setBackNavTo('action/'+mapid);   
 	            },
 	            error: function(error){
 	            	self.navigate(self.last_route, {trigger: false, replace: true});
@@ -251,6 +260,7 @@ var DateaRouter = Backbone.Router.extend({
             }); 
             this.showView('#main', this.newMapItemView); 
             this.renderNavigation('dateo', 'ftr_new-dateo', this.actionModel.toJSON());
+            self.setBackNavTo('action/'+mapid);  
 	    }
     	this.renderHeader('general');
     },
@@ -478,7 +488,19 @@ var DateaRouter = Backbone.Router.extend({
             });   
 
         }
-        
+    },
+    
+    setBackNavTo: function (url, options) {
+    	if (typeof(options) == 'undefined') {
+    		var options = {
+    			trigger: true,
+    			replace: true,
+    		}
+    	}
+    	var self = this;
+    	window.backbutton_func = function () {
+    		self.navigate(url, options);
+    	}
     }   
 });
 
@@ -538,9 +560,7 @@ function init_main () {
 	function () {
 		
 		init_autosize();
-		init_links();
-		init_kb_extra();
-		
+		init_links();		
 		
 		/******************* INIT AJAX *******************/
 		$.ajaxSetup({ 

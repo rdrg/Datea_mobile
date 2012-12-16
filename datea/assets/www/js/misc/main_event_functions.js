@@ -27,37 +27,31 @@ function init_links() {
 
 /***********************  SOFTKEYBOARD  ************************/
 
+var kbhide_interval;
+var kb_is_open = false;
+
 function onKBHide() {
-	if (input_focused) {
-		footer_visible = footer_was_visible;
-		return;
-	}
-	var inter = setInterval(function(){
+	if (typeof(kbhide_interval) != 'undefined') clearInterval(kbhide_interval);
+	var attempts = 20;
+	var i = 0;
+	kbhide_interval = setInterval(function(){
 		if ($(window).height() >= window_h) {
-			clearInterval(inter);
+			clearInterval(kbhide_interval);
 			if (footer_was_visible) showFooter('show');
 			if (window.dateaApp.currentView.scroller) window.dateaApp.currentView.scroll_refresh();
+			kb_is_open = false;
+		}else{
+			i++;
+			if (i == 20) clearInterval(kbhide_interval);
 		}
-	}, 100);
+	}, 50);
 }
 
 function onKBShow() {
-	footer_was_visible = footer_visible;
+	if (typeof(kbhide_interval) != 'undefined') clearInterval(kbhide_interval);
+	if (!kb_is_open) footer_was_visible = footer_visible;
 	showFooter('hide');
-}
-
-input_focused = false;
-function init_kb_extra() {
-	
-	$(document).on('focus','input, textarea', {}, function(){
-		input_focused = true;
-		setTimeout(function(){
-			input_focused = false;
-		}, 700)
-	});
-	$(document).on('blur','input, textarea', {}, function(){
-		input_focused = false;
-	});
+	kb_is_open = true;
 }
 
 
