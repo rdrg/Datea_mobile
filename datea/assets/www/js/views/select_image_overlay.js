@@ -41,7 +41,8 @@ var SelectImageOverlayView = Backbone.View.extend({
             },
             {
                 quality: 50,
-                destinationType: navigator.camera.DestinationType.FILE_URI
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                correctOrientation: true,
             }
         );
      },

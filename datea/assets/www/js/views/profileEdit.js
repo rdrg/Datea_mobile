@@ -137,8 +137,9 @@ var ProfileEditView = Backbone.View.extend({
         
         // hide keyboard, but remember if it was hidden
         onKBShow();
-        $("#overlay").html(this.imageOverlay.render().el);
-        $("#overlay").slideDown(300, function(){
+        var $overlay = $("#overlay");
+        $#overlay.html(this.imageOverlay.render().el);
+        $overlay.slideDown(300, function(){
         	self.imageOverlay.is_active = true;
         });
     }

@@ -106,14 +106,16 @@ var MappingMapView = Backbone.View.extend({
     
     back_to_map: function (ev) {
     	if (typeof(ev) != 'undefined') ev.preventDefault();
-    	window.backbutton_func = undefined;
+    	window.backbutton_func = function () {
+			dateaApp.setBackNavTo('action/'+self.model.get('id'));
+		}
     	if (!this.check_events_active()) return;
     	var self = this;
     	this.$el.find('.cluster-content-view').fadeOut("fast", function(){
     		self.events_active = true;
     		self.item_cluster_view.close();
     		self.item_cluster_view = undefined;
-    	}) ;
+    	});
     },
     
     zoom_to_item: function(arg) {
