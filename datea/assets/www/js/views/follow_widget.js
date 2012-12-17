@@ -100,7 +100,7 @@ var FollowWidgetBaseView = Backbone.View.extend({
 					localUser.attributes.follows.push(self.model.toJSON());
 					if (self.options.follow_callback) self.options.follow_callback(model);
 				},
-				error: function(error) {
+				error: function() {
 					onOffline();
 					self.is_active = true;
 				}
