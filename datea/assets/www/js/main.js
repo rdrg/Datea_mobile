@@ -24,8 +24,8 @@ var DateaRouter = Backbone.Router.extend({
         "about": "about",
         "search":"searchForm",
         "search/:term/:cat/:order": "searchQuery",
-        "user/:userid": "userLoadProfile",
-        "user/edit/:userid": "userEditProfile",
+        "user": "userLoadProfile",
+        "user/edit": "userEditProfile",
         "actions": "actionList",
         "action/:actionid": "actionDetail",
         "mapping/:mapid/report/create": "createReport",
@@ -122,7 +122,7 @@ var DateaRouter = Backbone.Router.extend({
 	    dateaApp.navigate("/", { trigger: true });
 	},
 	
-	userLoadProfile: function (userid) {
+	userLoadProfile: function () {
         this.profileView = new ProfileView({ model: localUser });
         this.showView('#main', this.profileView);
         if (this.profileView.postRender){
@@ -132,7 +132,7 @@ var DateaRouter = Backbone.Router.extend({
         this.renderHeader('general');
     },
 	
-	userEditProfile: function (userid) {
+	userEditProfile: function () {
         this.profileEditView = new ProfileEditView({ model: localUser });
         this.showView('#main', this.profileEditView);
     	this.renderNavigation('general', 'ftr_profile');
