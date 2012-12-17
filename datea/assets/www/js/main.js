@@ -506,9 +506,6 @@ var DateaRouter = Backbone.Router.extend({
     }   
 });
 
-
-$(document).ready(function(){ init_main(); });
-
 	
 function init_main () {
 	
@@ -646,6 +643,7 @@ function init_main () {
 
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
+	init_main();
 }
 
 function onDeviceReady() {

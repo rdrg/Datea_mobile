@@ -104,6 +104,14 @@ var CreateMapItemOne = Backbone.View.extend({
         		self.options.parent_view.imageURI = imageURI;
         		$('#dateo-img-preview', self.$el).attr('src', imageURI);
         		self.options.parent_view.scroll_refresh();
+        		window.backbutton_func = function () {
+		        	notify_confirm(
+		        		'Alerta', 
+		        		'Al regresar pierdes los datos que ingresaste. Quieres proseguir?',
+		        		function () {
+		        			window.history.back();	
+		        		});	
+		        }
         	}, 
         });
         
