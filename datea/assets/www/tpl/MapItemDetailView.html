@@ -4,22 +4,23 @@
 	
 	<div class="head post-user-data">
 		<div class="user-picture">
-			<img src="<%= api_url+user.image_small %>" alt="<%= user.username %>" />
+			<img src="<%= api_url+user.image_small %>" alt="" />
 		</div>
 		<div class="data">
 			<div class="username">por <b><%= user.username %></b></div>
 			<div class="date"><%= created %></div>
 		</div>
+		<a class="zoom-to-item" href="#" data-id="<%= id %>" title="open in map">
+			<i data-id="<%= id %>" class="crosshair"></i>
+		</a>
 	</div>
 	
 	<div class="content">
-		
-		<div class="category">
-			<% if (category){ %> <span class="badge" style="background-color: <%= color %>"><%= category_name %></span>&nbsp;<% } %>
-			<a class="zoom-to-item" href="#" data-id="<%= id %>" title="open in map">
-				<i data-id="<%= id %>" class="crosshair"></i>
-			</a>
-		</div>
+		<% if (category){ %> 
+			<div class="category">
+				<span class="badge" style="background-color: <%= color %>"><%= category_name %></span>
+			</div>
+		<% } %>
 		<div class="field"><%= content %></div>
 	</div>
 	
