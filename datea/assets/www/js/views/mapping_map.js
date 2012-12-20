@@ -119,6 +119,7 @@ var MappingMapView = Backbone.View.extend({
     },
     
     zoom_to_item: function(arg) {
+    	console.log('zoom to ITEM!')
     	if (typeof(arg.attributes) != 'undefined'){
 			var mdl = arg;
 		}else{
@@ -131,7 +132,7 @@ var MappingMapView = Backbone.View.extend({
 			var mdl_id = '/api/v1/map_item/'+id+'/';
 	    	var mdl = this.map_items.get(mdl_id)
 		}
-		
+		console.log(mdl.get('id'));
 		//$('#mapping-map-view').fadeIn('fast');
 		var pos = mdl.get('position').coordinates;
     	var locInfo = {lat: pos[1], lng: pos[0], zoom: 17};

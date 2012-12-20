@@ -283,7 +283,7 @@ var DateaRouter = Backbone.Router.extend({
     	if (!this.actionModel || this.actionModel.get('id') != mapid) {
     		fetch_complete = true;
     	} else if (this.actionModel.get('id') == mapid && this.actionModel.get('map_items')) {
-    		fetch_map_item = false;
+    		fetch_map_items = false;
     	}
     	
     	if(!this.actionModel){

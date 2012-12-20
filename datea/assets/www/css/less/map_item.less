@@ -84,6 +84,11 @@
       position: absolute;
       right: 15px;
       top: 0px;
+      display: block;
+      height: 47px;
+      width: 47px;
+      text-align: center;
+      line-height: 47px;
     }
   }
   .content{
@@ -114,6 +119,43 @@
   .comment-widget{
     .rght;
   }
+  
+  .item-replies-wrap {
+    padding: 10px 0;
+    background-color: lighten(@gray-bg, 5%);
+    h4{
+      padding-left: 10px;
+      margin-bottom: 3px;
+    }
+    .item-replies {
+      
+      .reply {
+        border-bottom: 1px solid #e0e0e0;
+        &:last-child { border-bottom: 0}
+        margin-bottom: 5px;
+        padding: 5px 12px;
+        .reply-head {
+            margin-bottom: 5px;
+            .user{
+              color: @green;
+              margin-right: 8px;
+            }
+            .date{
+              font-size: 11px;
+              color: #aaa;
+            }
+          }
+          .reply-content{
+            margin-bottom: 10px;
+            .comment-text{
+              line-height: 15px;
+            }
+          }
+      }
+    }
+  }
+  
+  
   .comment-wrap{
     h4{
       padding-left: 10px;

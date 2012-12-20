@@ -189,7 +189,7 @@ var ActionsView = Backbone.View.extend({
             	self.render_page();
             },
             error: function() {
-            	onOffline();
+            	self.options.router.navigate(self.options.router.last_route, {trigger: false, replace: true});
         	}
 		};
 		if (this.params.offset > 0) {
@@ -307,7 +307,6 @@ var ActionsView = Backbone.View.extend({
         
         // scroll to last seen action
         if (this.last_scrollTop && this.last_scrollTop < 0) {
-        	console.log(this.last_scrollTop);
         	var $wrapper = $('#wrapper', this.$el);
         	$wrapper.css('visibility', 'hidden');
         	var self = this;

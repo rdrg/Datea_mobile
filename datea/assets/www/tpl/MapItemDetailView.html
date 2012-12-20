@@ -10,9 +10,9 @@
 			<div class="username">por <b><%= user.username %></b></div>
 			<div class="date"><%= created %></div>
 		</div>
-		<a class="zoom-to-item" href="#" data-id="<%= id %>" title="open in map">
+		<div class="zoom-to-item" href="#" data-id="<%= id %>">
 			<i data-id="<%= id %>" class="crosshair"></i>
-		</a>
+		</div>
 	</div>
 	
 	<div class="content">
@@ -38,7 +38,7 @@
 	
 	<% if (replies && replies.length > 0) { %>
 		<div class="item-replies-wrap">
-			<div class="replies-title">Respuestas</div>
+			<h4 class="replies-title">Respuestas</h4>
 			<div class="item-replies"></div>
 		</div>
 	<% } %>
