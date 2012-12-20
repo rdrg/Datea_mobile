@@ -43,7 +43,7 @@ var ProfileEditView = Backbone.View.extend({
         });
         
         if (this.new_image_uri != '') {
-        	$('#spinner').fadeIn("fast");
+        	$spinner.show();
         	//console.log("sending image");
 	        var profile_img = new Image();
 	 

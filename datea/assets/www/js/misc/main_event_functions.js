@@ -142,7 +142,7 @@ function onOffline(close){
 	 }else{
 	 	alert(error);
 	 }
-	 $('#spinner').fadeOut("fast");
+	 $spinner.hide();
 }
 
 function offLineAlertDismissed() {

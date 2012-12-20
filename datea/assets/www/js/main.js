@@ -592,6 +592,7 @@ function init_main () {
 	main_w = $(window).width();
 	//$('#main').css({height: "432px", width: "320px"});
 	$('#main').css({height: main_h, width: main_w});
+	window.$spinner = $('#spinner');
 	
     utils.loadTpl(['HeaderView', 
                     'AboutView', 
@@ -642,10 +643,10 @@ function init_main () {
 		/******************* INIT AJAX *******************/
 		$.ajaxSetup({ 
             beforeSend: function(){
-                $('#spinner').fadeIn("fast");
+                $spinner.show();
             },
             complete: function(){
-                $('#spinner').fadeOut("fast");
+                $spinner.hide();
             },
             crossDomain:true 
         });

@@ -139,7 +139,7 @@ var CreateMapItemView = Backbone.View.extend({
         //event.preventDefault();
 
         var self = this;
-        $('#spinner').fadeIn("fast");
+        $spinner.show();
         if(this.imageURI !== undefined){            
             var transfer = new FileTransfer();
             var options = new FileUploadOptions();

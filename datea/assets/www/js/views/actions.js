@@ -133,7 +133,7 @@ var ActionsView = Backbone.View.extend({
         }else{
 	        
 	        if(get_location_first){
-	        	$('#spinner').show();
+	        	$spinner.show();
 	        	navigator.geolocation.getCurrentPosition(this.location_success, this.location_err, {
 						maximumAge: 5000, 
 						timeout: 5000, 
