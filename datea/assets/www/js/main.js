@@ -43,10 +43,12 @@ var DateaRouter = Backbone.Router.extend({
 	
 	route: function (route, name, callback) {
 		return Backbone.Router.prototype.route.call(this, route, name, function() {
-            this.last_route = route;
+            this.last_route = Backbone.history.fragment;
             callback.apply(this, arguments);
         });
 	},
+	
+	last_actions_route: 'actions',
 	
 	/******************** VIEW FUNCTIONS *****************************/
 	
@@ -141,6 +143,8 @@ var DateaRouter = Backbone.Router.extend({
 	    
     actionList: function(){
         //console.log("normal action list");
+        this.last_actions_route = 'actions';
+        
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
         }
@@ -195,7 +199,7 @@ var DateaRouter = Backbone.Router.extend({
             this.showView('#main', self.actionView);
             this.renderNavigation('dateo', 'none', self.actionModel.toJSON());
             this.renderHeader('general');
-            this.setBackNavTo('actions');
+            self.setBackNavFromActionDetail();
              
         }else{
 	        this.actionModel.fetch({
@@ -209,7 +213,7 @@ var DateaRouter = Backbone.Router.extend({
 	                self.showView('#main', self.actionView);
 	                self.renderNavigation('dateo', 'none', self.actionModel.toJSON());
 	                self.renderHeader('general');
-	                self.setBackNavTo('actions');   
+	                self.setBackNavFromActionDetail();  
 	            },
 	            error: function(error){
 	            	self.navigate(self.last_route, {trigger: false, replace: true});
@@ -271,22 +275,68 @@ var DateaRouter = Backbone.Router.extend({
        
 	mappingMap: function(mapid, callback_func, zoom_item_id) {
 		
-    	var do_fetch = true;
+		var self = this;
+    	var fetch_map_items = true;
+    	var fetch_complete = false;
     	
-    	if (!this.actionModel.get('map_items')) {
-    		this.mapItems = new MapItemCollection();
+    	
+    	if (!this.actionModel || this.actionModel.get('id') != mapid) {
+    		fetch_complete = true;
     	} else if (this.actionModel.get('id') == mapid && this.actionModel.get('map_items')) {
-    		do_fetch = false;
+    		fetch_map_item = false;
     	}
-        
+    	
+    	if(!this.actionModel){
+            this.actionModel = new Action();
+        }
+
         if (!this.mappingMapView) {
         	this.mappingMapView = new MappingMapView({
         		model: this.actionModel
        	 	});
+       	 	var delegate = false;
+       	}else{
+       		var delegate = true;
        	}
+       	
+       	var show_view_func = function (delegate) {
+			self.showView('#main', self.mappingMapView);
+			if (delegate) self.mappingMapView.delegateEvents(); 
+			self.mappingMapView.loadMap(zoom_item_id);
+			if (typeof(callback_func) != 'undefined') callback_func();
+			self.renderNavigation('dateo', 'ftr_dateo', self.actionModel.toJSON());
+			self.renderHeader('general');
+			self.setBackNavTo('action/'+mapid); 
+       	};
+       	
+       	var error_func = function () {
+       		self.navigate(self.last_route, {trigger: false, replace: true});
+	        onOffline();
+       	};
+       	
+       	if (fetch_complete) {
+        	this.actionModel.url = api_url + "/api/v1/mapping/" + mapid + '/';
+        	this.actionModel.fetch({
+        		success: function() {
+        			self.mapItems = new MapItemCollection();
+	        		self.mapItems.fetch({
+		    			data: {
+		    				published: 1,
+		    				action: mapid,
+		    				order_by: '-created',
+		    			},
+		    			success: function () {
+		    				self.actionModel.set('map_items', self.mapItems.toJSON(), {silent: true});
+			        		show_view_func(delegate);
+						},
+						error: function () { error_func(); }
+					});
+	        	},
+	        	error: function () { error_func(); } 
+        	});
     	
-    	if (do_fetch) {
-    		var self = this;
+    	} else if (fetch_map_items) {
+    		this.mapItems = new MapItemCollection();
     		this.mapItems.fetch({
     			data: {
     				published: 1,
@@ -295,27 +345,13 @@ var DateaRouter = Backbone.Router.extend({
     			},
     			success: function () {
     				self.actionModel.set('map_items', self.mapItems.toJSON(), {silent: true});
-					self.showView('#main', self.mappingMapView);
-					self.mappingMapView.loadMap(zoom_item_id);
-					if (typeof(callback_func) != 'undefined') callback_func();
-					self.renderNavigation('dateo', 'ftr_dateo', self.actionModel.toJSON());
-					self.renderHeader('general');
-					self.setBackNavTo('action/'+mapid); 
+	        		show_view_func(delegate);
 				},
-				error: function(model,error) {
-					self.navigate(self.last_route, {trigger: false, replace: true});
-	                onOffline();
-				}
+				error: function() { error_func(); }
 			});
 			
 		}else{
-			this.showView('#main', this.mappingMapView);
-			this.mappingMapView.delegateEvents();
-			this.mappingMapView.loadMap(zoom_item_id);
-			if (typeof(callback_func) != 'undefined') callback_func();
-			this.renderNavigation('dateo', 'ftr_dateo', this.actionModel.toJSON());
-			this.renderHeader('general');
-			this.setBackNavTo('action/'+mapid); 
+			show_view_func(delegate);
 		}
 	    this.renderHeader('general');
     },
@@ -334,7 +370,10 @@ var DateaRouter = Backbone.Router.extend({
     	}, item_id);
     },
     
-    openHistory: function () {    	
+    openHistory: function () {
+    	
+    	this.last_action_route = 'history';
+    	    	
     	if (!this.historyListView) {
         	this.historyListView = new HistoryListView({
         		user_model: localUser,
@@ -377,6 +416,8 @@ var DateaRouter = Backbone.Router.extend({
     },
 
     searchQuery : function(term, cat, order){
+          
+        this.last_actions_route = this.last_route;
           
         if(!this.actionCollection){
             this.actionCollection = new ActionCollection();
@@ -525,7 +566,22 @@ var DateaRouter = Backbone.Router.extend({
     	window.backbutton_func = function () {
     		self.navigate(url, options);
     	}
-    }   
+    },
+    
+    setBackNavFromActionDetail: function (options) {
+    	if (typeof(options) == 'undefined') {
+    		var options = {
+    			trigger: true,
+    			replace: true,
+    		}
+    	}
+    	var self = this;
+    	window.backbutton_func = function () {
+    		console.log(self.last_actions_route)
+    		self.navigate(self.last_actions_route, options);
+    	}
+    }
+     
 });
 
 	
@@ -534,7 +590,7 @@ function init_main () {
 	window_h = $(window).height();
 	main_h = (window_h - 48);
 	main_w = $(window).width();
-	$('#main').css({height: "460px", width: "302px"});
+	//$('#main').css({height: "432px", width: "320px"});
 	$('#main').css({height: main_h, width: main_w});
 	
     utils.loadTpl(['HeaderView', 

@@ -17,11 +17,11 @@ function init_links() {
 		} 
 		dateaApp.navigate(href, {trigger: true});
 	});
-	
+	/*
 	$(document).on('click', '.link, a', {}, function(ev){
 		ev.stopPropagation();
 		ev.preventDefault();
-	});
+	});*/
 }
 
 
