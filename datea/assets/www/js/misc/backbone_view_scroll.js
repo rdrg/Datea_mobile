@@ -8,7 +8,7 @@ Backbone.View.prototype.scroll = function(elem){
         hScroll : false,
         fixedScrollbar: false,
         hideScrollbar: false,
-        useTransform: false,
+        useTransform: true,
         zoom: false,
         //checkDOMChanges: false,
         //bounce: false,

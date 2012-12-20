@@ -143,7 +143,6 @@ var HistoryListView = Backbone.View.extend({
     reset_event: function(ev) {
         this.render_filter();
     	this.render_page();
-    	this.scroll_refresh();
     } 
 	
 });
