@@ -81,7 +81,7 @@ var CustomSelectBoxOptionsView = Backbone.View.extend({
 		$('#opt-'+value).addClass('active');
 		var self = this;
 		setTimeout(function(){
-			$('.cselect-opt-wrapper', self.$el).slideUp('fast', function() {
+			$('.cselect-opt-wrapper', self.$el).hide(0, function() {
 				self.close();
 				self.parent_view.select_option(value);
 				window.backbutton_func = undefined;
