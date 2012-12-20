@@ -4,7 +4,7 @@ var CustomSelectBoxView = Backbone.View.extend({
 	initialize: function() {
 		if (this.options.value) {
 			this.value = this.options.value;
-			this.select_option = _.find(this.options.options, function(opt){ return opt.value == this.value; }, this);
+			this.selected_option = _.find(this.options.options, function(opt){ return opt.value == this.value; }, this);
 		}else{
 			this.value = this.options.options[0].value;
 			this.selected_option = this.options.options[0];

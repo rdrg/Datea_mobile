@@ -5,19 +5,13 @@ var CreateMapItemOne = Backbone.View.extend({
         var acc = this.model.get('action');
         //console.log("item action: " + JSON.stringify(acc));
         var cats = [];
-        var cat_options = [{value: '', label: '-- seleccionar --'}];
+        this.cat_options = [{value: '', label: '-- seleccionar --'}];
         _.each(this.options.mappingModel.get('item_categories'), function(cat){
             //console.log("category: " + JSON.stringify(cat));
-            cat_options.push({value: cat.id, label: cat.name, color: cat.color});
-        });
+            this.cat_options.push({value: cat.id, label: cat.name, color: cat.color});
+        }, this);
         
-        this.context = this.model.toJSON();
-        this.context.has_categories = cat_options.length > 1;
-        this.context.cat_options = cat_options;
-        this.context.step = this.options.step;
-        this.context.description = this.options.content;
-        if (this.options.parent_view.imageURI) this.context.imageURI = this.options.parent_view.imageURI;
-        _.bindAll(this);
+        //_.bindAll(this);
         //console.log("this is step: " + this.context.step);
         
         var self = this;
@@ -29,12 +23,21 @@ var CreateMapItemOne = Backbone.View.extend({
     },
 
     render: function(){
+    	
+    	this.context = this.model.toJSON();
+    	$.extend(this.context, {
+    		has_categories: this.cat_options.length > 1,
+    		cat_options: this.cat_options,
+    		step: this.options.step,
+    		description: this.context.content || false,
+    	});
+        if (this.options.parent_view.imageURI) this.context.imageURI = this.options.parent_view.imageURI;
+        
         this.$el.html(this.template(this.context));
+        
         if (this.context.has_categories) {
         	
         	var options = {};
-        	_.each(this.context.categories)
-        	
         	var self = this;
         	var selectBoxView = new CustomSelectBoxView({
         		options: this.context.cat_options,

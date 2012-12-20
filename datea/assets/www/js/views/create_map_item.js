@@ -2,8 +2,9 @@ var CreateMapItemView = Backbone.View.extend({
 
     initialize: function(){
         var self = this;
-        this.step = 1;    
-        _.bindAll(this);
+        this.step = 1;
+        this.last_step = 1;    
+        //_.bindAll(this);
         var cats = this.options.mappingModel.get('item_categories');
         this.has_categories = cats.length > 0;
     },
@@ -28,6 +29,7 @@ var CreateMapItemView = Backbone.View.extend({
     },
 
     stepForward: function(ev){
+    	
     	ev.preventDefault();
     	if (this.events_active) this.events_active = false;
     	else return;
@@ -58,7 +60,9 @@ var CreateMapItemView = Backbone.View.extend({
             this.setDescription();
         }
 		
+		this.last_step = this.step;
 		this.step++;
+		
 		if (this.step < 4) {
 			this.render();
 		}else{
@@ -66,16 +70,15 @@ var CreateMapItemView = Backbone.View.extend({
 		}
     },
 
-    stepBackward: function(){
-    	
+    stepBackward: function(ev){
+    	ev.preventDefault();
     	if (this.events_active) this.events_active = false;
     	else return;
     	
+    	this.last_step = this.step;
         if(this.step > 0 ){
-            this.step = this.step - 1;
+            this.step--;
             this.render();
-        }else{
-            this.step = 1;
         }
     },
 
@@ -93,7 +96,6 @@ var CreateMapItemView = Backbone.View.extend({
 		}
 		
         if(this.step == 1){
-        	
             this.currentView = new CreateMapItemOne({
                 model: this.model,
                 mappingModel: this.options.mappingModel, 
@@ -103,6 +105,9 @@ var CreateMapItemView = Backbone.View.extend({
             $content.html(this.currentView.render().el); 
 
         }else if(this.step == 2){
+
+        	this.scroller.destroy();
+        	this.scroller = undefined;
             
             this.currentView = new LocationInputView({
                 model: this.model,
@@ -132,7 +137,12 @@ var CreateMapItemView = Backbone.View.extend({
       		$content.html('');
             this.transferImage();
         }
-        if (this.step !=2 && this.scroller) this.scroll_refresh();
+        
+        if (this.step !=2 && this.scroller) {
+        	this.scroll_refresh();
+        }else if (this.step == 1 && this.last_step == 2) {
+        	this.scroll();
+        }
 	},
 
     transferImage: function(){
