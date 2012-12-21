@@ -140,7 +140,7 @@ var CreateMapItemView = Backbone.View.extend({
         
         if (this.step !=2 && this.scroller) {
         	this.scroll_refresh();
-        }else if (this.step == 1 && this.last_step == 2) {
+        }else if ((this.step == 1 && this.last_step == 2) || this.step > 2) {
         	this.scroll();
         }
 	},

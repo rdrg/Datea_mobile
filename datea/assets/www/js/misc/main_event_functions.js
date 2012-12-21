@@ -148,3 +148,9 @@ function onOffline(close){
 function offLineAlertDismissed() {
 	// he quitado esto, porque no creo que deberia salirse de la app, sino simplemente avisar.
 }
+
+
+/************************** IPHONE WINDOW STUFF ************************/
+function noTouchMove(ev) {
+	ev.preventDefault();
+}
