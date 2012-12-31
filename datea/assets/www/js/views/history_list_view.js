@@ -49,6 +49,7 @@ var HistoryListView = Backbone.View.extend({
     	this.build_filter_options();
     	var self = this;
     	var $filter = this.$el.find('#history-filter');
+    	$filter.empty();
     	
     	for (var i in this.filter_options) {
     		var opt = this.filter_options[i];
@@ -71,7 +72,6 @@ var HistoryListView = Backbone.View.extend({
     	var params = {
     		limit: this.items_per_page, 
     		offset: this.page * this.items_per_page,
-    		following_user: this.user_model.get('id')
     	};
     	
     	if (this.model.meta
@@ -80,14 +80,20 @@ var HistoryListView = Backbone.View.extend({
 			{return;}
     	
     	switch(this.selected_mode) {
-    	
+    		
+    		case 'combined':
+    			params.following_user = this.user_model.get('id');
+    			break;
     		case 'contributions':
+    			params.user_id = this.user_model.get('id');
     			params.sender_type =  'map_item';
     			break;
     		case 'comments':
+    			params.user_id = this.user_model.get('id');
     			params.sender_type = 'comment';
     			break;
     		case 'votes':
+    			params.user_id = this.user_model.get('id');
     			params.sender_type = 'vote';
     			break;
     	}
