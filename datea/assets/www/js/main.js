@@ -591,6 +591,7 @@ function init_main () {
 	main_h = (window_h - 48);
 	main_w = $(window).width();
 	//$('#main').css({height: "432px", width: "320px"});
+	//$('#main').css({height: "520px", width: "320px"});
 	$('#main').css({height: main_h, width: main_w});
 	window.$spinner = $('#spinner');
 	

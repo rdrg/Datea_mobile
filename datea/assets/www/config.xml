@@ -20,6 +20,7 @@
     <preference name="phonegap-version" value="2.2.0" />
     <preference name="fullscreen" value="false" />
     <preference name="orientation" value="portrait" />
+    <preference name="target-device" value="handheld" />
 
     <!-- android specific configurations -->
     <preference name="android-minSdkVersion" value="10" />
